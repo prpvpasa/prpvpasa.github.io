@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pipidahterka</title>
     <style>
-        /* Полное обнуление отступов и черный фон */
         body {
             margin: 0;
             padding: 0;
@@ -18,14 +17,17 @@
             overflow: hidden;
         }
 
-        /* Стиль для светящегося текста */
+        .content {
+            text-align: center;
+            transform: translateY(-80px);
+        }
+
         .glowing-text {
-            font-size: 4rem;
+            font-size: 5.5rem;
             font-weight: bold;
             color: #fff;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            /* Эффект неонового свечения (голубой/фиолетовый) */
+            letter-spacing: 4px;
             text-shadow: 
                 0 0 7px #fff,
                 0 0 10px #fff,
@@ -38,13 +40,32 @@
             animation: pulse 2s infinite alternate;
         }
 
-        /* Анимация легкого пульсирования свечения */
+        .subtitle {
+            margin-top: 25px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ff1a1a;
+            letter-spacing: 1px;
+            text-shadow:
+                0 0 7px #ff0000,
+                0 0 15px #ff0000,
+                0 0 30px #8b0000;
+        }
+
         @keyframes pulse {
             from {
-                text-shadow: 0 0 10px #fff, 0 0 20px #00f3ff, 0 0 40px #00f3ff, 0 0 80px #00f3ff;
+                text-shadow: 
+                    0 0 10px #fff,
+                    0 0 20px #00f3ff,
+                    0 0 40px #00f3ff,
+                    0 0 80px #00f3ff;
             }
             to {
-                text-shadow: 0 0 5px #fff, 0 0 10px #00f3ff, 0 0 20px #00f3ff, 0 0 60px #00f3ff;
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #00f3ff,
+                    0 0 20px #00f3ff,
+                    0 0 60px #00f3ff;
                 transform: scale(1.02);
             }
         }
@@ -52,7 +73,10 @@
 </head>
 <body>
 
-    <div class="glowing-text">Pipidahterka</div>
+    <div class="content">
+        <div class="glowing-text">Pipidahterka</div>
+        <div class="subtitle">Become part of us – become stronger.</div>
+    </div>
 
 </body>
 </html>
