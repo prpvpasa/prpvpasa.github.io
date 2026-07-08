@@ -3,149 +3,909 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipidahterka</title>
+    <title>Pipidahterka — System Requirements</title>
 
     <style>
-        @font-face {
-            font-family: 'Spielarcade';
-            src: url('assets/Spielarcade.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #050914;
+            --bg2: #07182f;
+            --card: rgba(12, 32, 64, 0.72);
+            --card2: rgba(8, 22, 48, 0.92);
+            --blue: #00c8ff;
+            --blue2: #1d6dff;
+            --blue3: #74e7ff;
+            --text: #ffffff;
+            --muted: #9bb7d8;
+            --border: rgba(0, 200, 255, 0.26);
+            --danger: #ff4d6d;
+            --ok: #34ffa4;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #0b0b0b;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(0, 200, 255, 0.20), transparent 30%),
+                radial-gradient(circle at 85% 25%, rgba(29, 109, 255, 0.26), transparent 35%),
+                radial-gradient(circle at 50% 100%, rgba(0, 255, 255, 0.10), transparent 35%),
+                linear-gradient(135deg, var(--bg), #02040a);
+            color: var(--text);
+            font-family: "Segoe UI", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 330px 1fr;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar {
+            padding: 28px 20px;
+            border-right: 1px solid var(--border);
+            background: rgba(2, 8, 22, 0.72);
+            backdrop-filter: blur(18px);
+            position: sticky;
+            top: 0;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-y: auto;
+        }
+
+        .logo {
+            margin-bottom: 28px;
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(145deg, rgba(0, 200, 255, 0.16), rgba(29, 109, 255, 0.08));
+            box-shadow: 0 0 35px rgba(0, 200, 255, 0.12);
+        }
+
+        .logo h1 {
+            font-size: 1.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--blue3);
+            text-shadow: 0 0 18px rgba(0, 200, 255, 0.8);
+        }
+
+        .logo p {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .sidebar-title {
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 18px 8px 12px;
+        }
+
+        .game-card {
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
             overflow: hidden;
+            background: rgba(10, 27, 58, 0.58);
+            transition: 0.25s;
+        }
+
+        .game-card.active {
+            border-color: rgba(0, 200, 255, 0.75);
+            box-shadow: 0 0 28px rgba(0, 200, 255, 0.18);
+        }
+
+        .game-head {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            color: white;
+            background: transparent;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .game-head span {
+            color: var(--blue3);
+        }
+
+        .arrow {
+            transition: 0.25s;
+            color: var(--blue);
+        }
+
+        .game-card.active .arrow {
+            transform: rotate(90deg);
+        }
+
+        .cheat-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.35s ease;
+        }
+
+        .game-card.active .cheat-list {
+            max-height: 360px;
+        }
+
+        .cheat-btn {
+            width: calc(100% - 24px);
+            margin: 0 12px 10px;
+            padding: 13px 14px;
+            border: 1px solid rgba(116, 231, 255, 0.14);
+            border-radius: 14px;
+            color: var(--text);
+            background: rgba(0, 200, 255, 0.06);
+            cursor: pointer;
+            text-align: left;
+            transition: 0.25s;
+        }
+
+        .cheat-btn:hover,
+        .cheat-btn.selected {
+            background: linear-gradient(90deg, rgba(0, 200, 255, 0.22), rgba(29, 109, 255, 0.16));
+            border-color: rgba(0, 200, 255, 0.55);
+            transform: translateX(4px);
+        }
+
+        .main {
+            padding: 42px;
         }
 
         .hero {
+            min-height: 210px;
             display: flex;
+            justify-content: space-between;
+            gap: 24px;
             align-items: center;
-            gap: 60px;
-            transform: translateY(-180px);
+            padding: 34px;
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            background:
+                linear-gradient(135deg, rgba(0, 200, 255, 0.15), rgba(29, 109, 255, 0.08)),
+                rgba(7, 18, 40, 0.75);
+            box-shadow: 0 0 50px rgba(0, 200, 255, 0.13);
+            overflow: hidden;
+            position: relative;
         }
 
-        .content {
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: -80px;
+            top: -80px;
+            background: radial-gradient(circle, rgba(0, 200, 255, 0.32), transparent 65%);
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 200, 255, 0.45);
+            border-radius: 999px;
+            color: var(--blue3);
+            background: rgba(0, 200, 255, 0.08);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .hero h2 {
+            font-size: clamp(2rem, 5vw, 4.8rem);
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 22px rgba(0, 200, 255, 0.6);
+        }
+
+        .hero p {
+            max-width: 720px;
+            margin-top: 16px;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(2, 120px);
+            gap: 12px;
+        }
+
+        .stat {
+            padding: 18px;
+            border-radius: 20px;
+            background: rgba(2, 12, 28, 0.72);
+            border: 1px solid var(--border);
             text-align: center;
         }
 
-        .glowing-text {
-            font-family: 'Spielarcade', 'Segoe UI', sans-serif;
-            font-size: 6.5rem;
-            font-weight: normal;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow:
-                0 0 7px #ffffff,
-                0 0 10px #ffffff,
-                0 0 21px #ffffff,
-                0 0 42px #00f3ff,
-                0 0 82px #00f3ff,
-                0 0 92px #00f3ff,
-                0 0 102px #00f3ff,
-                0 0 151px #00f3ff;
-            animation: pulse 2s infinite alternate;
-        }
-
-        .subtitle {
-            margin-top: 25px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #ff1a1a;
-            letter-spacing: 1px;
-            text-shadow:
-                0 0 7px #ff0000,
-                0 0 15px #ff0000,
-                0 0 30px #8b0000;
-        }
-
-        .funpay-link {
+        .stat strong {
             display: block;
-            text-decoration: none;
-            transition: 0.3s ease;
+            font-size: 1.7rem;
+            color: var(--blue3);
         }
 
-        .funpay-logo {
-            width: 260px;
-            height: auto;
+        .stat small {
+            color: var(--muted);
+        }
+
+        .content-grid {
+            margin-top: 26px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
+        }
+
+        .panel {
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            background: var(--card);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 0 32px rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 200, 255, 0.06);
+        }
+
+        .panel-header h3 {
+            font-size: 1.45rem;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .panel-body {
+            padding: 24px;
+        }
+
+        .cheat-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .cheat-title-row h3 {
+            font-size: 2rem;
+            color: var(--blue3);
+            text-shadow: 0 0 14px rgba(0, 200, 255, 0.35);
+        }
+
+        .status {
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #001b11;
+            background: var(--ok);
+            white-space: nowrap;
+            box-shadow: 0 0 18px rgba(52, 255, 164, 0.25);
+        }
+
+        .description {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 22px;
+        }
+
+        .requirements {
+            display: grid;
+            gap: 12px;
+        }
+
+        .req {
+            display: grid;
+            grid-template-columns: 135px 1fr;
+            gap: 12px;
+            padding: 13px 14px;
             border-radius: 14px;
-            box-shadow:
-                0 0 10px rgba(255, 255, 255, 0.5),
-                0 0 25px rgba(49, 132, 214, 0.8),
-                0 0 45px rgba(49, 132, 214, 0.6);
-            transition: 0.3s ease;
+            background: rgba(2, 10, 24, 0.55);
+            border: 1px solid rgba(116, 231, 255, 0.13);
         }
 
-        .funpay-link:hover .funpay-logo {
-            transform: scale(1.08);
-            box-shadow:
-                0 0 15px rgba(255, 255, 255, 0.8),
-                0 0 35px rgba(49, 132, 214, 1),
-                0 0 70px rgba(49, 132, 214, 0.9);
+        .req b {
+            color: var(--blue3);
         }
 
-        @keyframes pulse {
-            from {
-                text-shadow:
-                    0 0 10px #ffffff,
-                    0 0 20px #00f3ff,
-                    0 0 40px #00f3ff,
-                    0 0 80px #00f3ff;
+        .req span {
+            color: #dceeff;
+        }
+
+        .features {
+            display: grid;
+            gap: 12px;
+        }
+
+        .feature {
+            padding: 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(116, 231, 255, 0.15);
+            background: rgba(2, 10, 24, 0.48);
+            color: #dceeff;
+            line-height: 1.5;
+        }
+
+        .feature::before {
+            content: "✦";
+            color: var(--blue);
+            margin-right: 8px;
+        }
+
+        .media-grid {
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .media-card {
+            min-height: 155px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 200, 255, 0.22);
+            background:
+                linear-gradient(135deg, rgba(0, 200, 255, 0.12), rgba(29, 109, 255, 0.10)),
+                rgba(2, 10, 24, 0.68);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--muted);
+            padding: 18px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .media-card img,
+        .media-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+        }
+
+        .media-placeholder {
+            position: relative;
+            z-index: 2;
+        }
+
+        .media-placeholder strong {
+            display: block;
+            color: var(--blue3);
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        .notice {
+            margin-top: 24px;
+            padding: 18px;
+            border: 1px solid rgba(255, 77, 109, 0.35);
+            background: rgba(255, 77, 109, 0.08);
+            border-radius: 18px;
+            color: #ffd2dc;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1050px) {
+            .app {
+                grid-template-columns: 1fr;
             }
 
-            to {
-                text-shadow:
-                    0 0 5px #ffffff,
-                    0 0 10px #00f3ff,
-                    0 0 20px #00f3ff,
-                    0 0 60px #00f3ff;
-                transform: scale(1.02);
+            .sidebar {
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
             }
-        }
 
-        @media (max-width: 900px) {
+            .main {
+                padding: 24px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
             .hero {
                 flex-direction: column;
-                gap: 35px;
-                transform: translateY(-90px);
+                align-items: flex-start;
             }
 
-            .glowing-text {
-                font-size: 3.8rem;
-                letter-spacing: 3px;
+            .hero-stats {
+                width: 100%;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 620px) {
+            .main {
+                padding: 16px;
             }
 
-            .subtitle {
-                font-size: 1.2rem;
+            .hero {
+                padding: 24px;
+                border-radius: 24px;
             }
 
-            .funpay-logo {
-                width: 210px;
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .req {
+                grid-template-columns: 1fr;
+            }
+
+            .cheat-title-row {
+                align-items: flex-start;
+                flex-direction: column;
             }
         }
     </style>
 </head>
 
 <body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>Pipidahterka</h1>
+                <p>System requirements & media showcase</p>
+            </div>
 
-    <div class="hero">
-        <div class="content">
-            <div class="glowing-text">Pipidahterka</div>
-            <div class="subtitle">Become part of us – become stronger.</div>
-        </div>
+            <div class="sidebar-title">Games</div>
 
-        <a class="funpay-link" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">
-            <img class="funpay-logo" src="assets/funpay.png" alt="FunPay">
-        </a>
+            <div id="gamesMenu"></div>
+        </aside>
+
+        <main class="main">
+            <section class="hero">
+                <div class="hero-text">
+                    <div class="badge">● Blue Panel / Game Catalog</div>
+                    <h2 id="gameTitle">ARC Raiders</h2>
+                    <p id="gameDescription">
+                        Выберите игру слева, откройте нужный продукт и посмотрите системные требования, список функций, фото и видео демонстрации.
+                    </p>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <strong id="cheatsCount">0</strong>
+                        <small>products</small>
+                    </div>
+                    <div class="stat">
+                        <strong>24/7</strong>
+                        <small>catalog</small>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-grid">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Информация о продукте</h3>
+                        <p>Системные требования и краткое описание.</p>
+                    </div>
+
+                    <div class="panel-body" id="infoPanel"></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Функционал</h3>
+                        <p>Основные возможности выбранного продукта.</p>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="features" id="featuresPanel"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel" style="margin-top: 24px;">
+                <div class="panel-header">
+                    <h3>Фото / видео функционала</h3>
+                    <p>Здесь можно разместить скриншоты, превью и видео.</p>
+                </div>
+
+                <div class="panel-body">
+                    <div class="media-grid" id="mediaPanel"></div>
+
+                    <div class="notice">
+                        Совет: создай папку <b>assets</b> рядом с <b>index.html</b> и загружай туда картинки/видео.
+                        Например: <b>assets/arc-photo-1.jpg</b> или <b>assets/apex-video-1.mp4</b>.
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
 
+    <script>
+        const catalog = {
+            arc: {
+                title: "ARC Raiders",
+                description: "Каталог продуктов для ARC Raiders: требования, описание и медиа-демонстрации.",
+                cheats: [
+                    {
+                        name: "ARC Blue Vision",
+                        status: "Available",
+                        description: "Легкий визуальный модуль с акцентом на удобный интерфейс, стабильность и гибкие настройки отображения.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i5 / Ryzen 5 или лучше",
+                            RAM: "8 GB",
+                            GPU: "GTX 1060 / RX 580 или лучше",
+                            Disk: "500 MB свободного места"
+                        },
+                        features: [
+                            "Настраиваемое внутриигровое меню",
+                            "Отображение полезной информации на экране",
+                            "Настройка цветов интерфейса",
+                            "Сохранение профилей конфигурации",
+                            "Оптимизированный режим производительности"
+                        ],
+                        media: [
+                            { type: "photo", title: "Main menu", file: "assets/arc-photo-1.jpg" },
+                            { type: "photo", title: "Interface preview", file: "assets/arc-photo-2.jpg" },
+                            { type: "video", title: "Video showcase", file: "assets/arc-video-1.mp4" },
+                            { type: "photo", title: "Settings panel", file: "assets/arc-photo-3.jpg" }
+                        ]
+                    },
+                    {
+                        name: "ARC Lite Panel",
+                        status: "Available",
+                        description: "Минималистичный вариант с базовым набором функций и низкой нагрузкой на систему.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i3 / Ryzen 3 или лучше",
+                            RAM: "8 GB",
+                            GPU: "GTX 1050 Ti или лучше",
+                            Disk: "300 MB свободного места"
+                        },
+                        features: [
+                            "Компактное меню",
+                            "Быстрое переключение настроек",
+                            "Низкое потребление ресурсов",
+                            "Готовые пресеты",
+                            "Поддержка горячих клавиш"
+                        ],
+                        media: [
+                            { type: "photo", title: "Lite interface", file: "assets/arc-lite-1.jpg" },
+                            { type: "video", title: "Lite demo", file: "assets/arc-lite-video.mp4" }
+                        ]
+                    }
+                ]
+            },
+
+            albion: {
+                title: "Albion Online",
+                description: "Раздел для Albion Online с продуктами, требованиями и демонстрацией интерфейса.",
+                cheats: [
+                    {
+                        name: "Albion Blue Tools",
+                        status: "Available",
+                        description: "Информационная панель для удобного отображения игровых данных и быстрой настройки интерфейса.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i3 / Ryzen 3 или лучше",
+                            RAM: "6 GB",
+                            GPU: "GTX 750 Ti / встроенная современная графика",
+                            Disk: "250 MB свободного места"
+                        },
+                        features: [
+                            "Отдельная панель настроек",
+                            "Настраиваемые элементы интерфейса",
+                            "Профили под разные стили игры",
+                            "Горячие клавиши",
+                            "Легкий режим для слабых ПК"
+                        ],
+                        media: [
+                            { type: "photo", title: "Albion panel", file: "assets/albion-photo-1.jpg" },
+                            { type: "photo", title: "Settings", file: "assets/albion-photo-2.jpg" },
+                            { type: "video", title: "Showcase", file: "assets/albion-video-1.mp4" }
+                        ]
+                    },
+                    {
+                        name: "Albion Pro HUD",
+                        status: "Available",
+                        description: "Расширенный HUD с большим количеством настроек внешнего вида и удобной структурой меню.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i5 / Ryzen 5",
+                            RAM: "8 GB",
+                            GPU: "GTX 960 или лучше",
+                            Disk: "400 MB свободного места"
+                        },
+                        features: [
+                            "Расширенные настройки HUD",
+                            "Быстрое включение и выключение модулей",
+                            "Сохранение нескольких конфигов",
+                            "Чистый синий интерфейс",
+                            "Адаптация под разные разрешения"
+                        ],
+                        media: [
+                            { type: "photo", title: "HUD preview", file: "assets/albion-pro-1.jpg" },
+                            { type: "video", title: "HUD video", file: "assets/albion-pro-video.mp4" }
+                        ]
+                    }
+                ]
+            },
+
+            apex: {
+                title: "Apex Legends",
+                description: "Раздел Apex Legends: карточки продуктов, системные требования, функции и медиа.",
+                cheats: [
+                    {
+                        name: "Apex Storm Panel",
+                        status: "Available",
+                        description: "Современная панель с неоновым дизайном, пресетами и настройками под разные режимы.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i5-8400 / Ryzen 5 2600",
+                            RAM: "8 GB",
+                            GPU: "GTX 1060 6GB / RX 580",
+                            Disk: "600 MB свободного места"
+                        },
+                        features: [
+                            "Неоновое меню в синем стиле",
+                            "Настройка горячих клавиш",
+                            "Профили конфигураций",
+                            "Регулировка прозрачности интерфейса",
+                            "Быстрый режим включения функций"
+                        ],
+                        media: [
+                            { type: "photo", title: "Apex menu", file: "assets/apex-photo-1.jpg" },
+                            { type: "photo", title: "Apex settings", file: "assets/apex-photo-2.jpg" },
+                            { type: "video", title: "Apex showcase", file: "assets/apex-video-1.mp4" }
+                        ]
+                    },
+                    {
+                        name: "Apex Lite",
+                        status: "Available",
+                        description: "Базовый вариант для пользователей, которым нужен простой интерфейс и минимальная нагрузка.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i3 / Ryzen 3",
+                            RAM: "8 GB",
+                            GPU: "GTX 1050 Ti",
+                            Disk: "350 MB свободного места"
+                        },
+                        features: [
+                            "Минималистичный дизайн",
+                            "Простая настройка",
+                            "Малое потребление ресурсов",
+                            "Быстрые пресеты",
+                            "Поддержка популярных разрешений"
+                        ],
+                        media: [
+                            { type: "photo", title: "Lite menu", file: "assets/apex-lite-1.jpg" },
+                            { type: "video", title: "Lite video", file: "assets/apex-lite-video.mp4" }
+                        ]
+                    }
+                ]
+            },
+
+            arena: {
+                title: "Arena Breakout",
+                description: "Раздел Arena Breakout с продуктами, описанием, требованиями и блоком демонстраций.",
+                cheats: [
+                    {
+                        name: "Arena Blue Assist",
+                        status: "Available",
+                        description: "Настраиваемая панель с современным интерфейсом, удобной навигацией и медиа-превью.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i5 / Ryzen 5",
+                            RAM: "8 GB",
+                            GPU: "GTX 1060 / RX 580",
+                            Disk: "550 MB свободного места"
+                        },
+                        features: [
+                            "Синий интерфейс панели",
+                            "Гибкая настройка отображения",
+                            "Сохранение пользовательских пресетов",
+                            "Горячие клавиши",
+                            "Поддержка полноэкранного и оконного режима"
+                        ],
+                        media: [
+                            { type: "photo", title: "Arena menu", file: "assets/arena-photo-1.jpg" },
+                            { type: "photo", title: "Arena preview", file: "assets/arena-photo-2.jpg" },
+                            { type: "video", title: "Arena demo", file: "assets/arena-video-1.mp4" }
+                        ]
+                    },
+                    {
+                        name: "Arena Compact",
+                        status: "Available",
+                        description: "Компактная версия с простым меню, быстрым запуском и базовым набором настроек.",
+                        requirements: {
+                            OS: "Windows 10 / 11 x64",
+                            CPU: "Intel Core i3 / Ryzen 3",
+                            RAM: "8 GB",
+                            GPU: "GTX 1050 Ti",
+                            Disk: "300 MB свободного места"
+                        },
+                        features: [
+                            "Компактное меню",
+                            "Быстрая настройка",
+                            "Низкая нагрузка",
+                            "Простое управление",
+                            "Готовые профили"
+                        ],
+                        media: [
+                            { type: "photo", title: "Compact menu", file: "assets/arena-compact-1.jpg" },
+                            { type: "video", title: "Compact demo", file: "assets/arena-compact-video.mp4" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        const gamesMenu = document.getElementById("gamesMenu");
+        const gameTitle = document.getElementById("gameTitle");
+        const gameDescription = document.getElementById("gameDescription");
+        const cheatsCount = document.getElementById("cheatsCount");
+        const infoPanel = document.getElementById("infoPanel");
+        const featuresPanel = document.getElementById("featuresPanel");
+        const mediaPanel = document.getElementById("mediaPanel");
+
+        let currentGame = "arc";
+        let currentCheat = 0;
+
+        function renderMenu() {
+            gamesMenu.innerHTML = "";
+
+            Object.entries(catalog).forEach(([gameKey, game]) => {
+                const card = document.createElement("div");
+                card.className = "game-card";
+                if (gameKey === currentGame) card.classList.add("active");
+
+                const head = document.createElement("button");
+                head.className = "game-head";
+                head.innerHTML = `<span>${game.title}</span><div class="arrow">›</div>`;
+
+                head.onclick = () => {
+                    currentGame = gameKey;
+                    currentCheat = 0;
+                    renderAll();
+                };
+
+                const list = document.createElement("div");
+                list.className = "cheat-list";
+
+                game.cheats.forEach((cheat, index) => {
+                    const btn = document.createElement("button");
+                    btn.className = "cheat-btn";
+                    if (gameKey === currentGame && index === currentCheat) {
+                        btn.classList.add("selected");
+                    }
+
+                    btn.innerHTML = `<b>${cheat.name}</b><br><small>${cheat.status}</small>`;
+
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        currentGame = gameKey;
+                        currentCheat = index;
+                        renderAll();
+                    };
+
+                    list.appendChild(btn);
+                });
+
+                card.appendChild(head);
+                card.appendChild(list);
+                gamesMenu.appendChild(card);
+            });
+        }
+
+        function renderInfo() {
+            const game = catalog[currentGame];
+            const cheat = game.cheats[currentCheat];
+
+            gameTitle.textContent = game.title;
+            gameDescription.textContent = game.description;
+            cheatsCount.textContent = game.cheats.length;
+
+            const reqHTML = Object.entries(cheat.requirements).map(([key, value]) => `
+                <div class="req">
+                    <b>${key}</b>
+                    <span>${value}</span>
+                </div>
+            `).join("");
+
+            infoPanel.innerHTML = `
+                <div class="cheat-title-row">
+                    <h3>${cheat.name}</h3>
+                    <div class="status">${cheat.status}</div>
+                </div>
+
+                <p class="description">${cheat.description}</p>
+
+                <div class="requirements">
+                    ${reqHTML}
+                </div>
+            `;
+
+            featuresPanel.innerHTML = cheat.features.map(feature => `
+                <div class="feature">${feature}</div>
+            `).join("");
+
+            mediaPanel.innerHTML = cheat.media.map(item => {
+                if (item.type === "photo") {
+                    return `
+                        <div class="media-card">
+                            <img src="${item.file}" alt="${item.title}" onerror="this.style.display='none'">
+                            <div class="media-placeholder">
+                                <strong>Фото</strong>
+                                ${item.title}<br>
+                                <small>${item.file}</small>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="media-card">
+                        <video controls onerror="this.style.display='none'">
+                            <source src="${item.file}" type="video/mp4">
+                        </video>
+                        <div class="media-placeholder">
+                            <strong>Видео</strong>
+                            ${item.title}<br>
+                            <small>${item.file}</small>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderAll() {
+            renderMenu();
+            renderInfo();
+        }
+
+        renderAll();
+    </script>
 </body>
 </html>
