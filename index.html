@@ -8,7 +8,7 @@
     <style>
         @font-face {
             font-family: 'Spielarcade';
-            src: url('Spielarcade.ttf') format('truetype');
+            src: url('assets/Spielarcade.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -29,7 +29,7 @@
             display: flex;
             align-items: center;
             gap: 60px;
-            transform: translateY(-160px);
+            transform: translateY(-180px);
         }
 
         .content {
@@ -38,12 +38,12 @@
 
         .glowing-text {
             font-family: 'Spielarcade', 'Segoe UI', sans-serif;
-            font-size: 6.2rem;
+            font-size: 6.5rem;
             font-weight: normal;
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 5px;
-            text-shadow: 
+            text-shadow:
                 0 0 7px #fff,
                 0 0 10px #fff,
                 0 0 21px #fff,
@@ -74,9 +74,9 @@
         }
 
         .funpay-logo {
-            width: 230px;
+            width: 260px;
             height: auto;
-            border-radius: 16px;
+            border-radius: 14px;
             box-shadow:
                 0 0 10px rgba(255, 255, 255, 0.5),
                 0 0 25px rgba(49, 132, 214, 0.8),
@@ -94,19 +94,39 @@
 
         @keyframes pulse {
             from {
-                text-shadow: 
+                text-shadow:
                     0 0 10px #fff,
                     0 0 20px #00f3ff,
                     0 0 40px #00f3ff,
                     0 0 80px #00f3ff;
             }
             to {
-                text-shadow: 
+                text-shadow:
                     0 0 5px #fff,
                     0 0 10px #00f3ff,
                     0 0 20px #00f3ff,
                     0 0 60px #00f3ff;
                 transform: scale(1.02);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                gap: 35px;
+                transform: translateY(-90px);
+            }
+
+            .glowing-text {
+                font-size: 3.8rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .funpay-logo {
+                width: 210px;
             }
         }
     </style>
@@ -119,8 +139,8 @@
             <div class="subtitle">Become part of us – become stronger.</div>
         </div>
 
-        <a class="funpay-link" href="https://funpay.com/users/13609498/" target="_blank">
-            <img class="funpay-logo" src="funpay.png" alt="FunPay">
+        <a class="funpay-link" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">
+            <img class="funpay-logo" src="assets/funpay.png" alt="FunPay">
         </a>
     </div>
 
