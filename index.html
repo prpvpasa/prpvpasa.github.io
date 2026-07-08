@@ -701,20 +701,178 @@
                 description: "Раздел для ARC Raiders: системные требования, функционал, фото и видео.",
                 cheats: [
                     {
-                        name: "ARC Blue Vision",
-                        status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
-                        features: ["Функционал 1", "Функционал 2", "Функционал 3", "Функционал 4"],
+                        name: "Ancient",
+                        status: "Undetected",
+                        description: "Ancient — приватный чит для ARC Raiders с точным аимботом, расширенными визуалами, радаром, лутом и гибкими настройками мира.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "Клиент": "Steam | Xbox",
+                            "ОС": "Windows 10 | 11",
+                            "Видеокарта": "Nvidia | AMD",
+                            "Режим игры": "Безрамочный",
+                            "Формат диска": "On Intel GPT processors",
+                            "Биос": "On Intel UEFI processors",
+                            "Обход записи": "Да",
+                            "Информация": "16 ГБ оперативной памяти | RAID дисков и Rapid Storage - ВЫКЛ. (BIOS) | TPM - ВЫКЛ. | Включить SVM [AMD] / VT-X [INTEL] (BIOS)"
+                        },
+                        features: [
+                            "Aimbot",
+                            "Клавиша аима",
+                            "Тип аима: мышь / память",
+                            "Плавность аима",
+                            "Показать и изменить радиус аима",
+                            "Предсказание и точка предсказания",
+                            "Линия до цели",
+                            "Фиксация цели",
+                            "Проверка видимости",
+                            "Максимальное расстояние аима",
+                            "Кости цели",
+                            "Visuals",
+                            "Loot",
+                            "Radar",
+                            "Other"
+                        ],
+                        media: [
+                            { type: "photo", title: "Ancient showcase 1", file: "assets/ancient-1.gif" },
+                            { type: "photo", title: "Ancient showcase 2", file: "assets/ancient-2.webp" },
+                            { type: "photo", title: "Ancient showcase 3", file: "assets/ancient-3.webp" }
+                        ]
+                    },
+                    {
+                        name: "Arcane",
+                        status: "Undetected",
+                        description: "Arcane — приватный чит для ARC Raiders с аимботом, ESP, радаром, лутом и удобной настройкой функций под себя.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "Клиент": "Steam | Xbox",
+                            "ОС": "Windows 10 | 11",
+                            "Видеокарта": "Nvidia | AMD",
+                            "Режим игры": "Оконный | Безрамочный",
+                            "Формат диска": "GPT",
+                            "Биос": "UEFI",
+                            "Информация": "Требуется 12 GB оперативной памяти"
+                        },
+                        features: [
+                            "Aimbot",
+                            "Активировать всегда",
+                            "Проверка видимости",
+                            "Рисовать круг FOV и фон круга FOV",
+                            "Первая и вторая клавиша аима",
+                            "Цели: игроки, боты, команда, нокнутые",
+                            "Тип поиска кости: выбранная, ближняя, случайная",
+                            "Кость: голова, шея, грудь, таз и другие",
+                            "Размер круга FOV",
+                            "Плавность",
+                            "Максимальная дистанция",
+                            "Visuals",
+                            "Loot",
+                            "Radar",
+                            "Other"
+                        ],
                         media: []
                     },
                     {
-                        name: "ARC Lite Panel",
-                        status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
-                        features: ["Функционал 1", "Функционал 2", "Функционал 3"],
-                        media: []
+                        name: "BTG",
+                        status: "Undetected",
+                        description: "BTG для ARC Raiders даёт подсветку игроков через препятствия, отображение лута и базовые визуальные инструменты для контроля ситуации.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "Клиент": "Steam",
+                            "ОС": "Windows 10 | 11",
+                            "Режим игры": "Без рамок",
+                            "Формат диска": "GPT",
+                            "Биос": "UEFI",
+                            "Информация": "Выключить Secure Boot, включить виртуализацию"
+                        },
+                        features: [
+                            "Visuals",
+                            "Loot",
+                            "Скелет",
+                            "Боксы",
+                            "Закрашенные боксы",
+                            "Линии",
+                            "Дистанция",
+                            "Голова",
+                            "Радар",
+                            "Полоска здоровья",
+                            "Цвет видимого игрока",
+                            "Дистанция отрисовки"
+                        ],
+                        media: [
+                            { type: "photo", title: "BTG menu", file: "assets/btg-1.webp" },
+                            { type: "photo", title: "BTG showcase 1", file: "assets/btg-2.webp" },
+                            { type: "photo", title: "BTG showcase 2", file: "assets/btg-3.webp" },
+                            { type: "photo", title: "BTG showcase 3", file: "assets/btg-4.webp" },
+                            { type: "photo", title: "BTG showcase 4", file: "assets/btg-5.webp" }
+                        ]
+                    },
+                    {
+                        name: "Dullwave",
+                        status: "Undetected",
+                        description: "Dullwave для ARC Raiders сочетает подсветку игроков, аимбот и подсветку лута для быстрого поиска ресурсов и уверенной игры.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "Клиент": "Steam | Xbox",
+                            "ОС": "Windows 10 | 11 [21H2, 22H2, 23H2]",
+                            "Видеокарта": "Nvidia | AMD",
+                            "Режим игры": "Оконный | Безрамочный"
+                        },
+                        features: [
+                            "Aimbot",
+                            "Включение",
+                            "Клавиша активации",
+                            "Кости",
+                            "Отображение FOV",
+                            "Фиксация цели",
+                            "Гуманизация",
+                            "Невидимые цели",
+                            "Линия прицеливания",
+                            "Игнорирование сбитых",
+                            "Поле зрения",
+                            "Плавность",
+                            "Дальность",
+                            "Visuals",
+                            "Loot",
+                            "Other"
+                        ],
+                        media: [
+                            { type: "photo", title: "Dullwave menu", file: "assets/dullwave-arc-1.webp" },
+                            { type: "photo", title: "Dullwave showcase 1", file: "assets/dullwave-arc-2.webp" },
+                            { type: "photo", title: "Dullwave showcase 2", file: "assets/dullwave-arc-3.webp" },
+                            { type: "photo", title: "Dullwave showcase 3", file: "assets/dullwave-arc-4.webp" },
+                            { type: "photo", title: "Dullwave showcase 4", file: "assets/dullwave-arc-5.webp" }
+                        ]
+                    },
+                    {
+                        name: "Fecurity",
+                        status: "Undetected",
+                        description: "Fecurity для ARC Raiders помогает видеть противников, точнее стрелять и контролировать ситуацию на карте.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "Клиент": "Steam | Xbox",
+                            "ОС": "Windows 10 | 11",
+                            "Видеокарта": "Nvidia | AMD",
+                            "Режим игры": "Оконный | Полноэкранный в окне",
+                            "Формат диска": "GPT",
+                            "Биос": "UEFI"
+                        },
+                        features: [
+                            "Aimbot",
+                            "Включить",
+                            "Аим на выстрел",
+                            "Только видимые",
+                            "Только враги",
+                            "Компенсация отдачи",
+                            "Показать FOV",
+                            "Уникальная система хитбоксов",
+                            "Регулируемая скорость (0 - 30°)",
+                            "FOV (0 - 15°)",
+                            "Visuals"
+                        ],
+                        media: [
+                            { type: "photo", title: "Fecurity showcase 1", file: "assets/fecurity-1.webp" },
+                            { type: "photo", title: "Fecurity showcase 2", file: "assets/fecurity-2.webp" }
+                        ]
                     }
                 ]
             },
