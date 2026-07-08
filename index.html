@@ -118,6 +118,193 @@ body:before {
 .footer { padding:34px clamp(16px,4vw,54px); color:#777; border-top:1px solid var(--line); margin-top:34px; }
 @media(max-width:940px) { .workspace,.detail-body { grid-template-columns:1fr; } .cheats { position:relative; top:0; max-height:none; } .section-head { flex-direction:column; align-items:flex-start; } }
 @media(max-width:560px) { .nav { flex-direction:column; align-items:flex-start; } .req-grid { grid-template-columns:1fr; } .mini-stats { width:100%; } }
+
+/* ===== Admin panel ===== */
+.admin-open-btn {
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    border-radius:999px;
+    padding:12px 16px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+.admin-open-btn:hover { background:#fff; color:#000; transform:translateY(-2px); }
+.admin-login-backdrop,
+.admin-panel-backdrop {
+    position:fixed;
+    inset:0;
+    z-index:120;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.82);
+    backdrop-filter:blur(18px);
+    padding:18px;
+}
+.admin-login-backdrop.active,
+.admin-panel-backdrop.active { display:flex; }
+.admin-login-card {
+    width:min(460px,100%);
+    border:1px solid var(--line);
+    border-radius:30px;
+    background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025)),#080808;
+    box-shadow:0 40px 120px rgba(0,0,0,.72);
+    padding:28px;
+}
+.admin-login-card h2,
+.admin-panel-title {
+    font-family:Unbounded,Inter,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+}
+.admin-label {
+    display:block;
+    margin:14px 0 7px;
+    color:#a9a9a9;
+    font-weight:800;
+    font-size:.86rem;
+}
+.admin-input,
+.admin-select,
+.admin-textarea {
+    width:100%;
+    background:#0d0d0d;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:16px;
+    padding:13px 14px;
+    outline:none;
+    font:inherit;
+}
+.admin-textarea { min-height:120px; resize:vertical; line-height:1.5; }
+.admin-input:focus,
+.admin-select:focus,
+.admin-textarea:focus { border-color:rgba(255,255,255,.38); box-shadow:0 0 0 4px rgba(255,255,255,.06); }
+.admin-note {
+    color:#9d9d9d;
+    line-height:1.55;
+    font-size:.92rem;
+    margin-top:12px;
+}
+.admin-actions {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+.admin-btn {
+    border:1px solid rgba(255,255,255,.16);
+    background:#fff;
+    color:#000;
+    padding:12px 16px;
+    border-radius:15px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.18s;
+}
+.admin-btn:hover { transform:translateY(-2px); }
+.admin-btn.dark { background:#121212; color:#fff; }
+.admin-btn.danger { background:#2a1111; color:#fff; border-color:rgba(255,80,80,.35); }
+.admin-btn.small { padding:9px 11px; border-radius:12px; font-size:.86rem; }
+.admin-error { color:#ffb0b0; min-height:20px; margin-top:12px; font-weight:800; }
+.admin-panel-shell {
+    width:min(1320px,100%);
+    height:min(88vh,920px);
+    display:grid;
+    grid-template-columns:300px 1fr;
+    border:1px solid var(--line);
+    border-radius:34px;
+    overflow:hidden;
+    background:#050505;
+    box-shadow:0 42px 140px rgba(0,0,0,.85);
+}
+.admin-side {
+    border-right:1px solid var(--line);
+    background:
+        radial-gradient(circle at 50% 0%,rgba(255,255,255,.12),transparent 34%),
+        #080808;
+    padding:20px;
+    overflow:auto;
+}
+.admin-side-mark {
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:#fff;
+    color:#000;
+    display:grid;
+    place-items:center;
+    font-family:Russo One,Inter,sans-serif;
+    font-size:22px;
+    margin-bottom:16px;
+}
+.admin-side p { color:#9c9c9c; line-height:1.55; margin:10px 0 18px; }
+.admin-pill {
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:13px;
+    margin-bottom:10px;
+    background:rgba(255,255,255,.04);
+}
+.admin-pill b { display:block; }
+.admin-pill small { color:#999; }
+.admin-main {
+    min-width:0;
+    overflow:auto;
+    padding:22px;
+}
+.admin-top {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:18px;
+}
+.admin-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+}
+.admin-card {
+    border:1px solid var(--line);
+    border-radius:24px;
+    background:rgba(255,255,255,.035);
+    padding:18px;
+    margin-bottom:14px;
+}
+.admin-card h3 {
+    font-family:Russo One,Inter,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:13px;
+}
+.admin-req-row {
+    display:grid;
+    grid-template-columns:1fr 1.5fr auto;
+    gap:8px;
+    margin-bottom:8px;
+}
+.admin-media-help {
+    border:1px dashed rgba(255,255,255,.18);
+    border-radius:18px;
+    padding:13px;
+    color:#aaa;
+    line-height:1.55;
+    margin-top:10px;
+}
+.admin-close {
+    position:sticky;
+    top:0;
+}
+@media(max-width:900px) {
+    .admin-panel-shell { grid-template-columns:1fr; height:92vh; }
+    .admin-side { border-right:none; border-bottom:1px solid var(--line); }
+    .admin-grid { grid-template-columns:1fr; }
+    .admin-req-row { grid-template-columns:1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -134,6 +321,7 @@ body:before {
 <nav class="nav">
   <div class="brand">PIPIDAHTERKA</div>
   <div class="top-actions">
+    <button class="admin-open-btn" onclick="openAdminLogin()">Админ</button>
     <a class="funpay-link" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">
       <div class="funpay-logo">FP</div>
       <span>Купить лучшие читы тут</span>
@@ -173,6 +361,116 @@ body:before {
 
 <footer class="footer">PIPIDAHTERKA · информационный сайт · GitHub Pages</footer>
 </div>
+
+
+<div class="admin-login-backdrop" id="adminLoginBackdrop">
+  <div class="admin-login-card">
+    <h2>Авторизация администратора</h2>
+    <p class="admin-note">Вход в панель управления сайтом PIPIDAHTERKA.</p>
+    <label class="admin-label">Логин</label>
+    <input class="admin-input" id="adminLoginInput" autocomplete="username" placeholder="Введите логин">
+    <label class="admin-label">Пароль</label>
+    <input class="admin-input" id="adminPasswordInput" autocomplete="current-password" type="password" placeholder="Введите пароль">
+    <div class="admin-error" id="adminLoginError"></div>
+    <div class="admin-actions">
+      <button class="admin-btn" onclick="adminLogin()">Войти</button>
+      <button class="admin-btn dark" onclick="closeAdminLogin()">Закрыть</button>
+    </div>
+    <p class="admin-note">GitHub Pages — статический сайт. Изменения можно сохранить в браузере и скачать новый index.html для загрузки на GitHub.</p>
+  </div>
+</div>
+
+<div class="admin-panel-backdrop" id="adminPanelBackdrop">
+  <div class="admin-panel-shell">
+    <aside class="admin-side">
+      <div class="admin-side-mark">A</div>
+      <h2 class="admin-panel-title">Admin</h2>
+      <p>Панель администратора: статусы, описание, требования, функционал и фото.</p>
+      <div class="admin-pill"><b id="adminStatsGames">0 игр</b><small>в базе сайта</small></div>
+      <div class="admin-pill"><b id="adminStatsCheats">0 читов</b><small>в базе сайта</small></div>
+      <div class="admin-actions">
+        <button class="admin-btn dark" onclick="adminDownloadIndex()">Скачать index.html</button>
+        <button class="admin-btn dark" onclick="adminExportJSON()">Экспорт JSON</button>
+        <button class="admin-btn danger" onclick="adminLogout()">Выйти</button>
+      </div>
+      <p class="admin-note">Фото добавляй строками: <b>assets/file.webp</b> или прямой URL. Для видео можно указать .mp4.</p>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-top">
+        <div>
+          <h2 class="admin-panel-title">Редактор сайта</h2>
+          <p class="admin-note">После изменений нажми «Сохранить изменения», затем скачай index.html и загрузи его в GitHub.</p>
+        </div>
+        <button class="admin-btn dark admin-close" onclick="closeAdminPanel()">Свернуть</button>
+      </div>
+
+      <div class="admin-card">
+        <h3>Выбор карточки</h3>
+        <div class="admin-grid">
+          <div>
+            <label class="admin-label">Игра</label>
+            <select class="admin-select" id="adminGameSelect" onchange="adminChangeGame()"></select>
+          </div>
+          <div>
+            <label class="admin-label">Чит</label>
+            <select class="admin-select" id="adminCheatSelect" onchange="adminLoadEditor()"></select>
+          </div>
+        </div>
+        <div class="admin-actions">
+          <button class="admin-btn dark" onclick="adminAddGame()">Добавить игру</button>
+          <button class="admin-btn dark" onclick="adminAddCheat()">Добавить чит</button>
+          <button class="admin-btn danger" onclick="adminDeleteCheat()">Удалить чит</button>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3>Основное</h3>
+        <div class="admin-grid">
+          <div>
+            <label class="admin-label">Название чита</label>
+            <input class="admin-input" id="adminNameInput">
+          </div>
+          <div>
+            <label class="admin-label">Статус</label>
+            <input class="admin-input" id="adminStatusInput" placeholder="Available / Undetected / Updating">
+          </div>
+        </div>
+        <label class="admin-label">Описание</label>
+        <textarea class="admin-textarea" id="adminDescriptionInput"></textarea>
+      </div>
+
+      <div class="admin-card">
+        <h3>Системные требования</h3>
+        <div id="adminRequirementsList"></div>
+        <button class="admin-btn dark small" onclick="adminAddRequirementRow('', '')">+ требование</button>
+      </div>
+
+      <div class="admin-card">
+        <h3>Функционал</h3>
+        <textarea class="admin-textarea" id="adminFeaturesInput" placeholder="Одна функция на строку"></textarea>
+      </div>
+
+      <div class="admin-card">
+        <h3>Фото / видео</h3>
+        <textarea class="admin-textarea" id="adminMediaInput" placeholder="assets/photo.webp&#10;photo | Название фото | assets/photo.webp&#10;video | Видео | assets/video.mp4"></textarea>
+        <div class="admin-media-help">
+          Форматы строк:<br>
+          <b>assets/photo.webp</b><br>
+          <b>photo | Название | assets/photo.webp</b><br>
+          <b>video | Название | assets/video.mp4</b>
+        </div>
+      </div>
+
+      <div class="admin-actions">
+        <button class="admin-btn" onclick="adminSaveCheat()">Сохранить изменения</button>
+        <button class="admin-btn dark" onclick="adminDownloadIndex()">Скачать обновлённый index.html</button>
+        <button class="admin-btn danger" onclick="adminResetLocalChanges()">Сбросить локальные изменения</button>
+      </div>
+    </main>
+  </div>
+</div>
+
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightboxImg" src=""></div>
 
@@ -2086,18 +2384,7 @@ const catalog = [
                                         "Radar",
                                         "Misc"
                                 ],
-                                "media": [
-                                        {
-                                                "type": "photo",
-                                                "title": "XONE External — фото с сайта",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fxone-external-counter-strike-2?w=1400"
-                                        },
-                                        {
-                                                "type": "photo",
-                                                "title": "XONE External — функционал",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fxone-external-counter-strike-2%23media?w=1400"
-                                        }
-                                ]
+                                "media": []
                         },
                         {
                                 "name": "Fecurity",
@@ -2129,18 +2416,7 @@ const catalog = [
                                         "Visuals",
                                         "Misc"
                                 ],
-                                "media": [
-                                        {
-                                                "type": "photo",
-                                                "title": "Fecurity — фото с сайта",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Ffecurity-counter-strike-2?w=1400"
-                                        },
-                                        {
-                                                "type": "photo",
-                                                "title": "Fecurity — функционал",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Ffecurity-counter-strike-2%23media?w=1400"
-                                        }
-                                ]
+                                "media": []
                         },
                         {
                                 "name": "Arcane",
@@ -2171,18 +2447,7 @@ const catalog = [
                                         "Misc",
                                         "Other"
                                 ],
-                                "media": [
-                                        {
-                                                "type": "photo",
-                                                "title": "Arcane — фото с сайта",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Farcane-counter-strike-2?w=1400"
-                                        },
-                                        {
-                                                "type": "photo",
-                                                "title": "Arcane — функционал",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Farcane-counter-strike-2%23media?w=1400"
-                                        }
-                                ]
+                                "media": []
                         },
                         {
                                 "name": "XONE Internal",
@@ -2216,18 +2481,7 @@ const catalog = [
                                         "Radar",
                                         "Misc"
                                 ],
-                                "media": [
-                                        {
-                                                "type": "photo",
-                                                "title": "XONE Internal — фото с сайта",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fxone-internal-counter-strike-2?w=1400"
-                                        },
-                                        {
-                                                "type": "photo",
-                                                "title": "XONE Internal — функционал",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fxone-internal-counter-strike-2%23media?w=1400"
-                                        }
-                                ]
+                                "media": []
                         }
                 ],
                 "logo": "assets/counter-strike-2.svg"
@@ -2264,18 +2518,7 @@ const catalog = [
                                         "Visuals",
                                         "Other"
                                 ],
-                                "media": [
-                                        {
-                                                "type": "photo",
-                                                "title": "Ancient — фото с сайта",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fancient-rainbow-six-siege?w=1400"
-                                        },
-                                        {
-                                                "type": "photo",
-                                                "title": "Ancient — функционал",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fancient-rainbow-six-siege%23media?w=1400"
-                                        }
-                                ]
+                                "media": []
                         },
                         {
                                 "name": "UDP",
@@ -2303,18 +2546,7 @@ const catalog = [
                                         "Visuals",
                                         "Other"
                                 ],
-                                "media": [
-                                        {
-                                                "type": "photo",
-                                                "title": "UDP — фото с сайта",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fudp-rainbow-six-siege?w=1400"
-                                        },
-                                        {
-                                                "type": "photo",
-                                                "title": "UDP — функционал",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fudp-rainbow-six-siege%23media?w=1400"
-                                        }
-                                ]
+                                "media": []
                         },
                         {
                                 "name": "Crusader",
@@ -2338,18 +2570,7 @@ const catalog = [
                                         "Visuals",
                                         "Other"
                                 ],
-                                "media": [
-                                        {
-                                                "type": "photo",
-                                                "title": "Crusader — фото с сайта",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fcrusader-rainbow-six-siege?w=1400"
-                                        },
-                                        {
-                                                "type": "photo",
-                                                "title": "Crusader — функционал",
-                                                "file": "https://s.wordpress.com/mshots/v1/https%3A%2F%2Fdomination-cheats.com%2Fcheat%2Fcrusader-rainbow-six-siege%23media?w=1400"
-                                        }
-                                ]
+                                "media": []
                         }
                 ],
                 "logo": "assets/rainbow-six-siege.svg"
@@ -3134,37 +3355,258 @@ const catalog = [
                 "description": "Информация по ARC Raiders.",
                 "cheats": [
                         {
+                                "name": "Ancient",
+                                "status": "Undetected",
+                                "description": "Ancient — приватный чит для ARC Raiders с точным аимботом, расширенными визуалами, радаром, лутом и гибкими настройками мира.",
+                                "requirements": {
+                                        "Процессор": "Intel | AMD",
+                                        "Клиент": "Steam | Xbox",
+                                        "ОС": "Windows 10 | 11",
+                                        "Видеокарта": "Nvidia | AMD",
+                                        "Режим игры": "Безрамочный",
+                                        "Формат диска": "On Intel GPT processors",
+                                        "Биос": "On Intel UEFI processors",
+                                        "Обход записи": "Да",
+                                        "Информация": "16 ГБ оперативной памяти | RAID дисков и Rapid Storage - ВЫКЛ. (BIOS) | TPM - ВЫКЛ. | Включить SVM [AMD] / VT-X [INTEL] (BIOS)"
+                                },
+                                "features": [
+                                        "Aimbot",
+                                        "Клавиша аима",
+                                        "Тип аима: мышь / память",
+                                        "Плавность аима",
+                                        "Показать и изменить радиус аима",
+                                        "Предсказание и точка предсказания",
+                                        "Линия до цели",
+                                        "Фиксация цели",
+                                        "Проверка видимости",
+                                        "Максимальное расстояние аима",
+                                        "Кости цели",
+                                        "Visuals",
+                                        "Loot",
+                                        "Radar",
+                                        "Other"
+                                ],
                                 "media": [
                                         {
                                                 "type": "photo",
-                                                "title": "Dullwave showcase",
+                                                "title": "Ancient showcase 1",
+                                                "file": "assets/ancient-1.gif"
+                                        },
+                                        {
+                                                "type": "photo",
+                                                "title": "Ancient showcase 2",
+                                                "file": "assets/ancient-2.webp"
+                                        },
+                                        {
+                                                "type": "photo",
+                                                "title": "Ancient showcase 3",
+                                                "file": "assets/ancient-3.webp"
+                                        }
+                                ]
+                        },
+                        {
+                                "name": "Arcane",
+                                "status": "Undetected",
+                                "description": "Arcane — приватный чит для ARC Raiders с аимботом, ESP, радаром, лутом и удобной настройкой функций под себя.",
+                                "requirements": {
+                                        "Процессор": "Intel | AMD",
+                                        "Клиент": "Steam | Xbox",
+                                        "ОС": "Windows 10 | 11",
+                                        "Видеокарта": "Nvidia | AMD",
+                                        "Режим игры": "Оконный | Безрамочный",
+                                        "Формат диска": "GPT",
+                                        "Биос": "UEFI",
+                                        "Информация": "Требуется 12 GB оперативной памяти"
+                                },
+                                "features": [
+                                        "Aimbot",
+                                        "Активировать всегда",
+                                        "Проверка видимости",
+                                        "Рисовать круг FOV и фон круга FOV",
+                                        "Первая и вторая клавиша аима",
+                                        "Цели: игроки, боты, команда, нокнутые",
+                                        "Тип поиска кости",
+                                        "Размер круга FOV",
+                                        "Плавность",
+                                        "Максимальная дистанция",
+                                        "Visuals",
+                                        "Loot",
+                                        "Radar",
+                                        "Other"
+                                ],
+                                "media": []
+                        },
+                        {
+                                "name": "BTG",
+                                "status": "Undetected",
+                                "description": "BTG для ARC Raiders даёт подсветку игроков через препятствия, отображение лута и базовые визуальные инструменты для контроля ситуации.",
+                                "requirements": {
+                                        "Процессор": "Intel | AMD",
+                                        "Клиент": "Steam",
+                                        "ОС": "Windows 10 | 11",
+                                        "Режим игры": "Без рамок",
+                                        "Формат диска": "GPT",
+                                        "Биос": "UEFI",
+                                        "Информация": "Выключить Secure Boot, включить виртуализацию"
+                                },
+                                "features": [
+                                        "Visuals",
+                                        "Loot",
+                                        "Скелет",
+                                        "Боксы",
+                                        "Закрашенные боксы",
+                                        "Линии",
+                                        "Дистанция",
+                                        "Голова",
+                                        "Радар",
+                                        "Полоска здоровья",
+                                        "Цвет видимого игрока",
+                                        "Дистанция отрисовки"
+                                ],
+                                "media": [
+                                        {
+                                                "type": "photo",
+                                                "title": "BTG menu",
+                                                "file": "assets/btg-1.webp"
+                                        },
+                                        {
+                                                "type": "photo",
+                                                "title": "BTG showcase 1",
+                                                "file": "assets/btg-2.webp"
+                                        },
+                                        {
+                                                "type": "photo",
+                                                "title": "BTG showcase 2",
+                                                "file": "assets/btg-3.webp"
+                                        },
+                                        {
+                                                "type": "photo",
+                                                "title": "BTG showcase 3",
+                                                "file": "assets/btg-4.webp"
+                                        },
+                                        {
+                                                "type": "photo",
+                                                "title": "BTG showcase 4",
+                                                "file": "assets/btg-5.webp"
+                                        }
+                                ]
+                        },
+                        {
+                                "name": "Dullwave",
+                                "status": "Undetected",
+                                "description": "Dullwave для ARC Raiders сочетает подсветку игроков, аимбот и подсветку лута для быстрого поиска ресурсов и уверенной игры.",
+                                "requirements": {
+                                        "Процессор": "Intel | AMD",
+                                        "Клиент": "Steam | Xbox",
+                                        "ОС": "Windows 10 | 11 [21H2, 22H2, 23H2]",
+                                        "Видеокарта": "Nvidia | AMD",
+                                        "Режим игры": "Оконный | Безрамочный"
+                                },
+                                "features": [
+                                        "Aimbot",
+                                        "Включение",
+                                        "Клавиша активации",
+                                        "Кости",
+                                        "Отображение FOV",
+                                        "Фиксация цели",
+                                        "Гуманизация",
+                                        "Невидимые цели",
+                                        "Линия прицеливания",
+                                        "Игнорирование сбитых",
+                                        "Поле зрения",
+                                        "Плавность",
+                                        "Дальность",
+                                        "Visuals",
+                                        "Loot",
+                                        "Other"
+                                ],
+                                "media": [
+                                        {
+                                                "type": "photo",
+                                                "title": "Dullwave menu",
                                                 "file": "assets/dullwave-arc-1.webp"
                                         },
                                         {
                                                 "type": "photo",
-                                                "title": "Dullwave showcase",
+                                                "title": "Dullwave showcase 1",
                                                 "file": "assets/dullwave-arc-2.webp"
                                         },
                                         {
                                                 "type": "photo",
-                                                "title": "Dullwave showcase",
+                                                "title": "Dullwave showcase 2",
                                                 "file": "assets/dullwave-arc-3.webp"
                                         },
                                         {
                                                 "type": "photo",
-                                                "title": "Dullwave showcase",
+                                                "title": "Dullwave showcase 3",
                                                 "file": "assets/dullwave-arc-4.webp"
                                         },
                                         {
                                                 "type": "photo",
-                                                "title": "Dullwave showcase",
+                                                "title": "Dullwave showcase 4",
                                                 "file": "assets/dullwave-arc-5.webp"
+                                        }
+                                ]
+                        },
+                        {
+                                "name": "Fecurity",
+                                "status": "Undetected",
+                                "description": "Fecurity для ARC Raiders помогает видеть противников, точнее стрелять и контролировать ситуацию на карте.",
+                                "requirements": {
+                                        "Процессор": "Intel | AMD",
+                                        "Клиент": "Steam | Xbox",
+                                        "ОС": "Windows 10 | 11",
+                                        "Видеокарта": "Nvidia | AMD",
+                                        "Режим игры": "Оконный | Полноэкранный в окне",
+                                        "Формат диска": "GPT",
+                                        "Биос": "UEFI"
+                                },
+                                "features": [
+                                        "Aimbot",
+                                        "Включить",
+                                        "Аим на выстрел",
+                                        "Только видимые",
+                                        "Только враги",
+                                        "Компенсация отдачи",
+                                        "Показать FOV",
+                                        "Уникальная система хитбоксов",
+                                        "Регулируемая скорость",
+                                        "FOV",
+                                        "Visuals"
+                                ],
+                                "media": [
+                                        {
+                                                "type": "photo",
+                                                "title": "Fecurity showcase 1",
+                                                "file": "assets/fecurity-1.webp"
+                                        },
+                                        {
+                                                "type": "photo",
+                                                "title": "Fecurity showcase 2",
+                                                "file": "assets/fecurity-2.webp"
                                         }
                                 ]
                         }
                 ]
         }
 ];
+
+
+const CATALOG_STORAGE_KEY = 'pipidahterka_catalog_v2';
+const ADMIN_SESSION_KEY = 'pipidahterka_admin_session';
+const ADMIN_LOGIN_HASH = '4396210bc91f4e8717530483eee2bb9f550c31fb8637bba3cf846a22a4bc5b98';
+const ADMIN_PASSWORD_HASH = 'b5117724537a1cdd2f59e461b060167b101e56a417e36943a03cbca8fafd1a25';
+try {
+  const savedCatalog = localStorage.getItem(CATALOG_STORAGE_KEY);
+  if (savedCatalog) {
+    const parsedCatalog = JSON.parse(savedCatalog);
+    if (Array.isArray(parsedCatalog)) {
+      catalog.splice(0, catalog.length, ...parsedCatalog);
+    }
+  }
+} catch (e) {
+  console.warn('Catalog localStorage load error', e);
+}
 
 let currentGame = 0;
 let currentCheat = 0;
@@ -3263,7 +3705,311 @@ function closeLightbox() {
   document.getElementById('lightboxImg').src = '';
 }
 
-function renderAll() { renderGames(); renderCheats(); renderDetail(); }
+
+function adminEscape(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+  })[ch]);
+}
+
+async function adminSha256(message) {
+  const data = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function openAdminLogin() {
+  if (localStorage.getItem(ADMIN_SESSION_KEY) === '1') {
+    openAdminPanel();
+    return;
+  }
+  document.getElementById('adminLoginBackdrop').classList.add('active');
+  setTimeout(() => document.getElementById('adminLoginInput').focus(), 50);
+}
+
+function closeAdminLogin() {
+  document.getElementById('adminLoginBackdrop').classList.remove('active');
+  document.getElementById('adminLoginError').textContent = '';
+}
+
+async function adminLogin() {
+  const login = document.getElementById('adminLoginInput').value;
+  const password = document.getElementById('adminPasswordInput').value;
+  const error = document.getElementById('adminLoginError');
+
+  try {
+    const loginHash = await adminSha256(login);
+    const passwordHash = await adminSha256(password);
+    if (loginHash === ADMIN_LOGIN_HASH && passwordHash === ADMIN_PASSWORD_HASH) {
+      localStorage.setItem(ADMIN_SESSION_KEY, '1');
+      closeAdminLogin();
+      openAdminPanel();
+    } else {
+      error.textContent = 'Неверный логин или пароль.';
+    }
+  } catch (e) {
+    error.textContent = 'Ошибка авторизации. Открой сайт через HTTPS.';
+  }
+}
+
+function adminLogout() {
+  localStorage.removeItem(ADMIN_SESSION_KEY);
+  closeAdminPanel();
+}
+
+function openAdminPanel() {
+  document.getElementById('adminPanelBackdrop').classList.add('active');
+  adminFillSelectors();
+  adminUpdateStats();
+  adminLoadEditor();
+}
+
+function closeAdminPanel() {
+  document.getElementById('adminPanelBackdrop').classList.remove('active');
+}
+
+function adminUpdateStats() {
+  const games = catalog.length;
+  const cheats = catalog.reduce((sum, game) => sum + (game.cheats || []).filter(c => c && c.name).length, 0);
+  const g = document.getElementById('adminStatsGames');
+  const c = document.getElementById('adminStatsCheats');
+  if (g) g.textContent = games + ' игр';
+  if (c) c.textContent = cheats + ' читов';
+  const gamesCount = document.getElementById('gamesCount');
+  const cheatsCount = document.getElementById('cheatsCount');
+  if (gamesCount) gamesCount.textContent = games;
+  if (cheatsCount) cheatsCount.textContent = cheats;
+}
+
+function adminFillSelectors() {
+  const gameSelect = document.getElementById('adminGameSelect');
+  const cheatSelect = document.getElementById('adminCheatSelect');
+  if (!gameSelect || !cheatSelect) return;
+
+  gameSelect.innerHTML = catalog.map((game, index) => 
+    `<option value="${index}" ${index === currentGame ? 'selected' : ''}>${adminEscape(game.title || 'Без названия')}</option>`
+  ).join('');
+
+  const game = catalog[currentGame] || catalog[0];
+  const cheats = (game && game.cheats ? game.cheats : []).filter(c => c && c.name);
+  if (currentCheat >= cheats.length) currentCheat = 0;
+  cheatSelect.innerHTML = cheats.map((cheat, index) => 
+    `<option value="${index}" ${index === currentCheat ? 'selected' : ''}>${adminEscape(cheat.name)}</option>`
+  ).join('');
+}
+
+function adminChangeGame() {
+  currentGame = Number(document.getElementById('adminGameSelect').value || 0);
+  currentCheat = 0;
+  adminFillSelectors();
+  adminLoadEditor();
+  renderAll();
+}
+
+function adminGetCurrentCheat() {
+  const game = catalog[currentGame];
+  if (!game) return null;
+  game.cheats = (game.cheats || []).filter(c => c && c.name);
+  return game.cheats[currentCheat] || game.cheats[0] || null;
+}
+
+function adminLoadEditor() {
+  const cheatSelect = document.getElementById('adminCheatSelect');
+  if (cheatSelect) currentCheat = Number(cheatSelect.value || 0);
+  const cheat = adminGetCurrentCheat();
+  if (!cheat) return;
+
+  document.getElementById('adminNameInput').value = cheat.name || '';
+  document.getElementById('adminStatusInput').value = cheat.status || '';
+  document.getElementById('adminDescriptionInput').value = cheat.description || '';
+
+  const reqList = document.getElementById('adminRequirementsList');
+  reqList.innerHTML = '';
+  Object.entries(cheat.requirements || {}).forEach(([key, value]) => adminAddRequirementRow(key, value));
+
+  document.getElementById('adminFeaturesInput').value = (cheat.features || []).join('\n');
+  document.getElementById('adminMediaInput').value = (cheat.media || []).map(item => {
+    const type = item.type || 'photo';
+    const title = item.title || '';
+    const file = item.file || '';
+    return `${type} | ${title} | ${file}`;
+  }).join('\n');
+}
+
+function adminAddRequirementRow(key = '', value = '') {
+  const reqList = document.getElementById('adminRequirementsList');
+  const row = document.createElement('div');
+  row.className = 'admin-req-row';
+  row.innerHTML = `
+    <input class="admin-input admin-req-key" placeholder="Название" value="${adminEscape(key)}">
+    <input class="admin-input admin-req-value" placeholder="Значение" value="${adminEscape(value)}">
+    <button class="admin-btn danger small" type="button">×</button>
+  `;
+  row.querySelector('button').onclick = () => row.remove();
+  reqList.appendChild(row);
+}
+
+function adminParseRequirements() {
+  const rows = document.querySelectorAll('.admin-req-row');
+  const result = {};
+  rows.forEach(row => {
+    const key = row.querySelector('.admin-req-key').value.trim();
+    const value = row.querySelector('.admin-req-value').value.trim();
+    if (key) result[key] = value;
+  });
+  return result;
+}
+
+function adminParseMedia() {
+  return document.getElementById('adminMediaInput').value
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => {
+      const parts = line.split('|').map(part => part.trim());
+      if (parts.length >= 3) {
+        return { type: parts[0] || 'photo', title: parts[1] || 'Media', file: parts.slice(2).join('|') };
+      }
+      const file = line;
+      const lower = file.toLowerCase();
+      const type = lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.endsWith('.mov') ? 'video' : 'photo';
+      const title = file.split('/').pop() || 'Media';
+      return { type, title, file };
+    });
+}
+
+function adminSaveCheat() {
+  const game = catalog[currentGame];
+  if (!game) return;
+  game.cheats = (game.cheats || []).filter(c => c && c.name);
+  const cheat = game.cheats[currentCheat];
+  if (!cheat) return;
+
+  cheat.name = document.getElementById('adminNameInput').value.trim() || 'Новый чит';
+  cheat.status = document.getElementById('adminStatusInput').value.trim() || 'Available';
+  cheat.description = document.getElementById('adminDescriptionInput').value.trim();
+  cheat.requirements = adminParseRequirements();
+  cheat.features = document.getElementById('adminFeaturesInput').value
+    .split('\n').map(v => v.trim()).filter(Boolean);
+  cheat.media = adminParseMedia();
+
+  localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(catalog));
+  adminFillSelectors();
+  adminUpdateStats();
+  renderAll();
+  adminLoadEditor();
+  alert('Изменения сохранены в браузере. Чтобы применить их на GitHub, скачай обновлённый index.html.');
+}
+
+function adminAddGame() {
+  const title = prompt('Название новой игры:');
+  if (!title) return;
+  const key = title.toLowerCase().replace(/[^a-zа-яё0-9]+/gi, '-').replace(/^-|-$/g, '');
+  catalog.push({
+    key,
+    title,
+    icon: title.split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase(),
+    logo: `assets/${key}.svg`,
+    description: `Информация по ${title}.`,
+    cheats: [{
+      name: 'Новый чит',
+      status: 'Available',
+      description: '',
+      requirements: {},
+      features: [],
+      media: []
+    }]
+  });
+  currentGame = catalog.length - 1;
+  currentCheat = 0;
+  adminSaveCatalogOnly();
+}
+
+function adminAddCheat() {
+  const game = catalog[currentGame];
+  if (!game) return;
+  const name = prompt('Название нового чита:') || 'Новый чит';
+  game.cheats = game.cheats || [];
+  game.cheats.push({
+    name,
+    status: 'Available',
+    description: '',
+    requirements: {},
+    features: [],
+    media: []
+  });
+  currentCheat = game.cheats.length - 1;
+  adminSaveCatalogOnly();
+}
+
+function adminDeleteCheat() {
+  const game = catalog[currentGame];
+  if (!game || !game.cheats || !game.cheats[currentCheat]) return;
+  if (!confirm('Удалить выбранный чит?')) return;
+  game.cheats.splice(currentCheat, 1);
+  currentCheat = Math.max(0, currentCheat - 1);
+  adminSaveCatalogOnly();
+}
+
+function adminSaveCatalogOnly() {
+  localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(catalog));
+  adminFillSelectors();
+  adminUpdateStats();
+  renderAll();
+  adminLoadEditor();
+}
+
+function adminResetLocalChanges() {
+  if (!confirm('Сбросить все изменения, сохранённые в браузере?')) return;
+  localStorage.removeItem(CATALOG_STORAGE_KEY);
+  location.reload();
+}
+
+async function adminDownloadIndex() {
+  let pageSource = '';
+  try {
+    const response = await fetch(location.href, { cache: 'no-store' });
+    pageSource = await response.text();
+  } catch (e) {
+    pageSource = document.documentElement.outerHTML;
+  }
+
+  const updatedCatalog = 'const catalog = ' + JSON.stringify(catalog, null, 8) + ';\n\n';
+  let updatedSource = pageSource.replace(/const catalog = \[[\s\S]*?\];\n\n/, updatedCatalog);
+
+  if (!/^<!DOCTYPE html>/i.test(updatedSource.trim())) {
+    updatedSource = '<!DOCTYPE html>\n' + updatedSource;
+  }
+
+  const blob = new Blob([updatedSource], { type: 'text/html;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'index.html';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+}
+
+function adminExportJSON() {
+  const blob = new Blob([JSON.stringify(catalog, null, 2)], { type: 'application/json;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'pipidahterka-catalog.json';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closeAdminLogin();
+    closeAdminPanel();
+  }
+});
+
+function renderAll() { adminUpdateStats(); renderGames(); renderCheats(); renderDetail(); }
 renderAll();
 </script>
 </body>
