@@ -8,7 +8,7 @@
     <style>
         @font-face {
             font-family: 'Spielarcade';
-            src: url('assets/Spielarcade.ttf') format('truetype');
+            src: url('assets/Spielarcade.otf') format('opentype');
             font-weight: normal;
             font-style: normal;
         }
@@ -40,13 +40,13 @@
             font-family: 'Spielarcade', 'Segoe UI', sans-serif;
             font-size: 6.5rem;
             font-weight: normal;
-            color: #fff;
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 5px;
             text-shadow:
-                0 0 7px #fff,
-                0 0 10px #fff,
-                0 0 21px #fff,
+                0 0 7px #ffffff,
+                0 0 10px #ffffff,
+                0 0 21px #ffffff,
                 0 0 42px #00f3ff,
                 0 0 82px #00f3ff,
                 0 0 92px #00f3ff,
@@ -95,14 +95,15 @@
         @keyframes pulse {
             from {
                 text-shadow:
-                    0 0 10px #fff,
+                    0 0 10px #ffffff,
                     0 0 20px #00f3ff,
                     0 0 40px #00f3ff,
                     0 0 80px #00f3ff;
             }
+
             to {
                 text-shadow:
-                    0 0 5px #fff,
+                    0 0 5px #ffffff,
                     0 0 10px #00f3ff,
                     0 0 20px #00f3ff,
                     0 0 60px #00f3ff;
@@ -119,6 +120,7 @@
 
             .glowing-text {
                 font-size: 3.8rem;
+                letter-spacing: 3px;
             }
 
             .subtitle {
@@ -131,6 +133,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="hero">
