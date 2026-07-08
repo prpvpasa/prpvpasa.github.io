@@ -452,7 +452,7 @@
         }
 
         .media-card {
-            min-height: 255px;
+            height: 320px;
             border-radius: 20px;
             border: 1px solid rgba(0, 200, 255, 0.22);
             background:
@@ -473,9 +473,11 @@
         .media-card video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             position: absolute;
             inset: 0;
+            background: #07101e;
+            padding: 10px;
         }
 
         .media-placeholder {
@@ -580,6 +582,10 @@
 
             .media-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .media-card {
+                height: 220px;
             }
 
             .requirements {
@@ -782,8 +788,113 @@
                             "Config menu: быстрое включение/выключение модулей и настройка под себя"
                         ],
                         media: [
-                            { type: "photo", title: "Cyber Full functionality", file: "assets/cyber-full-1.png" },
-                            { type: "photo", title: "Cyber Full requirements", file: "assets/cyber-full-2.png" }
+                            { type: "photo", title: "Cyber Full functionality", file: "assets/cyber-full-1.png" }
+                        ]
+                    },
+                    {
+                        name: "Vata Rage Radar",
+                        status: "Available",
+                        description: "Vata Rage Radar — внешний радар для Arena Breakout.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "Клиент": "Steam | Game Launcher",
+                            "ОС": "Windows 10 | 11",
+                            "Видеокарта": "Nvidia | AMD",
+                            "Флешка": "Требуется",
+                            "Информация": "Софт работает на другом устройстве: 2 ПК, ноутбуке, телефоне, планшете"
+                        },
+                        features: [
+                            "Radar",
+                            "Отображение игроков",
+                            "Отображение напарников",
+                            "Метки высоты (выше/ниже вас)",
+                            "Отображение лута",
+                            "Отображение трупов"
+                        ],
+                        media: [
+                            { type: "photo", title: "Vata Rage Radar", file: "assets/vata-rage-radar-1.png" }
+                        ]
+                    },
+                    {
+                        name: "Dullwave",
+                        status: "Undetected",
+                        description: "С Dullwave вы сможете испытать настоящую волну безжалостной мощи, делая ваших врагов неспособными к действию.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "Клиент": "Game Launcher",
+                            "ОС": "Windows 10 | 11 (Except 24H2)",
+                            "Режим игры": "Любой"
+                        },
+                        features: [
+                            "Aimbot",
+                            "Кнопка аима",
+                            "Выбор кости",
+                            "Показать радиус аима",
+                            "Скорость наводки",
+                            "Аимлок",
+                            "Гуманизированный аим",
+                            "Невидимый",
+                            "На игроков",
+                            "На ботов",
+                            "Линия до цели",
+                            "Visuals",
+                            "Loot",
+                            "Misc"
+                        ],
+                        media: [
+                            { type: "photo", title: "Dullwave menu", file: "assets/dullwave-1.png" },
+                            { type: "photo", title: "Dullwave ESP", file: "assets/dullwave-2.jpeg" },
+                            { type: "photo", title: "Dullwave showcase", file: "assets/dullwave-3.jpeg" }
+                        ]
+                    },
+                    {
+                        name: "Cyber Radar",
+                        status: "Undetected",
+                        description: "Cyber Radar — радар для Arena Breakout с отображением игроков, ботов, лута и настройками карты.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "ОС": "Windows 10 | 11 (Except 25H2)",
+                            "Видеокарта": "Nvidia | AMD",
+                            "Режим игры": "Безрамочный | Оконный",
+                            "Информация": "Для безопасности лучше использовать второе устройство / Не работает в Азиатских странах"
+                        },
+                        features: [
+                            "Radar",
+                            "Отображение игроков",
+                            "Отображение ботов",
+                            "Отображение лута",
+                            "Фильтры на лут (Фиолетовый/Золотой/Красный)",
+                            "Отображение по высоте",
+                            "Настройка цвета иконок на карте",
+                            "Выбор текущей карты",
+                            "Центрировать локального игрока на радаре",
+                            "Поворот карты по направлению"
+                        ],
+                        media: [
+                            { type: "photo", title: "Cyber Radar settings", file: "assets/cyber-radar-1.webp" },
+                            { type: "photo", title: "Cyber Radar loot filters", file: "assets/cyber-radar-2.webp" },
+                            { type: "photo", title: "Cyber Radar map", file: "assets/cyber-radar-3.webp" }
+                        ]
+                    },
+                    {
+                        name: "Chams",
+                        status: "Undetected",
+                        description: "Chams — визуальный чит для Arena Breakout с подсветкой игроков, ботов и лута.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "ОС": "Windows 10 | 11"
+                        },
+                        features: [
+                            "Visuals",
+                            "CHAMS на игроков/ботов",
+                            "CHAMS на лут"
+                        ],
+                        media: [
+                            { type: "photo", title: "Chams showcase 1", file: "assets/chams-1.webp" },
+                            { type: "photo", title: "Chams showcase 2", file: "assets/chams-2.webp" },
+                            { type: "photo", title: "Chams showcase 3", file: "assets/chams-3.webp" },
+                            { type: "photo", title: "Chams showcase 4", file: "assets/chams-4.webp" },
+                            { type: "photo", title: "Chams showcase 5", file: "assets/chams-5.webp" }
                         ]
                     }
                 ]
