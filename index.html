@@ -452,7 +452,7 @@
         }
 
         .media-card {
-            height: 320px;
+            min-height: 255px;
             border-radius: 20px;
             border: 1px solid rgba(0, 200, 255, 0.22);
             background:
@@ -473,11 +473,9 @@
         .media-card video {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             position: absolute;
             inset: 0;
-            background: #07101e;
-            padding: 10px;
         }
 
         .media-placeholder {
@@ -582,10 +580,6 @@
 
             .media-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .media-card {
-                height: 220px;
             }
 
             .requirements {
@@ -788,35 +782,10 @@
                             "Config menu: быстрое включение/выключение модулей и настройка под себя"
                         ],
                         media: [
-                            { type: "photo", title: "Cyber Full functionality", file: "assets/cyber-full-1.png" }
+                            { type: "photo", title: "Cyber Full functionality", file: "assets/cyber-full-1.png" },
+                            { type: "photo", title: "Cyber Full requirements", file: "assets/cyber-full-2.png" }
                         ]
                     }
-,
-                    {
-                        name: "Vata Rage Radar",
-                        status: "Available",
-                        description: "Vata Rage Radar — внешний радар для Arena Breakout.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Steam | Game Launcher",
-                            "ОС": "Windows 10 | 11",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Флешка": "Требуется",
-                            "Информация": "Софт работает на другом устройстве: 2 ПК, ноутбуке, телефоне, планшете"
-                        },
-                        features: [
-                            "Radar",
-                            "Отображение игроков",
-                            "Отображение напарников",
-                            "Метки высоты (выше/ниже вас)",
-                            "Отображение лута",
-                            "Отображение трупов"
-                        ],
-                        media: [
-                            { type: "photo", title: "Vata Rage Radar", file: "assets/vata-rage-radar-1.png" }
-                        ]
-                    }
-
                 ]
             }
         };
