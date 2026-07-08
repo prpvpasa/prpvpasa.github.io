@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pipidahterka</title>
+
     <style>
+        @font-face {
+            font-family: 'Spielarcade';
+            src: url('Spielarcade.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -20,7 +28,7 @@
         .hero {
             display: flex;
             align-items: center;
-            gap: 55px;
+            gap: 60px;
             transform: translateY(-160px);
         }
 
@@ -29,11 +37,12 @@
         }
 
         .glowing-text {
-            font-size: 5.5rem;
-            font-weight: bold;
+            font-family: 'Spielarcade', 'Segoe UI', sans-serif;
+            font-size: 6.2rem;
+            font-weight: normal;
             color: #fff;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             text-shadow: 
                 0 0 7px #fff,
                 0 0 10px #fff,
@@ -59,34 +68,28 @@
         }
 
         .funpay-link {
+            display: block;
             text-decoration: none;
-        }
-
-        .funpay-icon {
-            width: 110px;
-            height: 110px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, #ffcc00, #ff9900);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #111;
-            font-size: 1.4rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            box-shadow:
-                0 0 10px #ffcc00,
-                0 0 25px #ff9900,
-                0 0 45px rgba(255, 153, 0, 0.7);
             transition: 0.3s ease;
         }
 
-        .funpay-icon:hover {
-            transform: scale(1.1);
+        .funpay-logo {
+            width: 230px;
+            height: auto;
+            border-radius: 16px;
             box-shadow:
-                0 0 15px #ffcc00,
-                0 0 35px #ff9900,
-                0 0 70px rgba(255, 153, 0, 0.9);
+                0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 25px rgba(49, 132, 214, 0.8),
+                0 0 45px rgba(49, 132, 214, 0.6);
+            transition: 0.3s ease;
+        }
+
+        .funpay-link:hover .funpay-logo {
+            transform: scale(1.08);
+            box-shadow:
+                0 0 15px rgba(255, 255, 255, 0.8),
+                0 0 35px rgba(49, 132, 214, 1),
+                0 0 70px rgba(49, 132, 214, 0.9);
         }
 
         @keyframes pulse {
@@ -117,7 +120,7 @@
         </div>
 
         <a class="funpay-link" href="https://funpay.com/users/13609498/" target="_blank">
-            <div class="funpay-icon">FunPay</div>
+            <img class="funpay-logo" src="funpay.png" alt="FunPay">
         </a>
     </div>
 
