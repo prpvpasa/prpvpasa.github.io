@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipidahterka — System Requirements</title>
+    <title>Pipidahterka Showcase</title>
 
     <style>
         * {
@@ -14,26 +14,23 @@
 
         :root {
             --bg: #050914;
-            --bg2: #07182f;
-            --card: rgba(12, 32, 64, 0.72);
-            --card2: rgba(8, 22, 48, 0.92);
+            --card: rgba(12, 32, 64, 0.74);
+            --card-dark: rgba(4, 13, 32, 0.92);
             --blue: #00c8ff;
-            --blue2: #1d6dff;
-            --blue3: #74e7ff;
+            --blue-light: #74e7ff;
+            --blue-dark: #1d6dff;
             --text: #ffffff;
             --muted: #9bb7d8;
-            --border: rgba(0, 200, 255, 0.26);
-            --danger: #ff4d6d;
-            --ok: #34ffa4;
+            --border: rgba(0, 200, 255, 0.28);
+            --green: #34ffa4;
         }
 
         body {
             min-height: 100vh;
             background:
-                radial-gradient(circle at 15% 15%, rgba(0, 200, 255, 0.20), transparent 30%),
-                radial-gradient(circle at 85% 25%, rgba(29, 109, 255, 0.26), transparent 35%),
-                radial-gradient(circle at 50% 100%, rgba(0, 255, 255, 0.10), transparent 35%),
-                linear-gradient(135deg, var(--bg), #02040a);
+                radial-gradient(circle at 15% 15%, rgba(0, 200, 255, 0.20), transparent 32%),
+                radial-gradient(circle at 85% 20%, rgba(29, 109, 255, 0.24), transparent 34%),
+                linear-gradient(135deg, #050914, #02040a);
             color: var(--text);
             font-family: "Segoe UI", Arial, sans-serif;
             overflow-x: hidden;
@@ -48,7 +45,7 @@
                 linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
             background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, black, transparent 85%);
+            opacity: 0.7;
         }
 
         .app {
@@ -62,12 +59,14 @@
         .sidebar {
             padding: 28px 20px;
             border-right: 1px solid var(--border);
-            background: rgba(2, 8, 22, 0.72);
+            background: rgba(2, 8, 22, 0.78);
             backdrop-filter: blur(18px);
             position: sticky;
             top: 0;
             height: 100vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         .logo {
@@ -76,14 +75,14 @@
             border: 1px solid var(--border);
             border-radius: 24px;
             background: linear-gradient(145deg, rgba(0, 200, 255, 0.16), rgba(29, 109, 255, 0.08));
-            box-shadow: 0 0 35px rgba(0, 200, 255, 0.12);
+            box-shadow: 0 0 35px rgba(0, 200, 255, 0.13);
         }
 
         .logo h1 {
             font-size: 1.75rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--blue3);
+            color: var(--blue-light);
             text-shadow: 0 0 18px rgba(0, 200, 255, 0.8);
         }
 
@@ -99,6 +98,10 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 18px 8px 12px;
+        }
+
+        .games-wrap {
+            flex: 1;
         }
 
         .game-card {
@@ -132,7 +135,7 @@
         }
 
         .game-head span {
-            color: var(--blue3);
+            color: var(--blue-light);
         }
 
         .arrow {
@@ -174,12 +177,70 @@
             transform: translateX(4px);
         }
 
+        .cheat-btn small {
+            color: var(--muted);
+        }
+
+        .funpay-btn {
+            margin-top: 22px;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 18px;
+            color: #001526;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
+            box-shadow:
+                0 0 18px rgba(0, 200, 255, 0.45),
+                0 0 42px rgba(29, 109, 255, 0.22);
+            transition: 0.25s;
+        }
+
+        .funpay-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 0 25px rgba(0, 200, 255, 0.75),
+                0 0 60px rgba(29, 109, 255, 0.45);
+        }
+
         .main {
-            padding: 42px;
+            padding: 34px 42px 42px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .showcase-btn {
+            border: 1px solid rgba(0, 200, 255, 0.55);
+            border-radius: 999px;
+            padding: 13px 20px;
+            color: white;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            background:
+                linear-gradient(135deg, rgba(0, 200, 255, 0.24), rgba(29, 109, 255, 0.20)),
+                rgba(4, 13, 32, 0.8);
+            box-shadow: 0 0 24px rgba(0, 200, 255, 0.24);
+            transition: 0.25s;
+        }
+
+        .showcase-btn:hover {
+            transform: translateY(-2px);
+            background:
+                linear-gradient(135deg, rgba(0, 200, 255, 0.38), rgba(29, 109, 255, 0.30)),
+                rgba(4, 13, 32, 0.95);
+            box-shadow: 0 0 38px rgba(0, 200, 255, 0.42);
         }
 
         .hero {
-            min-height: 210px;
+            min-height: 220px;
             display: flex;
             justify-content: space-between;
             gap: 24px;
@@ -189,7 +250,7 @@
             border-radius: 32px;
             background:
                 linear-gradient(135deg, rgba(0, 200, 255, 0.15), rgba(29, 109, 255, 0.08)),
-                rgba(7, 18, 40, 0.75);
+                rgba(7, 18, 40, 0.76);
             box-shadow: 0 0 50px rgba(0, 200, 255, 0.13);
             overflow: hidden;
             position: relative;
@@ -198,11 +259,11 @@
         .hero::after {
             content: "";
             position: absolute;
-            width: 260px;
-            height: 260px;
-            right: -80px;
-            top: -80px;
-            background: radial-gradient(circle, rgba(0, 200, 255, 0.32), transparent 65%);
+            width: 300px;
+            height: 300px;
+            right: -90px;
+            top: -90px;
+            background: radial-gradient(circle, rgba(0, 200, 255, 0.34), transparent 65%);
         }
 
         .hero-text {
@@ -212,15 +273,13 @@
 
         .badge {
             display: inline-flex;
-            align-items: center;
-            gap: 8px;
             padding: 8px 12px;
             border: 1px solid rgba(0, 200, 255, 0.45);
             border-radius: 999px;
-            color: var(--blue3);
+            color: var(--blue-light);
             background: rgba(0, 200, 255, 0.08);
             font-size: 0.85rem;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 14px;
         }
 
@@ -259,7 +318,7 @@
         .stat strong {
             display: block;
             font-size: 1.7rem;
-            color: var(--blue3);
+            color: var(--blue-light);
         }
 
         .stat small {
@@ -311,7 +370,7 @@
 
         .cheat-title-row h3 {
             font-size: 2rem;
-            color: var(--blue3);
+            color: var(--blue-light);
             text-shadow: 0 0 14px rgba(0, 200, 255, 0.35);
         }
 
@@ -319,9 +378,9 @@
             padding: 8px 12px;
             border-radius: 999px;
             font-size: 0.85rem;
-            font-weight: 800;
+            font-weight: 900;
             color: #001b11;
-            background: var(--ok);
+            background: var(--green);
             white-space: nowrap;
             box-shadow: 0 0 18px rgba(52, 255, 164, 0.25);
         }
@@ -341,6 +400,7 @@
             display: grid;
             grid-template-columns: 135px 1fr;
             gap: 12px;
+            min-height: 48px;
             padding: 13px 14px;
             border-radius: 14px;
             background: rgba(2, 10, 24, 0.55);
@@ -348,11 +408,13 @@
         }
 
         .req b {
-            color: var(--blue3);
+            color: var(--blue-light);
         }
 
         .req span {
             color: #dceeff;
+            min-height: 20px;
+            border-bottom: 1px dashed rgba(116, 231, 255, 0.25);
         }
 
         .features {
@@ -375,15 +437,19 @@
             margin-right: 8px;
         }
 
-        .media-grid {
+        .media-section {
             margin-top: 24px;
+            scroll-margin-top: 30px;
+        }
+
+        .media-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 14px;
         }
 
         .media-card {
-            min-height: 155px;
+            min-height: 165px;
             border-radius: 20px;
             border: 1px solid rgba(0, 200, 255, 0.22);
             background:
@@ -415,19 +481,9 @@
 
         .media-placeholder strong {
             display: block;
-            color: var(--blue3);
+            color: var(--blue-light);
             font-size: 1.1rem;
             margin-bottom: 6px;
-        }
-
-        .notice {
-            margin-top: 24px;
-            padding: 18px;
-            border: 1px solid rgba(255, 77, 109, 0.35);
-            background: rgba(255, 77, 109, 0.08);
-            border-radius: 18px;
-            color: #ffd2dc;
-            line-height: 1.5;
         }
 
         @media (max-width: 1050px) {
@@ -466,6 +522,14 @@
                 padding: 16px;
             }
 
+            .topbar {
+                justify-content: center;
+            }
+
+            .showcase-btn {
+                width: 100%;
+            }
+
             .hero {
                 padding: 24px;
                 border-radius: 24px;
@@ -492,21 +556,32 @@
         <aside class="sidebar">
             <div class="logo">
                 <h1>Pipidahterka</h1>
-                <p>System requirements & media showcase</p>
+                <p>Cheat requirements & media showcase</p>
             </div>
 
-            <div class="sidebar-title">Games</div>
+            <div class="games-wrap">
+                <div class="sidebar-title">Games</div>
+                <div id="gamesMenu"></div>
+            </div>
 
-            <div id="gamesMenu"></div>
+            <a class="funpay-btn" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">
+                Open FunPay
+            </a>
         </aside>
 
         <main class="main">
+            <div class="topbar">
+                <button class="showcase-btn" onclick="scrollToShowcase()">
+                    Pipidahterka showcase
+                </button>
+            </div>
+
             <section class="hero">
                 <div class="hero-text">
-                    <div class="badge">● Blue Panel / Game Catalog</div>
+                    <div class="badge">● Blue Showcase Panel</div>
                     <h2 id="gameTitle">ARC Raiders</h2>
                     <p id="gameDescription">
-                        Выберите игру слева, откройте нужный продукт и посмотрите системные требования, список функций, фото и видео демонстрации.
+                        Выберите игру слева, откройте нужный продукт и посмотрите системные требования, функционал, фото и видео.
                     </p>
                 </div>
 
@@ -516,8 +591,8 @@
                         <small>products</small>
                     </div>
                     <div class="stat">
-                        <strong>24/7</strong>
-                        <small>catalog</small>
+                        <strong>HD</strong>
+                        <small>showcase</small>
                     </div>
                 </div>
             </section>
@@ -526,7 +601,7 @@
                 <div class="panel">
                     <div class="panel-header">
                         <h3>Информация о продукте</h3>
-                        <p>Системные требования и краткое описание.</p>
+                        <p>Здесь будут системные требования выбранного продукта.</p>
                     </div>
 
                     <div class="panel-body" id="infoPanel"></div>
@@ -544,76 +619,63 @@
                 </div>
             </section>
 
-            <section class="panel" style="margin-top: 24px;">
+            <section class="panel media-section" id="showcase">
                 <div class="panel-header">
                     <h3>Фото / видео функционала</h3>
-                    <p>Здесь можно разместить скриншоты, превью и видео.</p>
+                    <p>Сюда можно поставить скриншоты, превью и видео демонстрации.</p>
                 </div>
 
                 <div class="panel-body">
                     <div class="media-grid" id="mediaPanel"></div>
-
-                    <div class="notice">
-                        Совет: создай папку <b>assets</b> рядом с <b>index.html</b> и загружай туда картинки/видео.
-                        Например: <b>assets/arc-photo-1.jpg</b> или <b>assets/apex-video-1.mp4</b>.
-                    </div>
                 </div>
             </section>
         </main>
     </div>
 
     <script>
+        const emptyRequirements = {
+            OS: "",
+            CPU: "",
+            RAM: "",
+            GPU: "",
+            Disk: ""
+        };
+
         const catalog = {
             arc: {
                 title: "ARC Raiders",
-                description: "Каталог продуктов для ARC Raiders: требования, описание и медиа-демонстрации.",
+                description: "Раздел для ARC Raiders: системные требования, функционал, фото и видео.",
                 cheats: [
                     {
                         name: "ARC Blue Vision",
                         status: "Available",
-                        description: "Легкий визуальный модуль с акцентом на удобный интерфейс, стабильность и гибкие настройки отображения.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i5 / Ryzen 5 или лучше",
-                            RAM: "8 GB",
-                            GPU: "GTX 1060 / RX 580 или лучше",
-                            Disk: "500 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Настраиваемое внутриигровое меню",
-                            "Отображение полезной информации на экране",
-                            "Настройка цветов интерфейса",
-                            "Сохранение профилей конфигурации",
-                            "Оптимизированный режим производительности"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3",
+                            "Функционал 4"
                         ],
                         media: [
-                            { type: "photo", title: "Main menu", file: "assets/arc-photo-1.jpg" },
-                            { type: "photo", title: "Interface preview", file: "assets/arc-photo-2.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/arc-video-1.mp4" },
-                            { type: "photo", title: "Settings panel", file: "assets/arc-photo-3.jpg" }
+                            { type: "photo", title: "Photo preview", file: "assets/arc-photo-1.jpg" },
+                            { type: "photo", title: "Menu preview", file: "assets/arc-photo-2.jpg" },
+                            { type: "video", title: "Video showcase", file: "assets/arc-video-1.mp4" }
                         ]
                     },
                     {
                         name: "ARC Lite Panel",
                         status: "Available",
-                        description: "Минималистичный вариант с базовым набором функций и низкой нагрузкой на систему.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i3 / Ryzen 3 или лучше",
-                            RAM: "8 GB",
-                            GPU: "GTX 1050 Ti или лучше",
-                            Disk: "300 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Компактное меню",
-                            "Быстрое переключение настроек",
-                            "Низкое потребление ресурсов",
-                            "Готовые пресеты",
-                            "Поддержка горячих клавиш"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3"
                         ],
                         media: [
-                            { type: "photo", title: "Lite interface", file: "assets/arc-lite-1.jpg" },
-                            { type: "video", title: "Lite demo", file: "assets/arc-lite-video.mp4" }
+                            { type: "photo", title: "Photo preview", file: "assets/arc-lite-1.jpg" },
+                            { type: "video", title: "Video showcase", file: "assets/arc-lite-video.mp4" }
                         ]
                     }
                 ]
@@ -621,53 +683,38 @@
 
             albion: {
                 title: "Albion Online",
-                description: "Раздел для Albion Online с продуктами, требованиями и демонстрацией интерфейса.",
+                description: "Раздел для Albion Online: системные требования, функционал, фото и видео.",
                 cheats: [
                     {
                         name: "Albion Blue Tools",
                         status: "Available",
-                        description: "Информационная панель для удобного отображения игровых данных и быстрой настройки интерфейса.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i3 / Ryzen 3 или лучше",
-                            RAM: "6 GB",
-                            GPU: "GTX 750 Ti / встроенная современная графика",
-                            Disk: "250 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Отдельная панель настроек",
-                            "Настраиваемые элементы интерфейса",
-                            "Профили под разные стили игры",
-                            "Горячие клавиши",
-                            "Легкий режим для слабых ПК"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3",
+                            "Функционал 4"
                         ],
                         media: [
-                            { type: "photo", title: "Albion panel", file: "assets/albion-photo-1.jpg" },
-                            { type: "photo", title: "Settings", file: "assets/albion-photo-2.jpg" },
-                            { type: "video", title: "Showcase", file: "assets/albion-video-1.mp4" }
+                            { type: "photo", title: "Photo preview", file: "assets/albion-photo-1.jpg" },
+                            { type: "photo", title: "Settings preview", file: "assets/albion-photo-2.jpg" },
+                            { type: "video", title: "Video showcase", file: "assets/albion-video-1.mp4" }
                         ]
                     },
                     {
                         name: "Albion Pro HUD",
                         status: "Available",
-                        description: "Расширенный HUD с большим количеством настроек внешнего вида и удобной структурой меню.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i5 / Ryzen 5",
-                            RAM: "8 GB",
-                            GPU: "GTX 960 или лучше",
-                            Disk: "400 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Расширенные настройки HUD",
-                            "Быстрое включение и выключение модулей",
-                            "Сохранение нескольких конфигов",
-                            "Чистый синий интерфейс",
-                            "Адаптация под разные разрешения"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3"
                         ],
                         media: [
                             { type: "photo", title: "HUD preview", file: "assets/albion-pro-1.jpg" },
-                            { type: "video", title: "HUD video", file: "assets/albion-pro-video.mp4" }
+                            { type: "video", title: "Video showcase", file: "assets/albion-pro-video.mp4" }
                         ]
                     }
                 ]
@@ -675,53 +722,38 @@
 
             apex: {
                 title: "Apex Legends",
-                description: "Раздел Apex Legends: карточки продуктов, системные требования, функции и медиа.",
+                description: "Раздел для Apex Legends: системные требования, функционал, фото и видео.",
                 cheats: [
                     {
                         name: "Apex Storm Panel",
                         status: "Available",
-                        description: "Современная панель с неоновым дизайном, пресетами и настройками под разные режимы.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i5-8400 / Ryzen 5 2600",
-                            RAM: "8 GB",
-                            GPU: "GTX 1060 6GB / RX 580",
-                            Disk: "600 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Неоновое меню в синем стиле",
-                            "Настройка горячих клавиш",
-                            "Профили конфигураций",
-                            "Регулировка прозрачности интерфейса",
-                            "Быстрый режим включения функций"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3",
+                            "Функционал 4"
                         ],
                         media: [
                             { type: "photo", title: "Apex menu", file: "assets/apex-photo-1.jpg" },
-                            { type: "photo", title: "Apex settings", file: "assets/apex-photo-2.jpg" },
-                            { type: "video", title: "Apex showcase", file: "assets/apex-video-1.mp4" }
+                            { type: "photo", title: "Settings preview", file: "assets/apex-photo-2.jpg" },
+                            { type: "video", title: "Video showcase", file: "assets/apex-video-1.mp4" }
                         ]
                     },
                     {
                         name: "Apex Lite",
                         status: "Available",
-                        description: "Базовый вариант для пользователей, которым нужен простой интерфейс и минимальная нагрузка.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i3 / Ryzen 3",
-                            RAM: "8 GB",
-                            GPU: "GTX 1050 Ti",
-                            Disk: "350 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Минималистичный дизайн",
-                            "Простая настройка",
-                            "Малое потребление ресурсов",
-                            "Быстрые пресеты",
-                            "Поддержка популярных разрешений"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3"
                         ],
                         media: [
                             { type: "photo", title: "Lite menu", file: "assets/apex-lite-1.jpg" },
-                            { type: "video", title: "Lite video", file: "assets/apex-lite-video.mp4" }
+                            { type: "video", title: "Video showcase", file: "assets/apex-lite-video.mp4" }
                         ]
                     }
                 ]
@@ -729,53 +761,38 @@
 
             arena: {
                 title: "Arena Breakout",
-                description: "Раздел Arena Breakout с продуктами, описанием, требованиями и блоком демонстраций.",
+                description: "Раздел для Arena Breakout: системные требования, функционал, фото и видео.",
                 cheats: [
                     {
                         name: "Arena Blue Assist",
                         status: "Available",
-                        description: "Настраиваемая панель с современным интерфейсом, удобной навигацией и медиа-превью.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i5 / Ryzen 5",
-                            RAM: "8 GB",
-                            GPU: "GTX 1060 / RX 580",
-                            Disk: "550 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Синий интерфейс панели",
-                            "Гибкая настройка отображения",
-                            "Сохранение пользовательских пресетов",
-                            "Горячие клавиши",
-                            "Поддержка полноэкранного и оконного режима"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3",
+                            "Функционал 4"
                         ],
                         media: [
                             { type: "photo", title: "Arena menu", file: "assets/arena-photo-1.jpg" },
                             { type: "photo", title: "Arena preview", file: "assets/arena-photo-2.jpg" },
-                            { type: "video", title: "Arena demo", file: "assets/arena-video-1.mp4" }
+                            { type: "video", title: "Video showcase", file: "assets/arena-video-1.mp4" }
                         ]
                     },
                     {
                         name: "Arena Compact",
                         status: "Available",
-                        description: "Компактная версия с простым меню, быстрым запуском и базовым набором настроек.",
-                        requirements: {
-                            OS: "Windows 10 / 11 x64",
-                            CPU: "Intel Core i3 / Ryzen 3",
-                            RAM: "8 GB",
-                            GPU: "GTX 1050 Ti",
-                            Disk: "300 MB свободного места"
-                        },
+                        description: "Описание продукта можно изменить здесь.",
+                        requirements: { ...emptyRequirements },
                         features: [
-                            "Компактное меню",
-                            "Быстрая настройка",
-                            "Низкая нагрузка",
-                            "Простое управление",
-                            "Готовые профили"
+                            "Функционал 1",
+                            "Функционал 2",
+                            "Функционал 3"
                         ],
                         media: [
                             { type: "photo", title: "Compact menu", file: "assets/arena-compact-1.jpg" },
-                            { type: "video", title: "Compact demo", file: "assets/arena-compact-video.mp4" }
+                            { type: "video", title: "Video showcase", file: "assets/arena-compact-video.mp4" }
                         ]
                     }
                 ]
@@ -792,6 +809,13 @@
 
         let currentGame = "arc";
         let currentCheat = 0;
+
+        function scrollToShowcase() {
+            document.getElementById("showcase").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
 
         function renderMenu() {
             gamesMenu.innerHTML = "";
@@ -817,6 +841,7 @@
                 game.cheats.forEach((cheat, index) => {
                     const btn = document.createElement("button");
                     btn.className = "cheat-btn";
+
                     if (gameKey === currentGame && index === currentCheat) {
                         btn.classList.add("selected");
                     }
