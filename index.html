@@ -1,1220 +1,1960 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipidahterka Showcase</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg: #050914;
-            --card: rgba(12, 32, 64, 0.74);
-            --card-dark: rgba(4, 13, 32, 0.92);
-            --blue: #00c8ff;
-            --blue-light: #74e7ff;
-            --blue-dark: #1d6dff;
-            --text: #ffffff;
-            --muted: #9bb7d8;
-            --border: rgba(0, 200, 255, 0.28);
-            --green: #34ffa4;
-        }
-
-        body {
-            min-height: 100vh;
-            background:
-                radial-gradient(circle at 15% 15%, rgba(0, 200, 255, 0.20), transparent 32%),
-                radial-gradient(circle at 85% 20%, rgba(29, 109, 255, 0.24), transparent 34%),
-                linear-gradient(135deg, #050914, #02040a);
-            color: var(--text);
-            font-family: "Segoe UI", Arial, sans-serif;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-            background-size: 42px 42px;
-            opacity: 0.7;
-        }
-
-        .app {
-            display: grid;
-            grid-template-columns: 330px 1fr;
-            min-height: 100vh;
-            position: relative;
-            z-index: 1;
-        }
-
-        .sidebar {
-            padding: 28px 20px;
-            border-right: 1px solid var(--border);
-            background: rgba(2, 8, 22, 0.78);
-            backdrop-filter: blur(18px);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo {
-            margin-bottom: 28px;
-            padding: 22px;
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            background: linear-gradient(145deg, rgba(0, 200, 255, 0.16), rgba(29, 109, 255, 0.08));
-            box-shadow: 0 0 35px rgba(0, 200, 255, 0.13);
-        }
-
-        .logo h1 {
-            font-size: 1.75rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--blue-light);
-            text-shadow: 0 0 18px rgba(0, 200, 255, 0.8);
-        }
-
-        .logo p {
-            margin-top: 8px;
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
-
-        .sidebar-title {
-            color: var(--muted);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 18px 8px 12px;
-        }
-
-        .games-wrap {
-            flex: 1;
-        }
-
-        .game-card {
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            overflow: hidden;
-            background: rgba(10, 27, 58, 0.58);
-            transition: 0.25s;
-        }
-
-        .game-card.active {
-            border-color: rgba(0, 200, 255, 0.75);
-            box-shadow: 0 0 28px rgba(0, 200, 255, 0.18);
-        }
-
-        .game-head {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            color: white;
-            background: transparent;
-            cursor: pointer;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            font-weight: 800;
-            font-size: 1rem;
-        }
-
-        .game-head span {
-            color: var(--blue-light);
-        }
-
-        .arrow {
-            transition: 0.25s;
-            color: var(--blue);
-        }
-
-        .game-card.active .arrow {
-            transform: rotate(90deg);
-        }
-
-        .cheat-list {
-            max-height: 0;
-            overflow: hidden;
-            transition: 0.35s ease;
-        }
-
-        .game-card.active .cheat-list {
-            max-height: 360px;
-        }
-
-        .cheat-btn {
-            width: calc(100% - 24px);
-            margin: 0 12px 10px;
-            padding: 13px 14px;
-            border: 1px solid rgba(116, 231, 255, 0.14);
-            border-radius: 14px;
-            color: var(--text);
-            background: rgba(0, 200, 255, 0.06);
-            cursor: pointer;
-            text-align: left;
-            transition: 0.25s;
-        }
-
-        .cheat-btn:hover,
-        .cheat-btn.selected {
-            background: linear-gradient(90deg, rgba(0, 200, 255, 0.22), rgba(29, 109, 255, 0.16));
-            border-color: rgba(0, 200, 255, 0.55);
-            transform: translateX(4px);
-        }
-
-        .cheat-btn small {
-            color: var(--muted);
-        }
-
-        .funpay-btn {
-            margin-top: 22px;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            padding: 16px;
-            border-radius: 18px;
-            color: #001526;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            background: linear-gradient(135deg, var(--blue-light), var(--blue-dark));
-            box-shadow:
-                0 0 18px rgba(0, 200, 255, 0.45),
-                0 0 42px rgba(29, 109, 255, 0.22);
-            transition: 0.25s;
-        }
-
-        .funpay-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow:
-                0 0 25px rgba(0, 200, 255, 0.75),
-                0 0 60px rgba(29, 109, 255, 0.45);
-        }
-
-        .main {
-            padding: 34px 42px 42px;
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 22px;
-        }
-
-        .showcase-btn {
-            border: 1px solid rgba(0, 200, 255, 0.55);
-            border-radius: 999px;
-            padding: 13px 20px;
-            color: white;
-            font-weight: 900;
-            letter-spacing: 0.8px;
-            cursor: pointer;
-            background:
-                linear-gradient(135deg, rgba(0, 200, 255, 0.24), rgba(29, 109, 255, 0.20)),
-                rgba(4, 13, 32, 0.8);
-            box-shadow: 0 0 24px rgba(0, 200, 255, 0.24);
-            transition: 0.25s;
-        }
-
-        .showcase-btn:hover {
-            transform: translateY(-2px);
-            background:
-                linear-gradient(135deg, rgba(0, 200, 255, 0.38), rgba(29, 109, 255, 0.30)),
-                rgba(4, 13, 32, 0.95);
-            box-shadow: 0 0 38px rgba(0, 200, 255, 0.42);
-        }
-
-        .hero {
-            min-height: 220px;
-            display: flex;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: center;
-            padding: 34px;
-            border: 1px solid var(--border);
-            border-radius: 32px;
-            background:
-                linear-gradient(135deg, rgba(0, 200, 255, 0.15), rgba(29, 109, 255, 0.08)),
-                rgba(7, 18, 40, 0.76);
-            box-shadow: 0 0 50px rgba(0, 200, 255, 0.13);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            right: -90px;
-            top: -90px;
-            background: radial-gradient(circle, rgba(0, 200, 255, 0.34), transparent 65%);
-        }
-
-        .hero-text {
-            position: relative;
-            z-index: 2;
-        }
-
-        .badge {
-            display: inline-flex;
-            padding: 8px 12px;
-            border: 1px solid rgba(0, 200, 255, 0.45);
-            border-radius: 999px;
-            color: var(--blue-light);
-            background: rgba(0, 200, 255, 0.08);
-            font-size: 0.85rem;
-            font-weight: 800;
-            margin-bottom: 14px;
-        }
-
-        .hero h2 {
-            font-size: clamp(2rem, 5vw, 4.8rem);
-            line-height: 1;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 22px rgba(0, 200, 255, 0.6);
-        }
-
-        .hero p {
-            max-width: 720px;
-            margin-top: 16px;
-            color: var(--muted);
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
-
-        .hero-stats {
-            position: relative;
-            z-index: 2;
-            display: grid;
-            grid-template-columns: repeat(2, 120px);
-            gap: 12px;
-        }
-
-        .stat {
-            padding: 18px;
-            border-radius: 20px;
-            background: rgba(2, 12, 28, 0.72);
-            border: 1px solid var(--border);
-            text-align: center;
-        }
-
-        .stat strong {
-            display: block;
-            font-size: 1.7rem;
-            color: var(--blue-light);
-        }
-
-        .stat small {
-            color: var(--muted);
-        }
-
-        .content-grid {
-            margin-top: 26px;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 24px;
-        }
-
-        .panel {
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            background: var(--card);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 0 32px rgba(0, 0, 0, 0.22);
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 22px 24px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(0, 200, 255, 0.06);
-        }
-
-        .panel-header h3 {
-            font-size: 1.45rem;
-        }
-
-        .panel-header p {
-            color: var(--muted);
-            margin-top: 6px;
-        }
-
-        .panel-body {
-            padding: 24px;
-        }
-
-        .cheat-title-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 18px;
-        }
-
-        .cheat-title-row h3 {
-            font-size: 2rem;
-            color: var(--blue-light);
-            text-shadow: 0 0 14px rgba(0, 200, 255, 0.35);
-        }
-
-        .status {
-            padding: 8px 12px;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            font-weight: 900;
-            color: #001b11;
-            background: var(--green);
-            white-space: nowrap;
-            box-shadow: 0 0 18px rgba(52, 255, 164, 0.25);
-        }
-
-        .description {
-            color: var(--muted);
-            line-height: 1.7;
-            margin-bottom: 22px;
-        }
-
-        .requirements {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .req {
-            min-height: 88px;
-            padding: 18px;
-            border-radius: 18px;
-            background: rgba(2, 10, 24, 0.58);
-            border: 1px solid rgba(116, 231, 255, 0.13);
-        }
-
-        .req b {
-            display: block;
-            color: #8191bd;
-            font-size: 0.95rem;
-            margin-bottom: 12px;
-        }
-
-        .req span {
-            display: block;
-            color: #ffffff;
-            font-weight: 900;
-            font-size: 1.08rem;
-            line-height: 1.25;
-        }
-
-        .features {
-            display: grid;
-            gap: 12px;
-        }
-
-        .feature {
-            padding: 14px;
-            border-radius: 16px;
-            border: 1px solid rgba(116, 231, 255, 0.15);
-            background: rgba(2, 10, 24, 0.48);
-            color: #dceeff;
-            line-height: 1.5;
-        }
-
-        .feature::before {
-            content: "✦";
-            color: var(--blue);
-            margin-right: 8px;
-        }
-
-        .media-section {
-            margin-top: 24px;
-            scroll-margin-top: 30px;
-        }
-
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 16px;
-        }
-
-        .media-card {
-            height: 320px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 200, 255, 0.22);
-            background:
-                linear-gradient(135deg, rgba(0, 200, 255, 0.12), rgba(29, 109, 255, 0.10)),
-                rgba(2, 10, 24, 0.68);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--muted);
-            padding: 18px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .media-card img,
-        .media-card video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            position: absolute;
-            inset: 0;
-            background: #07101e;
-            padding: 10px;
-        }
-
-        .media-placeholder {
-            position: relative;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .media-placeholder strong {
-            display: block;
-            color: var(--blue-light);
-            font-size: 1.1rem;
-            margin-bottom: 6px;
-        }
-
-        .lightbox {
-            position: fixed;
-            inset: 0;
-            z-index: 20;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background: rgba(0, 0, 0, 0.86);
-            backdrop-filter: blur(10px);
-        }
-
-        .lightbox.active {
-            display: flex;
-        }
-
-        .lightbox img {
-            max-width: 96vw;
-            max-height: 90vh;
-            border-radius: 18px;
-            border: 1px solid rgba(0, 200, 255, 0.45);
-            box-shadow: 0 0 45px rgba(0, 200, 255, 0.25);
-        }
-
-        .lightbox-close {
-            position: fixed;
-            right: 24px;
-            top: 20px;
-            width: 46px;
-            height: 46px;
-            border: 1px solid rgba(0, 200, 255, 0.55);
-            border-radius: 50%;
-            background: rgba(4, 13, 32, 0.92);
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        @media (max-width: 1050px) {
-            .app {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                position: relative;
-                height: auto;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-            }
-
-            .main {
-                padding: 24px;
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .hero-stats {
-                width: 100%;
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 620px) {
-            .main {
-                padding: 16px;
-            }
-
-            .topbar {
-                justify-content: center;
-            }
-
-            .showcase-btn {
-                width: 100%;
-            }
-
-            .hero {
-                padding: 24px;
-                border-radius: 24px;
-            }
-
-            .media-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .media-card {
-                height: 220px;
-            }
-
-            .requirements {
-                grid-template-columns: 1fr;
-            }
-
-            .cheat-title-row {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pipidahterka Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg:#050505; --bg2:#0b0b0b; --panel:#111; --panel2:#161616; --line:rgba(255,255,255,.10);
+    --text:#f7f7f7; --muted:#a8a8a8; --soft:#dcdcdc; --white:#fff; --shadow:0 28px 90px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+    min-height:100vh; background:
+      radial-gradient(circle at 20% -10%, rgba(255,255,255,.08), transparent 28%),
+      radial-gradient(circle at 90% 10%, rgba(255,255,255,.045), transparent 24%),
+      linear-gradient(145deg, #020202, #0d0d0d 48%, #020202);
+    color:var(--text); font-family:Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif; overflow-x:hidden;
+}
+body:before {
+    content:""; position:fixed; inset:0; pointer-events:none; opacity:.42;
+    background-image:linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size:46px 46px; mask-image:linear-gradient(to bottom, black, transparent 78%);
+}
+a { color:inherit; }
+.shell { position:relative; z-index:1; }
+.nav {
+    position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; gap:18px;
+    padding:18px clamp(18px,4vw,56px); border-bottom:1px solid var(--line); backdrop-filter: blur(18px);
+    background:rgba(5,5,5,.72);
+}
+.brand { display:flex; align-items:center; gap:14px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+.brand-mark { width:42px; height:42px; border:1px solid var(--line); border-radius:14px; display:grid; place-items:center; font-family:'Russo One'; background:#fff; color:#000; }
+.nav-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+.btn {
+    border:1px solid var(--line); background:#111; color:#fff; border-radius:999px; padding:12px 18px; text-decoration:none; font-weight:800;
+    transition:.2s; cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+}
+.btn:hover { transform:translateY(-2px); border-color:rgba(255,255,255,.32); background:#fff; color:#000; }
+.btn.primary { background:#fff; color:#000; border-color:#fff; }
+.hero { padding:72px clamp(18px,4vw,56px) 40px; display:grid; grid-template-columns:1.18fr .82fr; gap:28px; align-items:stretch; }
+.hero-card, .side-card, .panel {
+    border:1px solid var(--line); border-radius:34px; background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018)); box-shadow:var(--shadow);
+}
+.hero-card { padding:clamp(28px,5vw,58px); position:relative; overflow:hidden; }
+.hero-card:after { content:""; position:absolute; width:420px; height:420px; right:-160px; top:-160px; background:radial-gradient(circle, rgba(255,255,255,.13), transparent 64%); }
+.kicker { color:var(--muted); text-transform:uppercase; letter-spacing:.22em; font-size:.82rem; font-weight:900; margin-bottom:18px; }
+h1 { font-family:'Russo One', Inter, sans-serif; font-size:clamp(2.8rem,8vw,7.4rem); line-height:.9; letter-spacing:.02em; text-transform:uppercase; max-width:900px; }
+.lead { margin-top:26px; color:var(--soft); font-size:clamp(1rem,1.6vw,1.25rem); line-height:1.75; max-width:760px; }
+.side-card { padding:24px; display:flex; flex-direction:column; justify-content:space-between; gap:18px; }
+.profile { display:flex; gap:16px; align-items:center; padding:18px; border:1px solid var(--line); border-radius:26px; background:rgba(0,0,0,.24); }
+.avatar { width:70px; height:70px; border-radius:24px; background:#fff; color:#000; display:grid; place-items:center; font-family:'Russo One'; font-size:28px; }
+.profile h2 { font-size:1.25rem; }
+.profile p { color:var(--muted); margin-top:6px; line-height:1.5; }
+.stats { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.stat { padding:20px; border:1px solid var(--line); border-radius:24px; background:#0b0b0b; }
+.stat b { display:block; font-size:2rem; font-family:'Russo One'; }
+.stat span { color:var(--muted); font-weight:700; font-size:.9rem; }
+.section { padding:34px clamp(18px,4vw,56px); }
+.section-head { display:flex; align-items:end; justify-content:space-between; gap:20px; margin-bottom:22px; }
+.section h2 { font-family:'Russo One'; font-size:clamp(2rem,4vw,3.7rem); text-transform:uppercase; }
+.section p { color:var(--muted); line-height:1.65; }
+.games-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; }
+.game-tile {
+    border:1px solid var(--line); border-radius:26px; background:rgba(255,255,255,.035); padding:16px; cursor:pointer; transition:.2s;
+}
+.game-tile:hover, .game-tile.active { transform:translateY(-4px); background:#fff; color:#000; }
+.game-tile img { width:70px; height:70px; border-radius:20px; object-fit:cover; border:1px solid rgba(255,255,255,.14); background:#000; }
+.game-tile h3 { margin-top:14px; font-size:1.05rem; }
+.game-tile small { color:var(--muted); font-weight:800; }
+.game-tile:hover small, .game-tile.active small { color:#333; }
+.workspace { display:grid; grid-template-columns:330px 1fr; gap:18px; align-items:start; }
+.cheat-list { position:sticky; top:90px; border:1px solid var(--line); border-radius:30px; background:rgba(8,8,8,.74); padding:14px; max-height:calc(100vh - 110px); overflow:auto; }
+.cheat-search { width:100%; background:#050505; border:1px solid var(--line); color:#fff; border-radius:18px; padding:14px 15px; outline:none; margin-bottom:12px; }
+.cheat-btn { width:100%; border:1px solid transparent; background:transparent; color:#fff; padding:14px; text-align:left; border-radius:18px; cursor:pointer; transition:.18s; }
+.cheat-btn:hover, .cheat-btn.active { background:#fff; color:#000; }
+.cheat-btn b { display:block; font-size:.98rem; }
+.cheat-btn small { color:#8d8d8d; font-weight:800; }
+.detail { border:1px solid var(--line); border-radius:34px; background:rgba(255,255,255,.035); overflow:hidden; box-shadow:var(--shadow); }
+.detail-top { padding:28px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:20px; align-items:start; }
+.detail h3 { font-family:'Russo One'; font-size:clamp(2rem,4vw,4rem); text-transform:uppercase; }
+.badge { padding:9px 12px; border:1px solid var(--line); border-radius:999px; color:#000; background:#fff; font-weight:900; white-space:nowrap; }
+.detail-body { padding:28px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+.box { border:1px solid var(--line); border-radius:26px; background:#0a0a0a; padding:22px; }
+.box h4 { font-size:1.1rem; margin-bottom:16px; text-transform:uppercase; letter-spacing:.12em; color:#fff; }
+.req-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.req { padding:14px; border:1px solid var(--line); border-radius:18px; background:#111; }
+.req b { display:block; color:#8f8f8f; font-size:.82rem; margin-bottom:8px; }
+.req span { font-weight:800; line-height:1.35; }
+.features { display:grid; gap:10px; }
+.feature { padding:13px 14px; border:1px solid var(--line); border-radius:16px; background:#111; line-height:1.45; }
+.feature:before { content:"◇"; margin-right:9px; color:#fff; }
+.media-grid { grid-column:1 / -1; display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; }
+.media-card { height:230px; border:1px solid var(--line); border-radius:22px; background:#0b0b0b; display:grid; place-items:center; color:#9d9d9d; text-align:center; padding:20px; overflow:hidden; }
+.media-card img, .media-card video { width:100%; height:100%; object-fit:contain; }
+.footer { padding:46px clamp(18px,4vw,56px); color:#777; border-top:1px solid var(--line); margin-top:28px; }
+@media(max-width:950px) { .hero,.workspace,.detail-body { grid-template-columns:1fr; } .cheat-list { position:relative; top:0; max-height:none; } }
+@media(max-width:560px) { .nav { align-items:flex-start; flex-direction:column; } .stats,.req-grid { grid-template-columns:1fr; } }
+</style>
 </head>
-
 <body>
-    <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                <h1>Pipidahterka</h1>
-                <p>Cheat requirements & media showcase</p>
-            </div>
+<div class="shell">
+<nav class="nav">
+  <div class="brand"><div class="brand-mark">P</div><span>Pipidahterka</span></div>
+  <div class="nav-actions">
+    <a class="btn" href="#catalog">Каталог</a>
+    <a class="btn primary" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">FunPay</a>
+  </div>
+</nav>
 
-            <div class="games-wrap">
-                <div class="sidebar-title">Games</div>
-                <div id="gamesMenu"></div>
-            </div>
-
-            <a class="funpay-btn" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">
-                Open FunPay
-            </a>
-        </aside>
-
-        <main class="main">
-            <div class="topbar">
-                <button class="showcase-btn" onclick="scrollToShowcase()">
-                    Pipidahterka showcase
-                </button>
-            </div>
-
-            <section class="hero">
-                <div class="hero-text">
-                    <div class="badge">● Blue Showcase Panel</div>
-                    <h2 id="gameTitle">Arena Breakout</h2>
-                    <p id="gameDescription">
-                        Выберите игру слева, откройте нужный продукт и посмотрите системные требования, функционал, фото и видео.
-                    </p>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat">
-                        <strong id="cheatsCount">0</strong>
-                        <small>products</small>
-                    </div>
-                    <div class="stat">
-                        <strong>HD</strong>
-                        <small>showcase</small>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-grid">
-                <div class="panel">
-                    <div class="panel-header">
-                        <h3>Информация о продукте</h3>
-                        <p>Системные требования выбранного продукта.</p>
-                    </div>
-
-                    <div class="panel-body" id="infoPanel"></div>
-                </div>
-
-                <div class="panel">
-                    <div class="panel-header">
-                        <h3>Функционал</h3>
-                        <p>Основные возможности выбранного продукта.</p>
-                    </div>
-
-                    <div class="panel-body">
-                        <div class="features" id="featuresPanel"></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="panel media-section" id="showcase">
-                <div class="panel-header">
-                    <h3>Фото / видео функционала</h3>
-                    <p>Здесь отображаются только добавленные фото и видео — без пустых слотов.</p>
-                </div>
-
-                <div class="panel-body">
-                    <div class="media-grid" id="mediaPanel"></div>
-                </div>
-            </section>
-        </main>
+<header class="hero">
+  <div class="hero-card">
+    <div class="kicker">Black & White Showcase</div>
+    <h1>Game tools catalog</h1>
+    <p class="lead">Аккуратная витрина по играм и продуктам: требования, список функций, медиа и быстрый переход на FunPay. Дизайн сделан спокойнее — без кислотных цветов, с чёрно-белой палитрой и удобной навигацией.</p>
+    <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+      <a class="btn primary" href="#catalog">Открыть каталог</a>
+      <a class="btn" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">Мой FunPay</a>
     </div>
-
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <button class="lightbox-close" type="button">×</button>
-        <img id="lightboxImg" src="" alt="Preview">
+  </div>
+  <aside class="side-card">
+    <div class="profile">
+      <div class="avatar">PB</div>
+      <div><h2>Pipidahterka Showcase</h2><p>Витрина продуктов, требований и функционала по разным играм.</p></div>
     </div>
+    <div class="stats">
+      <div class="stat"><b id="gamesCount">0</b><span>игр</span></div>
+      <div class="stat"><b id="productsCount">0</b><span>читов</span></div>
+    </div>
+  </aside>
+</header>
 
-    <script>
-        const emptyRequirements = {
-            OS: "",
-            CPU: "",
-            RAM: "",
-            GPU: "",
-            Disk: ""
-        };
+<section class="section" id="catalog">
+  <div class="section-head">
+    <div><h2>Игры</h2><p>Выбери игру, затем продукт. Список можно расширять новыми ссылками.</p></div>
+  </div>
+  <div class="games-grid" id="gamesGrid"></div>
+</section>
 
-        const catalog = {
-            arc: {
-                title: "ARC Raiders",
-                description: "Раздел для ARC Raiders: системные требования, функционал, фото и видео.",
-                cheats: [
-                    {
-                        name: "Ancient",
-                        status: "Undetected",
-                        description: "Ancient — приватный чит для ARC Raiders с точным аимботом, расширенными визуалами, радаром, лутом и гибкими настройками мира.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Steam | Xbox",
-                            "ОС": "Windows 10 | 11",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Режим игры": "Безрамочный",
-                            "Формат диска": "On Intel GPT processors",
-                            "Биос": "On Intel UEFI processors",
-                            "Обход записи": "Да",
-                            "Информация": "16 ГБ оперативной памяти | RAID дисков и Rapid Storage - ВЫКЛ. (BIOS) | TPM - ВЫКЛ. | Включить SVM [AMD] / VT-X [INTEL] (BIOS)"
-                        },
-                        features: [
-                            "Aimbot",
-                            "Клавиша аима",
-                            "Тип аима: мышь / память",
-                            "Плавность аима",
-                            "Показать и изменить радиус аима",
-                            "Предсказание и точка предсказания",
-                            "Линия до цели",
-                            "Фиксация цели",
-                            "Проверка видимости",
-                            "Максимальное расстояние аима",
-                            "Кости цели",
-                            "Visuals",
-                            "Loot",
-                            "Radar",
-                            "Other"
+<section class="section">
+  <div class="workspace">
+    <aside class="cheat-list">
+      <input class="cheat-search" id="search" placeholder="Поиск чита..." oninput="renderCheats()">
+      <div id="cheatsList"></div>
+    </aside>
+    <main class="detail" id="detail"></main>
+  </div>
+</section>
+
+<footer class="footer">© Pipidahterka Showcase · GitHub Pages ready · index.html + assets</footer>
+</div>
+
+<script>
+const catalog = [
+            {
+                        "key": "arena-breakout",
+                        "title": "Arena Breakout",
+                        "icon": "AB",
+                        "description": "Подборка продуктов для Arena Breakout: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Ghost",
+                                                "status": "Available",
+                                                "url": "https://ghost.one/ghost-arena-breakout",
+                                                "description": "Ghost для Arena Breakout. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Ghost Lite",
+                                                "status": "Available",
+                                                "url": "https://ghost.one/ghost-arena-breakout-lite",
+                                                "description": "Ghost Lite для Arena Breakout. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
                         ],
-                        media: [
-                            { type: "photo", title: "Ancient showcase 1", file: "assets/ancient-1.gif" },
-                            { type: "photo", title: "Ancient showcase 2", file: "assets/ancient-2.webp" },
-                            { type: "photo", title: "Ancient showcase 3", file: "assets/ancient-3.webp" }
-                        ]
-                    },
-                    {
-                        name: "Arcane",
-                        status: "Undetected",
-                        description: "Arcane — приватный чит для ARC Raiders с аимботом, ESP, радаром, лутом и удобной настройкой функций под себя.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Steam | Xbox",
-                            "ОС": "Windows 10 | 11",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Режим игры": "Оконный | Безрамочный",
-                            "Формат диска": "GPT",
-                            "Биос": "UEFI",
-                            "Информация": "Требуется 12 GB оперативной памяти"
-                        },
-                        features: [
-                            "Aimbot",
-                            "Активировать всегда",
-                            "Проверка видимости",
-                            "Рисовать круг FOV и фон круга FOV",
-                            "Первая и вторая клавиша аима",
-                            "Цели: игроки, боты, команда, нокнутые",
-                            "Тип поиска кости: выбранная, ближняя, случайная",
-                            "Кость: голова, шея, грудь, таз и другие",
-                            "Размер круга FOV",
-                            "Плавность",
-                            "Максимальная дистанция",
-                            "Visuals",
-                            "Loot",
-                            "Radar",
-                            "Other"
-                        ],
-                        media: []
-                    },
-                    {
-                        name: "BTG",
-                        status: "Undetected",
-                        description: "BTG для ARC Raiders даёт подсветку игроков через препятствия, отображение лута и базовые визуальные инструменты для контроля ситуации.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Steam",
-                            "ОС": "Windows 10 | 11",
-                            "Режим игры": "Без рамок",
-                            "Формат диска": "GPT",
-                            "Биос": "UEFI",
-                            "Информация": "Выключить Secure Boot, включить виртуализацию"
-                        },
-                        features: [
-                            "Visuals",
-                            "Loot",
-                            "Скелет",
-                            "Боксы",
-                            "Закрашенные боксы",
-                            "Линии",
-                            "Дистанция",
-                            "Голова",
-                            "Радар",
-                            "Полоска здоровья",
-                            "Цвет видимого игрока",
-                            "Дистанция отрисовки"
-                        ],
-                        media: [
-                            { type: "photo", title: "BTG menu", file: "assets/btg-1.webp" },
-                            { type: "photo", title: "BTG showcase 1", file: "assets/btg-2.webp" },
-                            { type: "photo", title: "BTG showcase 2", file: "assets/btg-3.webp" },
-                            { type: "photo", title: "BTG showcase 3", file: "assets/btg-4.webp" },
-                            { type: "photo", title: "BTG showcase 4", file: "assets/btg-5.webp" }
-                        ]
-                    },
-                    {
-                        name: "Dullwave",
-                        status: "Undetected",
-                        description: "Dullwave для ARC Raiders сочетает подсветку игроков, аимбот и подсветку лута для быстрого поиска ресурсов и уверенной игры.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Steam | Xbox",
-                            "ОС": "Windows 10 | 11 [21H2, 22H2, 23H2]",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Режим игры": "Оконный | Безрамочный"
-                        },
-                        features: [
-                            "Aimbot",
-                            "Включение",
-                            "Клавиша активации",
-                            "Кости",
-                            "Отображение FOV",
-                            "Фиксация цели",
-                            "Гуманизация",
-                            "Невидимые цели",
-                            "Линия прицеливания",
-                            "Игнорирование сбитых",
-                            "Поле зрения",
-                            "Плавность",
-                            "Дальность",
-                            "Visuals",
-                            "Loot",
-                            "Other"
-                        ],
-                        media: [
-                            { type: "photo", title: "Dullwave menu", file: "assets/dullwave-arc-1.webp" },
-                            { type: "photo", title: "Dullwave showcase 1", file: "assets/dullwave-arc-2.webp" },
-                            { type: "photo", title: "Dullwave showcase 2", file: "assets/dullwave-arc-3.webp" },
-                            { type: "photo", title: "Dullwave showcase 3", file: "assets/dullwave-arc-4.webp" },
-                            { type: "photo", title: "Dullwave showcase 4", file: "assets/dullwave-arc-5.webp" }
-                        ]
-                    },
-                    {
-                        name: "Fecurity",
-                        status: "Undetected",
-                        description: "Fecurity для ARC Raiders помогает видеть противников, точнее стрелять и контролировать ситуацию на карте.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Steam | Xbox",
-                            "ОС": "Windows 10 | 11",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Режим игры": "Оконный | Полноэкранный в окне",
-                            "Формат диска": "GPT",
-                            "Биос": "UEFI"
-                        },
-                        features: [
-                            "Aimbot",
-                            "Включить",
-                            "Аим на выстрел",
-                            "Только видимые",
-                            "Только враги",
-                            "Компенсация отдачи",
-                            "Показать FOV",
-                            "Уникальная система хитбоксов",
-                            "Регулируемая скорость (0 - 30°)",
-                            "FOV (0 - 15°)",
-                            "Visuals"
-                        ],
-                        media: [
-                            { type: "photo", title: "Fecurity showcase 1", file: "assets/fecurity-1.webp" },
-                            { type: "photo", title: "Fecurity showcase 2", file: "assets/fecurity-2.webp" }
-                        ]
-                    }
-                ]
+                        "logo": "assets/arena-breakout.svg"
             },
-
-            albion: {
-                title: "Albion Online",
-                description: "Раздел для Albion Online: системные требования, функционал, фото и видео.",
-                cheats: [
-                    {
-                        name: "Albion Blue Tools",
-                        status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
-                        features: ["Функционал 1", "Функционал 2", "Функционал 3", "Функционал 4"],
-                        media: []
-                    },
-                    {
-                        name: "Albion Pro HUD",
-                        status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
-                        features: ["Функционал 1", "Функционал 2", "Функционал 3"],
-                        media: []
-                    }
-                ]
+            {
+                        "key": "dayz",
+                        "title": "DayZ",
+                        "icon": "DZ",
+                        "description": "Подборка продуктов для DayZ: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "NC",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/nc-dayz",
+                                                "description": "NC для DayZ. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Authority",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/authority-day-z",
+                                                "description": "Authority для DayZ. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Medusa",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/medusa-day-z",
+                                                "description": "Medusa для DayZ. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-dayz",
+                                                "description": "Dullwave для DayZ. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-dayz",
+                                                "description": "Arcane для DayZ. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Medusa Lite",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/medusa-lite-day-z",
+                                                "description": "Medusa Lite для DayZ. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/dayz.svg"
             },
-
-            apex: {
-                title: "Apex Legends",
-                description: "Раздел для Apex Legends: системные требования, функционал, фото и видео.",
-                cheats: [
-                    {
-                        name: "Apex Storm Panel",
-                        status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
-                        features: ["Функционал 1", "Функционал 2", "Функционал 3", "Функционал 4"],
-                        media: []
-                    },
-                    {
-                        name: "Apex Lite",
-                        status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
-                        features: ["Функционал 1", "Функционал 2", "Функционал 3"],
-                        media: []
-                    }
-                ]
+            {
+                        "key": "pubg",
+                        "title": "PUBG",
+                        "icon": "PG",
+                        "description": "Подборка продуктов для PUBG: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-pubg",
+                                                "description": "Ancient для PUBG. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Vengeance",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/vengeance-pubg",
+                                                "description": "Vengeance для PUBG. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane Full",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-full-pubg",
+                                                "description": "Arcane Full для PUBG. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "BTG",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/btg-pubg",
+                                                "description": "BTG для PUBG. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane ESP",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-esp-pubg",
+                                                "description": "Arcane ESP для PUBG. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/pubg.svg"
             },
-
-            arena: {
-                title: "Arena Breakout",
-                description: "Раздел для Arena Breakout: системные требования, функционал, фото и видео.",
-                cheats: [
-                    {
-                        name: "Cyber Full",
-                        status: "Available",
-                        description: "Cyber Full — продукт для Arena Breakout с расширенным меню, визуальными настройками и showcase-блоком для демонстрации функционала.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "ОС": "Windows 10 | 11 (Except 25H2)",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Режим игры": "Безрамочный | Оконный",
-                            "Информация": "Не работает в Азиатских странах"
-                        },
-                        features: [
-                            "Player ESP: отображение игроков, дистанции, скелета, имени, оружия и статуса",
-                            "World ESP: отображение объектов, лута, контейнеров и других элементов на карте",
-                            "AIM: настройки активации, клавиши, области наведения, сглаживания и FOV",
-                            "Visual settings: настройка цветов, шрифта, теней и отображения интерфейса",
-                            "Config menu: быстрое включение/выключение модулей и настройка под себя"
+            {
+                        "key": "rust",
+                        "title": "Rust",
+                        "icon": "RS",
+                        "description": "Подборка продуктов для Rust: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-rust",
+                                                "description": "Ancient для Rust. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "SMG Chams Plus",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/smg-chams-plus-rust",
+                                                "description": "SMG Chams Plus для Rust. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Stealth Full",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/stealth-full-rust",
+                                                "description": "Stealth Full для Rust. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "MrPro",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/mrpro-rust",
+                                                "description": "MrPro для Rust. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Stealth Lite",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/stealth-lite-rust",
+                                                "description": "Stealth Lite для Rust. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Vengeance Full",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/vengeance-full-rust",
+                                                "description": "Vengeance Full для Rust. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
                         ],
-                        media: [
-                            { type: "photo", title: "Cyber Full functionality", file: "assets/cyber-full-1.png" }
-                        ]
-                    },
-                    {
-                        name: "Vata Rage Radar",
-                        status: "Available",
-                        description: "Vata Rage Radar — внешний радар для Arena Breakout.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Steam | Game Launcher",
-                            "ОС": "Windows 10 | 11",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Флешка": "Требуется",
-                            "Информация": "Софт работает на другом устройстве: 2 ПК, ноутбуке, телефоне, планшете"
-                        },
-                        features: [
-                            "Radar",
-                            "Отображение игроков",
-                            "Отображение напарников",
-                            "Метки высоты (выше/ниже вас)",
-                            "Отображение лута",
-                            "Отображение трупов"
+                        "logo": "assets/rust.svg"
+            },
+            {
+                        "key": "stalcraft-x",
+                        "title": "STALCRAFT X",
+                        "icon": "SX",
+                        "description": "Подборка продуктов для STALCRAFT X: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Phoenix",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/phoenix-stalcrut-x",
+                                                "description": "Phoenix для STALCRAFT X. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Exlab Full",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/exlab-full-stalcrut-x",
+                                                "description": "Exlab Full для STALCRAFT X. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Cucumber",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/cucumber-stalcrut-x",
+                                                "description": "Cucumber для STALCRAFT X. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Exlab Lite",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/exlab-lite-stalcrut-x",
+                                                "description": "Exlab Lite для STALCRAFT X. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
                         ],
-                        media: [
-                            { type: "photo", title: "Vata Rage Radar", file: "assets/vata-rage-radar-1.png" }
-                        ]
-                    },
-                    {
-                        name: "Dullwave",
-                        status: "Undetected",
-                        description: "С Dullwave вы сможете испытать настоящую волну безжалостной мощи, делая ваших врагов неспособными к действию.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "Клиент": "Game Launcher",
-                            "ОС": "Windows 10 | 11 (Except 24H2)",
-                            "Режим игры": "Любой"
-                        },
-                        features: [
-                            "Aimbot",
-                            "Кнопка аима",
-                            "Выбор кости",
-                            "Показать радиус аима",
-                            "Скорость наводки",
-                            "Аимлок",
-                            "Гуманизированный аим",
-                            "Невидимый",
-                            "На игроков",
-                            "На ботов",
-                            "Линия до цели",
-                            "Visuals",
-                            "Loot",
-                            "Misc"
+                        "logo": "assets/stalcraft-x.svg"
+            },
+            {
+                        "key": "apex-legends",
+                        "title": "Apex Legends",
+                        "icon": "AP",
+                        "description": "Подборка продуктов для Apex Legends: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "BTG",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/btg-apex-legends",
+                                                "description": "BTG для Apex Legends. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-apex-legends",
+                                                "description": "Arcane для Apex Legends. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-apex-legends",
+                                                "description": "Dullwave для Apex Legends. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Mason Full",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/mason-full-apex-legends",
+                                                "description": "Mason Full для Apex Legends. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Stealth",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/stealth-apex-legends",
+                                                "description": "Stealth для Apex Legends. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Phoenix Xray",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/phoenix-xray-apex-legends",
+                                                "description": "Phoenix Xray для Apex Legends. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
                         ],
-                        media: [
-                            { type: "photo", title: "Dullwave menu", file: "assets/dullwave-1.png" },
-                            { type: "photo", title: "Dullwave ESP", file: "assets/dullwave-2.jpeg" },
-                            { type: "photo", title: "Dullwave showcase", file: "assets/dullwave-3.jpeg" }
-                        ]
-                    },
-                    {
-                        name: "Cyber Radar",
-                        status: "Undetected",
-                        description: "Cyber Radar — радар для Arena Breakout с отображением игроков, ботов, лута и настройками карты.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "ОС": "Windows 10 | 11 (Except 25H2)",
-                            "Видеокарта": "Nvidia | AMD",
-                            "Режим игры": "Безрамочный | Оконный",
-                            "Информация": "Для безопасности лучше использовать второе устройство / Не работает в Азиатских странах"
-                        },
-                        features: [
-                            "Radar",
-                            "Отображение игроков",
-                            "Отображение ботов",
-                            "Отображение лута",
-                            "Фильтры на лут (Фиолетовый/Золотой/Красный)",
-                            "Отображение по высоте",
-                            "Настройка цвета иконок на карте",
-                            "Выбор текущей карты",
-                            "Центрировать локального игрока на радаре",
-                            "Поворот карты по направлению"
+                        "logo": "assets/apex-legends.svg"
+            },
+            {
+                        "key": "war-thunder",
+                        "title": "War Thunder",
+                        "icon": "WT",
+                        "description": "Подборка продуктов для War Thunder: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "SMG",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/smg-war-tundra",
+                                                "description": "SMG для War Thunder. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Mason EAC",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/mason-eac-war-tundra",
+                                                "description": "Mason EAC для War Thunder. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Mira Pro",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/mira-pro-war-tundra",
+                                                "description": "Mira Pro для War Thunder. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Mira ESP",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/mira-esp-war-tundra",
+                                                "description": "Mira ESP для War Thunder. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Mason Arcade",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/mason-arcade-war-tundra",
+                                                "description": "Mason Arcade для War Thunder. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
                         ],
-                        media: [
-                            { type: "photo", title: "Cyber Radar settings", file: "assets/cyber-radar-1.webp" },
-                            { type: "photo", title: "Cyber Radar loot filters", file: "assets/cyber-radar-2.webp" },
-                            { type: "photo", title: "Cyber Radar map", file: "assets/cyber-radar-3.webp" }
-                        ]
-                    },
-                    {
-                        name: "Chams",
-                        status: "Undetected",
-                        description: "Chams — визуальный чит для Arena Breakout с подсветкой игроков, ботов и лута.",
-                        requirements: {
-                            "Процессор": "Intel | AMD",
-                            "ОС": "Windows 10 | 11"
-                        },
-                        features: [
-                            "Visuals",
-                            "CHAMS на игроков/ботов",
-                            "CHAMS на лут"
+                        "logo": "assets/war-thunder.svg"
+            },
+            {
+                        "key": "squad",
+                        "title": "Squad",
+                        "icon": "SQ",
+                        "description": "Подборка продуктов для Squad: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "SMG",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/smg-squad",
+                                                "description": "SMG для Squad. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-squad",
+                                                "description": "Dullwave для Squad. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Byster",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/byster-squad",
+                                                "description": "Byster для Squad. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-squad",
+                                                "description": "Arcane для Squad. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Pro",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/pro-squad",
+                                                "description": "Pro для Squad. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
                         ],
-                        media: [
-                            { type: "photo", title: "Chams showcase 1", file: "assets/chams-1.webp" },
-                            { type: "photo", title: "Chams showcase 2", file: "assets/chams-2.webp" },
-                            { type: "photo", title: "Chams showcase 3", file: "assets/chams-3.webp" },
-                            { type: "photo", title: "Chams showcase 4", file: "assets/chams-4.webp" },
-                            { type: "photo", title: "Chams showcase 5", file: "assets/chams-5.webp" }
-                        ]
-                    }
-                ]
+                        "logo": "assets/squad.svg"
+            },
+            {
+                        "key": "counter-strike-2",
+                        "title": "Counter-Strike 2",
+                        "icon": "CS",
+                        "description": "Подборка продуктов для Counter-Strike 2: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "XONE External",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/xone-external-counter-strike-2",
+                                                "description": "XONE External для Counter-Strike 2. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Fecurity",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/fecurity-counter-strike-2",
+                                                "description": "Fecurity для Counter-Strike 2. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-counter-strike-2",
+                                                "description": "Arcane для Counter-Strike 2. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "XONE Internal",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/xone-internal-counter-strike-2",
+                                                "description": "XONE Internal для Counter-Strike 2. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/counter-strike-2.svg"
+            },
+            {
+                        "key": "rainbow-six-siege",
+                        "title": "Rainbow Six Siege",
+                        "icon": "R6",
+                        "description": "Подборка продуктов для Rainbow Six Siege: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-rainbow-six-siege",
+                                                "description": "Ancient для Rainbow Six Siege. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "UDP",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/udp-rainbow-six-siege",
+                                                "description": "UDP для Rainbow Six Siege. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Crusader",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/crusader-rainbow-six-siege",
+                                                "description": "Crusader для Rainbow Six Siege. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/rainbow-six-siege.svg"
+            },
+            {
+                        "key": "fortnite",
+                        "title": "Fortnite",
+                        "icon": "FN",
+                        "description": "Подборка продуктов для Fortnite: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Fecurity",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/fecurity-fortnite",
+                                                "description": "Fecurity для Fortnite. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-fortnite",
+                                                "description": "Dullwave для Fortnite. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/fortnite.svg"
+            },
+            {
+                        "key": "delta-force",
+                        "title": "Delta Force",
+                        "icon": "DF",
+                        "description": "Подборка продуктов для Delta Force: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-delta-force",
+                                                "description": "Ancient для Delta Force. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Chams",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/chams-delta-force",
+                                                "description": "Chams для Delta Force. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-delta-force",
+                                                "description": "Dullwave для Delta Force. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Crooked",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/crooked-delta-force",
+                                                "description": "Crooked для Delta Force. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-delta-force",
+                                                "description": "Arcane для Delta Force. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/delta-force.svg"
+            },
+            {
+                        "key": "valorant",
+                        "title": "Valorant",
+                        "icon": "VL",
+                        "description": "Подборка продуктов для Valorant: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "BTG",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/btg-valorant",
+                                                "description": "BTG для Valorant. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Evicted Triggerbot",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/evicted-triggerbot-valorant",
+                                                "description": "Evicted Triggerbot для Valorant. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/valorant.svg"
+            },
+            {
+                        "key": "albion-online",
+                        "title": "Albion Online",
+                        "icon": "AO",
+                        "description": "Подборка продуктов для Albion Online: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Byster Radar",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/byster-radar-albion-online",
+                                                "description": "Byster Radar для Albion Online. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-albion-online",
+                                                "description": "Ancient для Albion Online. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/albion-online.svg"
+            },
+            {
+                        "key": "battlefield-6",
+                        "title": "Battlefield 6",
+                        "icon": "B6",
+                        "description": "Подборка продуктов для Battlefield 6: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-battlefield-6",
+                                                "description": "Ancient для Battlefield 6. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Fecurity",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/fecurity-battlefield-6",
+                                                "description": "Fecurity для Battlefield 6. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-battlefield-6",
+                                                "description": "Arcane для Battlefield 6. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/battlefield-6.svg"
+            },
+            {
+                        "key": "marvel-rivals",
+                        "title": "Marvel Rivals",
+                        "icon": "MR",
+                        "description": "Подборка продуктов для Marvel Rivals: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-marvel-rivals",
+                                                "description": "Ancient для Marvel Rivals. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-marvel-rivals",
+                                                "description": "Dullwave для Marvel Rivals. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-marvel-rivals",
+                                                "description": "Arcane для Marvel Rivals. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/marvel-rivals.svg"
+            },
+            {
+                        "key": "deadlock",
+                        "title": "Deadlock",
+                        "icon": "DL",
+                        "description": "Подборка продуктов для Deadlock: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Byster",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/byster-deadlock",
+                                                "description": "Byster для Deadlock. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Mason",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/mason-deadlock",
+                                                "description": "Mason для Deadlock. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/deadlock.svg"
+            },
+            {
+                        "key": "fragpunk",
+                        "title": "FragPunk",
+                        "icon": "FP",
+                        "description": "Подборка продуктов для FragPunk: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Dullwave Frag Punk",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-frag-punk",
+                                                "description": "Dullwave Frag Punk для FragPunk. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/fragpunk.svg"
+            },
+            {
+                        "key": "the-finals",
+                        "title": "The Finals",
+                        "icon": "TF",
+                        "description": "Подборка продуктов для The Finals: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Fecurity",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/fecurity-the-finals",
+                                                "description": "Fecurity для The Finals. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-the-finals",
+                                                "description": "Dullwave для The Finals. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/the-finals.svg"
+            },
+            {
+                        "key": "hunt-showdown",
+                        "title": "Hunt: Showdown",
+                        "icon": "HS",
+                        "description": "Подборка продуктов для Hunt: Showdown: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-huntshowdown",
+                                                "description": "Arcane для Hunt: Showdown. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Ancient",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/ancient-huntshowdown",
+                                                "description": "Ancient для Hunt: Showdown. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/hunt-showdown.svg"
+            },
+            {
+                        "key": "battlefield-2042",
+                        "title": "Battlefield 2042",
+                        "icon": "42",
+                        "description": "Подборка продуктов для Battlefield 2042: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Fecurity",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/fecurity-battlefield-2042",
+                                                "description": "Fecurity для Battlefield 2042. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Crooked",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/crooked-battlefield-2042",
+                                                "description": "Crooked для Battlefield 2042. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/battlefield-2042.svg"
+            },
+            {
+                        "key": "dead-by-daylight",
+                        "title": "Dead by Daylight",
+                        "icon": "DB",
+                        "description": "Подборка продуктов для Dead by Daylight: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-dead-by-daylight",
+                                                "description": "Arcane для Dead by Daylight. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Byster",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/byster-dbd",
+                                                "description": "Byster для Dead by Daylight. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Collapse",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/collapse-dead-by-daylight",
+                                                "description": "Collapse для Dead by Daylight. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/dead-by-daylight.svg"
+            },
+            {
+                        "key": "scum",
+                        "title": "SCUM",
+                        "icon": "SC",
+                        "description": "Подборка продуктов для SCUM: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Byster",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/byster-scum",
+                                                "description": "Byster для SCUM. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-scum",
+                                                "description": "Arcane для SCUM. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Crooked",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/crooked-scum",
+                                                "description": "Crooked для SCUM. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/scum.svg"
+            },
+            {
+                        "key": "hell-let-loose",
+                        "title": "Hell Let Loose",
+                        "icon": "HL",
+                        "description": "Подборка продуктов для Hell Let Loose: требования, функции, медиа и ссылки на источник.",
+                        "cheats": [
+                                    {
+                                                "name": "Arcane",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/arcane-hell-let-loose",
+                                                "description": "Arcane для Hell Let Loose. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    },
+                                    {
+                                                "name": "Dullwave",
+                                                "status": "Available",
+                                                "url": "https://domination-cheats.com/cheat/dullwave-hell-let-loose",
+                                                "description": "Dullwave для Hell Let Loose. Карточка добавлена в витрину, ссылка ведёт на страницу источника.",
+                                                "requirements": {
+                                                            "Процессор": "Intel | AMD",
+                                                            "ОС": "Windows 10 | 11",
+                                                            "Клиент": "Уточняется на странице источника",
+                                                            "Режим игры": "Уточняется на странице источника"
+                                                },
+                                                "features": [
+                                                            "ESP / Visuals",
+                                                            "Aimbot / Aim settings",
+                                                            "Loot / World items",
+                                                            "Config menu"
+                                                ],
+                                                "media": []
+                                    }
+                        ],
+                        "logo": "assets/hell-let-loose.svg"
             }
-        };
+];
 
-        const gamesMenu = document.getElementById("gamesMenu");
-        const gameTitle = document.getElementById("gameTitle");
-        const gameDescription = document.getElementById("gameDescription");
-        const cheatsCount = document.getElementById("cheatsCount");
-        const infoPanel = document.getElementById("infoPanel");
-        const featuresPanel = document.getElementById("featuresPanel");
-        const mediaPanel = document.getElementById("mediaPanel");
-        const lightbox = document.getElementById("lightbox");
-        const lightboxImg = document.getElementById("lightboxImg");
+let currentGame = 0;
+let currentCheat = 0;
 
-        let currentGame = "arena";
-        let currentCheat = 0;
+const gamesGrid = document.getElementById('gamesGrid');
+const cheatsList = document.getElementById('cheatsList');
+const detail = document.getElementById('detail');
+const search = document.getElementById('search');
 
-        function scrollToShowcase() {
-            document.getElementById("showcase").scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-        }
+document.getElementById('gamesCount').textContent = catalog.length;
+document.getElementById('productsCount').textContent = catalog.reduce((s,g)=>s+g.cheats.length,0);
 
-        function openLightbox(src) {
-            lightboxImg.src = src;
-            lightbox.classList.add("active");
-        }
+function renderGames(){
+  gamesGrid.innerHTML = catalog.map((g,i)=>`
+    <div class="game-tile ${i===currentGame?'active':''}" onclick="currentGame=${i};currentCheat=0;search.value='';renderAll();">
+      <img src="${g.logo}" alt="${g.title}">
+      <h3>${g.title}</h3>
+      <small>${g.cheats.length} products</small>
+    </div>
+  `).join('');
+}
 
-        function closeLightbox() {
-            lightbox.classList.remove("active");
-            lightboxImg.src = "";
-        }
+function renderCheats(){
+  const q = search.value.trim().toLowerCase();
+  const game = catalog[currentGame];
+  cheatsList.innerHTML = game.cheats.map((c,i)=>({c,i})).filter(x=>!q || x.c.name.toLowerCase().includes(q)).map(x=>`
+    <button class="cheat-btn ${x.i===currentCheat?'active':''}" onclick="currentCheat=${x.i};renderDetail();renderCheats();">
+      <b>${x.c.name}</b><small>${x.c.status}</small>
+    </button>
+  `).join('') || '<p style="color:#777;padding:14px">Ничего не найдено</p>';
+}
 
-        function renderMenu() {
-            gamesMenu.innerHTML = "";
+function renderDetail(){
+  const game = catalog[currentGame];
+  const cheat = game.cheats[currentCheat] || game.cheats[0];
+  const req = Object.entries(cheat.requirements || {}).map(([k,v])=>`
+    <div class="req"><b>${k}</b><span>${v}</span></div>
+  `).join('');
+  const features = (cheat.features || []).map(f=>`<div class="feature">${f}</div>`).join('');
+  const media = cheat.media && cheat.media.length ? cheat.media.map(m=>`
+    <div class="media-card">${m.type==='video'?`<video controls src="${m.file}"></video>`:`<img src="${m.file}" alt="${m.title}">`}</div>
+  `).join('') : `<div class="media-card"><div><b>Медиа пока не добавлено</b><br><small>Фото можно добавить в assets позже</small></div></div>`;
+  detail.innerHTML = `
+    <div class="detail-top">
+      <div>
+        <div class="kicker">${game.title}</div>
+        <h3>${cheat.name}</h3>
+        <p class="lead" style="font-size:1rem;margin-top:14px">${cheat.description}</p>
+      </div>
+      <div class="badge">${cheat.status}</div>
+    </div>
+    <div class="detail-body">
+      <div class="box"><h4>Системные требования</h4><div class="req-grid">${req}</div></div>
+      <div class="box"><h4>Функционал</h4><div class="features">${features}</div></div>
+      <div class="box" style="grid-column:1/-1"><h4>Источник</h4><a class="btn" href="${cheat.url}" target="_blank" rel="noopener noreferrer">Открыть страницу чита</a></div>
+      <div class="media-grid">${media}</div>
+    </div>
+  `;
+}
 
-            Object.entries(catalog).forEach(([gameKey, game]) => {
-                const card = document.createElement("div");
-                card.className = "game-card";
-                if (gameKey === currentGame) card.classList.add("active");
-
-                const head = document.createElement("button");
-                head.className = "game-head";
-                head.innerHTML = `<span>${game.title}</span><div class="arrow">›</div>`;
-
-                head.onclick = () => {
-                    currentGame = gameKey;
-                    currentCheat = 0;
-                    renderAll();
-                };
-
-                const list = document.createElement("div");
-                list.className = "cheat-list";
-
-                game.cheats.forEach((cheat, index) => {
-                    const btn = document.createElement("button");
-                    btn.className = "cheat-btn";
-
-                    if (gameKey === currentGame && index === currentCheat) {
-                        btn.classList.add("selected");
-                    }
-
-                    btn.innerHTML = `<b>${cheat.name}</b><br><small>${cheat.status}</small>`;
-
-                    btn.onclick = (e) => {
-                        e.stopPropagation();
-                        currentGame = gameKey;
-                        currentCheat = index;
-                        renderAll();
-                    };
-
-                    list.appendChild(btn);
-                });
-
-                card.appendChild(head);
-                card.appendChild(list);
-                gamesMenu.appendChild(card);
-            });
-        }
-
-        function renderInfo() {
-            const game = catalog[currentGame];
-            const cheat = game.cheats[currentCheat];
-
-            gameTitle.textContent = game.title;
-            gameDescription.textContent = game.description;
-            cheatsCount.textContent = game.cheats.length;
-
-            const reqHTML = Object.entries(cheat.requirements).map(([key, value]) => `
-                <div class="req">
-                    <b>${key}</b>
-                    <span>${value}</span>
-                </div>
-            `).join("");
-
-            infoPanel.innerHTML = `
-                <div class="cheat-title-row">
-                    <h3>${cheat.name}</h3>
-                    <div class="status">${cheat.status}</div>
-                </div>
-
-                <p class="description">${cheat.description}</p>
-
-                <div class="requirements">
-                    ${reqHTML}
-                </div>
-            `;
-
-            featuresPanel.innerHTML = cheat.features.map(feature => `
-                <div class="feature">${feature}</div>
-            `).join("");
-
-            if (!cheat.media || cheat.media.length === 0) {
-                mediaPanel.innerHTML = `
-                    <div class="media-card">
-                        <div class="media-placeholder">
-                            <strong>Медиа пока не добавлено</strong>
-                            Когда добавишь фото или видео, они появятся здесь.
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            mediaPanel.innerHTML = cheat.media.map(item => {
-                if (item.type === "photo") {
-                    return `
-                        <div class="media-card" onclick="openLightbox('${item.file}')">
-                            <img src="${item.file}" alt="${item.title}" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-                            <div class="media-placeholder">
-                                <strong>Фото</strong>
-                                ${item.title}<br>
-                                <small>${item.file}</small>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                return `
-                    <div class="media-card">
-                        <video controls onloadeddata="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-                            <source src="${item.file}" type="video/mp4">
-                        </video>
-                        <div class="media-placeholder">
-                            <strong>Видео</strong>
-                            ${item.title}<br>
-                            <small>${item.file}</small>
-                        </div>
-                    </div>
-                `;
-            }).join("");
-        }
-
-        function renderAll() {
-            renderMenu();
-            renderInfo();
-        }
-
-        renderAll();
-    </script>
+function renderAll(){ renderGames(); renderCheats(); renderDetail(); }
+renderAll();
+</script>
 </body>
 </html>
