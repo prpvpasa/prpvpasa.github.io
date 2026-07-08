@@ -119,6 +119,161 @@ body:before {
 @media(max-width:940px) { .workspace,.detail-body { grid-template-columns:1fr; } .cheats { position:relative; top:0; max-height:none; } .section-head { flex-direction:column; align-items:flex-start; } }
 @media(max-width:560px) { .nav { flex-direction:column; align-items:flex-start; } .req-grid { grid-template-columns:1fr; } .mini-stats { width:100%; } }
 
+
+/* ===== Left expandable game sidebar ===== */
+.sidebar-workspace {
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:360px minmax(0,1fr);
+    gap:18px;
+    align-items:start;
+}
+.game-sidebar {
+    position:sticky;
+    top:88px;
+    max-height:calc(100vh - 108px);
+    overflow:auto;
+    display:block;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:30px;
+    padding:12px;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255,255,255,.11), transparent 28%),
+      linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025)),
+      rgba(8,8,8,.92);
+    box-shadow:0 28px 80px rgba(0,0,0,.42);
+    backdrop-filter:blur(18px);
+}
+.sidebar-caption {
+    padding:8px 10px 14px;
+    color:#a8a8a8;
+    font-size:.78rem;
+    font-weight:900;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+.game-group {
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:23px;
+    background:rgba(255,255,255,.035);
+    margin-bottom:10px;
+    overflow:hidden;
+    transition:.2s ease;
+}
+.game-group:hover {
+    border-color:rgba(255,255,255,.20);
+    background:rgba(255,255,255,.055);
+    transform:translateY(-1px);
+}
+.game-group.active {
+    border-color:rgba(255,255,255,.34);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.08), 0 16px 45px rgba(0,0,0,.28);
+}
+.game-head {
+    width:100%;
+    display:grid;
+    grid-template-columns:48px minmax(0,1fr) auto;
+    gap:12px;
+    align-items:center;
+    padding:12px;
+    border:0;
+    background:transparent;
+    color:#fff;
+    text-align:left;
+    cursor:pointer;
+}
+.game-head img,
+.game-fallback {
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    object-fit:cover;
+    background:#fff;
+    color:#000;
+    display:grid;
+    place-items:center;
+    font-family:Russo One,Inter,sans-serif;
+    font-weight:900;
+    box-shadow:0 0 24px rgba(255,255,255,.10);
+}
+.game-meta { min-width:0; }
+.game-meta b {
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:.98rem;
+}
+.game-meta small {
+    display:block;
+    margin-top:4px;
+    color:#9c9c9c;
+    font-weight:800;
+}
+.game-arrow {
+    width:34px;
+    height:34px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.11);
+    display:grid;
+    place-items:center;
+    color:#cfcfcf;
+    background:rgba(255,255,255,.04);
+    transition:.2s;
+}
+.game-group.open .game-arrow { transform:rotate(90deg); background:#fff; color:#000; }
+.game-cheat-list {
+    display:none;
+    padding:0 10px 12px 70px;
+}
+.game-group.open .game-cheat-list { display:grid; gap:7px; }
+.side-cheat {
+    width:100%;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:15px;
+    background:rgba(255,255,255,.035);
+    color:#fff;
+    padding:11px 12px;
+    cursor:pointer;
+    text-align:left;
+    transition:.18s;
+}
+.side-cheat:hover,
+.side-cheat.active {
+    background:#fff;
+    color:#000;
+    transform:translateX(3px);
+}
+.side-cheat b {
+    display:block;
+    font-size:.92rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.side-cheat small {
+    display:inline-block;
+    margin-top:6px;
+    color:#8a8a8a;
+    font-weight:900;
+    font-size:.74rem;
+}
+.side-empty {
+    padding:16px;
+    color:#888;
+    line-height:1.5;
+}
+@media(max-width:940px) {
+    .sidebar-workspace { grid-template-columns:1fr; }
+    .game-sidebar { position:relative; top:0; max-height:none; }
+    .game-cheat-list { padding-left:12px; }
+}
+@media(max-width:560px) {
+    .game-head { grid-template-columns:42px minmax(0,1fr) auto; }
+    .game-head img,
+    .game-fallback { width:42px; height:42px; border-radius:14px; }
+}
+
 /* ===== Admin panel ===== */
 .admin-open-btn {
     border:1px solid var(--line);
@@ -351,12 +506,11 @@ body:before {
     <h2 class="section-title">Игры</h2>
     <input class="search" id="search" placeholder="Поиск игры или чита..." oninput="renderAll()">
   </div>
-  <div class="games" id="games"></div>
-
-  <div class="workspace">
-    <aside class="cheats" id="cheats"></aside>
+  <div class="workspace sidebar-workspace">
+    <aside class="games game-sidebar" id="games"></aside>
     <main class="detail" id="detail"></main>
   </div>
+  <aside class="cheats" id="cheats" hidden></aside>
 </section>
 
 <footer class="footer">PIPIDAHTERKA · информационный сайт · GitHub Pages</footer>
@@ -4020,36 +4174,78 @@ function filteredGames() {
   );
 }
 
-function renderGames() {
-  const list = filteredGames();
-  if (!list.some(x => x.i === currentGame) && list.length) {
-    currentGame = list[0].i;
-    currentCheat = 0;
-  }
-  gamesEl.innerHTML = list.map(x => `
-    <div class="game ${x.i===currentGame?'active':''}" onclick="currentGame=${x.i};currentCheat=0;renderAll();">
-      <img src="${x.g.logo}" alt="${x.g.title}">
-      <h3>${x.g.title}</h3>
-      <small>${x.g.cheats.length} читов</small>
-    </div>
-  `).join('');
+let expandedGames = new Set([currentGame]);
+
+function sidebarLogo(game) {
+  const fallback = game.icon || (game.title || '?').slice(0,2);
+  if (game.logo) return `<img src="${game.logo}" alt="${game.title}" onerror="this.outerHTML='<div class=&quot;game-fallback&quot;>${fallback}</div>'">`;
+  return `<div class="game-fallback">${fallback}</div>`;
 }
 
 function visibleCheats(game) {
   const q = norm(searchEl.value.trim());
-  if (!q || norm(game.title).includes(q)) return game.cheats.map((c,i)=>({c,i}));
-  return game.cheats.map((c,i)=>({c,i})).filter(x => norm(x.c.name).includes(q));
+  if (!q || norm(game.title).includes(q)) return (game.cheats || []).map((c,i)=>({c,i}));
+  return (game.cheats || []).map((c,i)=>({c,i})).filter(x => norm(x.c.name).includes(q));
+}
+
+function toggleGame(index) {
+  currentGame = index;
+  currentCheat = 0;
+  if (expandedGames.has(index)) {
+    expandedGames.delete(index);
+  } else {
+    expandedGames.add(index);
+  }
+  renderAll();
+}
+
+function selectSidebarCheat(gameIndex, cheatIndex) {
+  currentGame = gameIndex;
+  currentCheat = cheatIndex;
+  expandedGames.add(gameIndex);
+  renderAll();
+}
+
+function renderGames() {
+  const list = filteredGames();
+  const q = norm(searchEl.value.trim());
+  if (!list.some(x => x.i === currentGame) && list.length) {
+    currentGame = list[0].i;
+    currentCheat = 0;
+    expandedGames.add(currentGame);
+  }
+  if (q) list.forEach(x => expandedGames.add(x.i));
+
+  gamesEl.innerHTML = `
+    <div class="sidebar-caption">Каталог игр</div>
+    ${list.map(x => {
+      const cheats = visibleCheats(x.g);
+      const isOpen = expandedGames.has(x.i);
+      const isActiveGame = x.i === currentGame;
+      return `
+        <div class="game-group ${isOpen ? 'open' : ''} ${isActiveGame ? 'active' : ''}">
+          <button class="game-head" onclick="toggleGame(${x.i})" type="button">
+            ${sidebarLogo(x.g)}
+            <span class="game-meta"><b>${x.g.title}</b><small>${(x.g.cheats || []).length} читов</small></span>
+            <span class="game-arrow">›</span>
+          </button>
+          <div class="game-cheat-list">
+            ${cheats.map(item => `
+              <button class="side-cheat ${isActiveGame && item.i === currentCheat ? 'active' : ''}" onclick="selectSidebarCheat(${x.i}, ${item.i})" type="button">
+                <b>${item.c.name}</b><small>${item.c.status || 'Available'}</small>
+              </button>
+            `).join('') || '<div class="side-empty">Читы не найдены</div>'}
+          </div>
+        </div>`;
+    }).join('') || '<div class="side-empty">Ничего не найдено</div>'}
+  `;
 }
 
 function renderCheats() {
   const game = catalog[currentGame];
+  if (!game) return;
   const list = visibleCheats(game);
   if (!list.some(x => x.i === currentCheat) && list.length) currentCheat = list[0].i;
-  cheatsEl.innerHTML = list.map(x => `
-    <button class="cheat-btn ${x.i===currentCheat?'active':''}" onclick="currentCheat=${x.i};renderCheats();renderDetail();">
-      <b>${x.c.name}</b><small>${x.c.status || 'Available'}</small>
-    </button>
-  `).join('') || '<p style="color:#777;padding:14px">Ничего не найдено</p>';
 }
 
 function renderDetail() {
