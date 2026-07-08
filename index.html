@@ -1,6 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipidahterka</title>
+    <style>
+        /* Полное обнуление отступов и черный фон */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0b0b;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Стиль для светящегося текста */
+        .glowing-text {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            /* Эффект неонового свечения (голубой/фиолетовый) */
+            text-shadow: 
+                0 0 7px #fff,
+                0 0 10px #fff,
+                0 0 21px #fff,
+                0 0 42px #00f3ff,
+                0 0 82px #00f3ff,
+                0 0 92px #00f3ff,
+                0 0 102px #00f3ff,
+                0 0 151px #00f3ff;
+            animation: pulse 2s infinite alternate;
+        }
+
+        /* Анимация легкого пульсирования свечения */
+        @keyframes pulse {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #00f3ff, 0 0 40px #00f3ff, 0 0 80px #00f3ff;
+            }
+            to {
+                text-shadow: 0 0 5px #fff, 0 0 10px #00f3ff, 0 0 20px #00f3ff, 0 0 60px #00f3ff;
+                transform: scale(1.02);
+            }
+        }
+    </style>
+</head>
 <body>
-    <h1>Мой первый сайт на GitHub Pages!</h1>
+
+    <div class="glowing-text">Pipidahterka</div>
+
 </body>
 </html>
