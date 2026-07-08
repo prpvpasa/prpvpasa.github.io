@@ -393,28 +393,31 @@
 
         .requirements {
             display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
         }
 
         .req {
-            display: grid;
-            grid-template-columns: 135px 1fr;
-            gap: 12px;
-            min-height: 48px;
-            padding: 13px 14px;
-            border-radius: 14px;
-            background: rgba(2, 10, 24, 0.55);
+            min-height: 88px;
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(2, 10, 24, 0.58);
             border: 1px solid rgba(116, 231, 255, 0.13);
         }
 
         .req b {
-            color: var(--blue-light);
+            display: block;
+            color: #8191bd;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
         }
 
         .req span {
-            color: #dceeff;
-            min-height: 20px;
-            border-bottom: 1px dashed rgba(116, 231, 255, 0.25);
+            display: block;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 1.08rem;
+            line-height: 1.25;
         }
 
         .features {
@@ -444,12 +447,12 @@
 
         .media-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
         }
 
         .media-card {
-            min-height: 165px;
+            min-height: 255px;
             border-radius: 20px;
             border: 1px solid rgba(0, 200, 255, 0.22);
             background:
@@ -463,6 +466,7 @@
             padding: 18px;
             overflow: hidden;
             position: relative;
+            cursor: pointer;
         }
 
         .media-card img,
@@ -477,6 +481,7 @@
         .media-placeholder {
             position: relative;
             z-index: 2;
+            pointer-events: none;
         }
 
         .media-placeholder strong {
@@ -484,6 +489,44 @@
             color: var(--blue-light);
             font-size: 1.1rem;
             margin-bottom: 6px;
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.86);
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 96vw;
+            max-height: 90vh;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 200, 255, 0.45);
+            box-shadow: 0 0 45px rgba(0, 200, 255, 0.25);
+        }
+
+        .lightbox-close {
+            position: fixed;
+            right: 24px;
+            top: 20px;
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(0, 200, 255, 0.55);
+            border-radius: 50%;
+            background: rgba(4, 13, 32, 0.92);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
         }
 
         @media (max-width: 1050px) {
@@ -539,7 +582,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .req {
+            .requirements {
                 grid-template-columns: 1fr;
             }
 
@@ -579,7 +622,7 @@
             <section class="hero">
                 <div class="hero-text">
                     <div class="badge">● Blue Showcase Panel</div>
-                    <h2 id="gameTitle">ARC Raiders</h2>
+                    <h2 id="gameTitle">Arena Breakout</h2>
                     <p id="gameDescription">
                         Выберите игру слева, откройте нужный продукт и посмотрите системные требования, функционал, фото и видео.
                     </p>
@@ -601,7 +644,7 @@
                 <div class="panel">
                     <div class="panel-header">
                         <h3>Информация о продукте</h3>
-                        <p>Здесь будут системные требования выбранного продукта.</p>
+                        <p>Системные требования выбранного продукта.</p>
                     </div>
 
                     <div class="panel-body" id="infoPanel"></div>
@@ -622,7 +665,7 @@
             <section class="panel media-section" id="showcase">
                 <div class="panel-header">
                     <h3>Фото / видео функционала</h3>
-                    <p>Сюда можно поставить скриншоты, превью и видео демонстрации.</p>
+                    <p>Здесь отображаются только добавленные фото и видео — без пустых слотов.</p>
                 </div>
 
                 <div class="panel-body">
@@ -630,6 +673,11 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" type="button">×</button>
+        <img id="lightboxImg" src="" alt="Preview">
     </div>
 
     <script>
@@ -651,32 +699,16 @@
                         status: "Available",
                         description: "Описание продукта можно изменить здесь.",
                         requirements: { ...emptyRequirements },
-                        features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3",
-                            "Функционал 4"
-                        ],
-                        media: [
-                            { type: "photo", title: "Photo preview", file: "assets/arc-photo-1.jpg" },
-                            { type: "photo", title: "Menu preview", file: "assets/arc-photo-2.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/arc-video-1.mp4" }
-                        ]
+                        features: ["Функционал 1", "Функционал 2", "Функционал 3", "Функционал 4"],
+                        media: []
                     },
                     {
                         name: "ARC Lite Panel",
                         status: "Available",
                         description: "Описание продукта можно изменить здесь.",
                         requirements: { ...emptyRequirements },
-                        features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3"
-                        ],
-                        media: [
-                            { type: "photo", title: "Photo preview", file: "assets/arc-lite-1.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/arc-lite-video.mp4" }
-                        ]
+                        features: ["Функционал 1", "Функционал 2", "Функционал 3"],
+                        media: []
                     }
                 ]
             },
@@ -690,32 +722,16 @@
                         status: "Available",
                         description: "Описание продукта можно изменить здесь.",
                         requirements: { ...emptyRequirements },
-                        features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3",
-                            "Функционал 4"
-                        ],
-                        media: [
-                            { type: "photo", title: "Photo preview", file: "assets/albion-photo-1.jpg" },
-                            { type: "photo", title: "Settings preview", file: "assets/albion-photo-2.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/albion-video-1.mp4" }
-                        ]
+                        features: ["Функционал 1", "Функционал 2", "Функционал 3", "Функционал 4"],
+                        media: []
                     },
                     {
                         name: "Albion Pro HUD",
                         status: "Available",
                         description: "Описание продукта можно изменить здесь.",
                         requirements: { ...emptyRequirements },
-                        features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3"
-                        ],
-                        media: [
-                            { type: "photo", title: "HUD preview", file: "assets/albion-pro-1.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/albion-pro-video.mp4" }
-                        ]
+                        features: ["Функционал 1", "Функционал 2", "Функционал 3"],
+                        media: []
                     }
                 ]
             },
@@ -729,32 +745,16 @@
                         status: "Available",
                         description: "Описание продукта можно изменить здесь.",
                         requirements: { ...emptyRequirements },
-                        features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3",
-                            "Функционал 4"
-                        ],
-                        media: [
-                            { type: "photo", title: "Apex menu", file: "assets/apex-photo-1.jpg" },
-                            { type: "photo", title: "Settings preview", file: "assets/apex-photo-2.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/apex-video-1.mp4" }
-                        ]
+                        features: ["Функционал 1", "Функционал 2", "Функционал 3", "Функционал 4"],
+                        media: []
                     },
                     {
                         name: "Apex Lite",
                         status: "Available",
                         description: "Описание продукта можно изменить здесь.",
                         requirements: { ...emptyRequirements },
-                        features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3"
-                        ],
-                        media: [
-                            { type: "photo", title: "Lite menu", file: "assets/apex-lite-1.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/apex-lite-video.mp4" }
-                        ]
+                        features: ["Функционал 1", "Функционал 2", "Функционал 3"],
+                        media: []
                     }
                 ]
             },
@@ -764,35 +764,26 @@
                 description: "Раздел для Arena Breakout: системные требования, функционал, фото и видео.",
                 cheats: [
                     {
-                        name: "Arena Blue Assist",
+                        name: "Cyber Full",
                         status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
+                        description: "Cyber Full — продукт для Arena Breakout с расширенным меню, визуальными настройками и showcase-блоком для демонстрации функционала.",
+                        requirements: {
+                            "Процессор": "Intel | AMD",
+                            "ОС": "Windows 10 | 11 (Except 25H2)",
+                            "Видеокарта": "Nvidia | AMD",
+                            "Режим игры": "Безрамочный | Оконный",
+                            "Информация": "Не работает в Азиатских странах"
+                        },
                         features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3",
-                            "Функционал 4"
+                            "Player ESP: отображение игроков, дистанции, скелета, имени, оружия и статуса",
+                            "World ESP: отображение объектов, лута, контейнеров и других элементов на карте",
+                            "AIM: настройки активации, клавиши, области наведения, сглаживания и FOV",
+                            "Visual settings: настройка цветов, шрифта, теней и отображения интерфейса",
+                            "Config menu: быстрое включение/выключение модулей и настройка под себя"
                         ],
                         media: [
-                            { type: "photo", title: "Arena menu", file: "assets/arena-photo-1.jpg" },
-                            { type: "photo", title: "Arena preview", file: "assets/arena-photo-2.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/arena-video-1.mp4" }
-                        ]
-                    },
-                    {
-                        name: "Arena Compact",
-                        status: "Available",
-                        description: "Описание продукта можно изменить здесь.",
-                        requirements: { ...emptyRequirements },
-                        features: [
-                            "Функционал 1",
-                            "Функционал 2",
-                            "Функционал 3"
-                        ],
-                        media: [
-                            { type: "photo", title: "Compact menu", file: "assets/arena-compact-1.jpg" },
-                            { type: "video", title: "Video showcase", file: "assets/arena-compact-video.mp4" }
+                            { type: "photo", title: "Cyber Full functionality", file: "assets/cyber-full-1.png" },
+                            { type: "photo", title: "Cyber Full requirements", file: "assets/cyber-full-2.png" }
                         ]
                     }
                 ]
@@ -806,8 +797,10 @@
         const infoPanel = document.getElementById("infoPanel");
         const featuresPanel = document.getElementById("featuresPanel");
         const mediaPanel = document.getElementById("mediaPanel");
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightboxImg");
 
-        let currentGame = "arc";
+        let currentGame = "arena";
         let currentCheat = 0;
 
         function scrollToShowcase() {
@@ -815,6 +808,16 @@
                 behavior: "smooth",
                 block: "start"
             });
+        }
+
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add("active");
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove("active");
+            lightboxImg.src = "";
         }
 
         function renderMenu() {
@@ -896,11 +899,23 @@
                 <div class="feature">${feature}</div>
             `).join("");
 
+            if (!cheat.media || cheat.media.length === 0) {
+                mediaPanel.innerHTML = `
+                    <div class="media-card">
+                        <div class="media-placeholder">
+                            <strong>Медиа пока не добавлено</strong>
+                            Когда добавишь фото или видео, они появятся здесь.
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
             mediaPanel.innerHTML = cheat.media.map(item => {
                 if (item.type === "photo") {
                     return `
-                        <div class="media-card">
-                            <img src="${item.file}" alt="${item.title}" onerror="this.style.display='none'">
+                        <div class="media-card" onclick="openLightbox('${item.file}')">
+                            <img src="${item.file}" alt="${item.title}" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
                             <div class="media-placeholder">
                                 <strong>Фото</strong>
                                 ${item.title}<br>
@@ -912,7 +927,7 @@
 
                 return `
                     <div class="media-card">
-                        <video controls onerror="this.style.display='none'">
+                        <video controls onloadeddata="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
                             <source src="${item.file}" type="video/mp4">
                         </video>
                         <div class="media-placeholder">
