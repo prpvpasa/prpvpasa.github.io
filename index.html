@@ -971,6 +971,125 @@ body:before { display:none; }
 }
 .footer,.nav,.hero,.intro,.section-head { display:none !important; }
 .lightbox { background:rgba(0,0,0,.9); }
+
+.minimal-home-btn {
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border:1px solid rgba(123,195,255,.20);
+    border-radius:14px;
+    background:rgba(123,195,255,.07);
+    color:#e8f5ff;
+    padding:12px 13px;
+    font-weight:900;
+    cursor:pointer;
+    margin:12px 0 14px;
+    transition:.14s;
+}
+.minimal-home-btn:hover,
+.minimal-home-btn.active {
+    border-color:rgba(123,195,255,.45);
+    background:rgba(123,195,255,.14);
+    color:#fff;
+}
+.minimal-home-btn span:last-child { color:#7bc3ff; }
+.home-panel {
+    display:grid;
+    gap:14px;
+}
+.home-hero {
+    border:1px solid var(--line);
+    border-radius:22px;
+    background:
+      radial-gradient(circle at 0% 0%, rgba(123,195,255,.16), transparent 34%),
+      radial-gradient(circle at 100% 0%, rgba(87,239,189,.10), transparent 30%),
+      linear-gradient(180deg, rgba(14,29,51,.90), rgba(9,18,32,.90));
+    padding:26px;
+}
+.home-hero h2 {
+    font-family:Unbounded,Inter,sans-serif;
+    font-size:clamp(2rem,4.4vw,4.6rem);
+    line-height:.96;
+    letter-spacing:-.045em;
+    text-transform:uppercase;
+    max-width:900px;
+}
+.home-hero p {
+    max-width:850px;
+    margin-top:14px;
+    color:#bed0e8;
+    line-height:1.65;
+}
+.home-quick {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:10px;
+}
+.home-quick-card {
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:rgba(8,18,33,.84);
+    padding:16px;
+}
+.home-quick-card b {
+    display:block;
+    color:#eaf5ff;
+    margin-bottom:7px;
+}
+.home-quick-card span {
+    color:#8ea2bf;
+    line-height:1.45;
+    font-size:.9rem;
+}
+.tutorials-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+    gap:12px;
+}
+.tutorial-card {
+    border:1px solid var(--line);
+    border-radius:18px;
+    background:rgba(8,18,33,.84);
+    padding:18px;
+}
+.tutorial-card h3 {
+    font-family:Unbounded,Inter,sans-serif;
+    font-size:.95rem;
+    letter-spacing:.02em;
+    margin-bottom:11px;
+}
+.tutorial-card ol {
+    margin:0;
+    padding-left:18px;
+    color:#bed0e8;
+    line-height:1.58;
+}
+.tutorial-card li { margin:7px 0; }
+.tutorial-card code {
+    display:inline-block;
+    max-width:100%;
+    overflow-wrap:anywhere;
+    border:1px solid rgba(123,195,255,.20);
+    border-radius:9px;
+    background:#071020;
+    color:#d9e8ff;
+    padding:2px 7px;
+    font-family:Consolas,Menlo,monospace;
+    font-size:.86em;
+}
+.tutorial-note {
+    margin-top:12px;
+    color:#7bc3ff;
+    font-size:.86rem;
+    line-height:1.45;
+}
+@media(max-width:560px) {
+    .home-hero { padding:20px; }
+    .tutorials-grid { grid-template-columns:1fr; }
+}
+
 @media(max-width:980px) {
     .minimal-site { grid-template-columns:1fr; }
     .minimal-sidebar { position:relative; height:auto; max-height:none; border-right:0; border-bottom:1px solid var(--line); }
@@ -1005,6 +1124,10 @@ body:before { display:none; }
       <button class="minimal-lang active" type="button" data-lang="ru" onclick="setLang('ru')">RU</button>
       <button class="minimal-lang" type="button" data-lang="en" onclick="setLang('en')">EN</button>
     </div>
+
+    <button class="minimal-home-btn active" id="homeBtn" type="button" onclick="goHome()">
+      <span data-i18n="homeButton">Главная</span><span>⌂</span>
+    </button>
 
     <div class="minimal-menu-title" data-i18n="menuTitle">Игры и читы</div>
     <aside class="games game-sidebar" id="games"></aside>
@@ -5308,7 +5431,7 @@ try {
   console.warn('Catalog localStorage load error', e);
 }
 
-let currentGame = 0;
+let currentGame = -1;
 let currentCheat = 0;
 
 const intro = document.getElementById('intro');
@@ -5324,7 +5447,19 @@ const searchEl = document.getElementById('search');
 document.getElementById('gamesCount').textContent = catalog.length;
 document.getElementById('cheatsCount').textContent = catalog.reduce((s,g)=>s+g.cheats.length,0);
 
-function norm(s) { return (s || '').toLowerCase(); }
+function norm(s) {
+  return String(s || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ё/g, 'е')
+    .replace(/Ё/g, 'е')
+    .toLocaleLowerCase('ru-RU')
+    .trim();
+}
+
+function matchesText(value, query) {
+  return norm(value).includes(norm(query));
+}
 
 const LANG_STORAGE_KEY = 'pipidahterka_lang';
 let currentLang = localStorage.getItem(LANG_STORAGE_KEY) || 'ru';
@@ -5352,7 +5487,25 @@ const UI_TEXT = {
     mediaEmptyTitle: 'Фото пока не добавлены',
     mediaEmptyHint: 'Можно добавить позже в assets',
     descriptionFallback: 'Описание можно добавить в админ-панели.',
-    breadcrumbRoot: 'Информация о читах'
+    breadcrumbRoot: 'Информация о читах',
+    homeButton: 'Главная',
+    homeBreadcrumb: 'Главная',
+    homeKicker: 'PIPIDAHTERKA',
+    homeTitle: 'Информация о читах',
+    homeDesc: 'Выбери игру слева, раскрой список читов и открой нужную карточку. Здесь можно посмотреть функции, системные требования, фото и видео.',
+    quickLeftTitle: 'Выбор слева',
+    quickLeftText: 'Игры раскрываются, внутри находятся читы.',
+    quickReqTitle: 'Требования',
+    quickReqText: 'Проверяй Windows, BIOS, Secure Boot, Hyper-V и формат диска.',
+    quickLangTitle: 'RU / EN',
+    quickLangText: 'Переключатель языка находится в левом меню.',
+    tutorialsTitle: 'Туториалы по проверке ПК',
+    tutWindowsTitle: 'Как узнать версию Windows',
+    tutBiosTitle: 'Как узнать режим BIOS',
+    tutSecureBootTitle: 'Как проверить Secure Boot',
+    tutHyperVTitle: 'Как проверить Hyper-V',
+    tutDiskTitle: 'Как узнать MBR или GPT',
+    tutorialNote: 'Ничего не меняй, если не уверен. Эти пункты нужны только для проверки совместимости.'
   },
   en: {
     brandSub: 'Cheat information',
@@ -5375,8 +5528,95 @@ const UI_TEXT = {
     mediaEmptyTitle: 'No photos added yet',
     mediaEmptyHint: 'You can add them later in assets',
     descriptionFallback: 'Description can be added in the admin panel.',
-    breadcrumbRoot: 'Cheat information'
+    breadcrumbRoot: 'Cheat information',
+    homeButton: 'Home',
+    homeBreadcrumb: 'Home',
+    homeKicker: 'PIPIDAHTERKA',
+    homeTitle: 'Cheat information',
+    homeDesc: 'Choose a game on the left, expand the cheat list, and open the product card. You can view features, system requirements, photos and videos here.',
+    quickLeftTitle: 'Left selection',
+    quickLeftText: 'Games expand and show the cheats inside.',
+    quickReqTitle: 'Requirements',
+    quickReqText: 'Check Windows, BIOS, Secure Boot, Hyper-V and disk format.',
+    quickLangTitle: 'RU / EN',
+    quickLangText: 'The language switcher is in the left menu.',
+    tutorialsTitle: 'PC check tutorials',
+    tutWindowsTitle: 'How to check Windows version',
+    tutBiosTitle: 'How to check BIOS mode',
+    tutSecureBootTitle: 'How to check Secure Boot',
+    tutHyperVTitle: 'How to check Hyper-V',
+    tutDiskTitle: 'How to check MBR or GPT',
+    tutorialNote: 'Do not change anything if you are not sure. These steps are for compatibility checks only.'
   }
+};
+
+const TUTORIALS = {
+  ru: [
+    { key:'windows', titleKey:'tutWindowsTitle', steps:[
+      'Нажми Win + R.',
+      'Введи команду <code>winver</code> и нажми Enter.',
+      'В открывшемся окне посмотри версию Windows и номер сборки.',
+      'Альтернативно: Параметры → Система → О системе.'
+    ]},
+    { key:'bios', titleKey:'tutBiosTitle', steps:[
+      'Нажми Win + R.',
+      'Введи <code>msinfo32</code> и нажми Enter.',
+      'В строке «Режим BIOS» будет указано <code>UEFI</code> или <code>Устаревший / Legacy</code>.',
+      'Для большинства читов, где указано UEFI, нужен именно режим <code>UEFI</code>.'
+    ]},
+    { key:'secureboot', titleKey:'tutSecureBootTitle', steps:[
+      'Нажми Win + R.',
+      'Введи <code>msinfo32</code> и нажми Enter.',
+      'Найди строку «Состояние безопасной загрузки».',
+      '<code>Вкл.</code> означает Secure Boot включён, <code>Откл.</code> означает выключен.'
+    ]},
+    { key:'hyperv', titleKey:'tutHyperVTitle', steps:[
+      'Нажми Win + R.',
+      'Введи <code>optionalfeatures</code> и нажми Enter.',
+      'В списке найди <code>Hyper-V</code>. Галочка означает, что компонент включён.',
+      'Быстрая проверка через PowerShell от администратора: <code>Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All</code>.'
+    ]},
+    { key:'disk', titleKey:'tutDiskTitle', steps:[
+      'Нажми Win + X и открой «Управление дисками».',
+      'Нажми правой кнопкой по диску слева, например «Диск 0», и выбери «Свойства».',
+      'Открой вкладку «Тома».',
+      'В строке «Стиль раздела» будет указано <code>GPT</code> или <code>MBR</code>.',
+      'Команда PowerShell: <code>Get-Disk | Select Number,FriendlyName,PartitionStyle</code>.'
+    ]}
+  ],
+  en: [
+    { key:'windows', titleKey:'tutWindowsTitle', steps:[
+      'Press Win + R.',
+      'Type <code>winver</code> and press Enter.',
+      'Check the Windows version and build number in the window.',
+      'Alternative path: Settings → System → About.'
+    ]},
+    { key:'bios', titleKey:'tutBiosTitle', steps:[
+      'Press Win + R.',
+      'Type <code>msinfo32</code> and press Enter.',
+      'Find the “BIOS Mode” line. It will show <code>UEFI</code> or <code>Legacy</code>.',
+      'If a cheat requires UEFI, the value should be <code>UEFI</code>.'
+    ]},
+    { key:'secureboot', titleKey:'tutSecureBootTitle', steps:[
+      'Press Win + R.',
+      'Type <code>msinfo32</code> and press Enter.',
+      'Find the “Secure Boot State” line.',
+      '<code>On</code> means Secure Boot is enabled, <code>Off</code> means disabled.'
+    ]},
+    { key:'hyperv', titleKey:'tutHyperVTitle', steps:[
+      'Press Win + R.',
+      'Type <code>optionalfeatures</code> and press Enter.',
+      'Find <code>Hyper-V</code> in the list. A checked box means the component is enabled.',
+      'Fast admin PowerShell check: <code>Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All</code>.'
+    ]},
+    { key:'disk', titleKey:'tutDiskTitle', steps:[
+      'Press Win + X and open Disk Management.',
+      'Right-click the disk label on the left, for example “Disk 0”, and open Properties.',
+      'Open the Volumes tab.',
+      'The “Partition style” line will show <code>GPT</code> or <code>MBR</code>.',
+      'PowerShell command: <code>Get-Disk | Select Number,FriendlyName,PartitionStyle</code>.'
+    ]}
+  ]
 };
 
 const REQUIREMENT_KEY_EN = {
@@ -5459,15 +5699,66 @@ function productDescription(game, cheat) {
   return source;
 }
 
+function cheatSearchText(cheat) {
+  return [
+    cheat.name,
+    cheat.status,
+    cheat.description,
+    ...(cheat.features || []),
+    ...Object.keys(cheat.requirements || {}),
+    ...Object.values(cheat.requirements || {})
+  ].join(' ');
+}
+
+
+function goHome() {
+  currentGame = -1;
+  currentCheat = 0;
+  if (searchEl) searchEl.value = '';
+  expandedGames.clear();
+  renderAll();
+}
+
+function renderHome() {
+  const breadcrumb = document.getElementById('breadcrumb');
+  if (breadcrumb) breadcrumb.textContent = `PIPIDAHTERKA > ${t('homeBreadcrumb')}`;
+  const tutorials = (TUTORIALS[currentLang] || TUTORIALS.ru).map(item => `
+    <article class="tutorial-card">
+      <h3>${t(item.titleKey)}</h3>
+      <ol>${item.steps.map(step => `<li>${step}</li>`).join('')}</ol>
+    </article>
+  `).join('');
+
+  detailEl.innerHTML = `
+    <section class="home-panel">
+      <div class="home-hero">
+        <div class="minimal-kicker">${t('homeKicker')}</div>
+        <h2>${t('homeTitle')}</h2>
+        <p>${t('homeDesc')}</p>
+      </div>
+
+      <div class="home-quick">
+        <div class="home-quick-card"><b>${t('quickLeftTitle')}</b><span>${t('quickLeftText')}</span></div>
+        <div class="home-quick-card"><b>${t('quickReqTitle')}</b><span>${t('quickReqText')}</span></div>
+        <div class="home-quick-card"><b>${t('quickLangTitle')}</b><span>${t('quickLangText')}</span></div>
+      </div>
+
+      <div class="minimal-section-title">${t('tutorialsTitle')}</div>
+      <section class="tutorials-grid">${tutorials}</section>
+      <div class="tutorial-note">${t('tutorialNote')}</div>
+    </section>
+  `;
+}
+
 function filteredGames() {
-  const q = norm(searchEl.value.trim());
+  const q = norm(searchEl.value);
   if (!q) return catalog.map((g,i)=>({g,i}));
   return catalog.map((g,i)=>({g,i})).filter(x =>
-    norm(x.g.title).includes(q) || x.g.cheats.some(c => norm(c.name).includes(q))
+    matchesText(x.g.title, q) || (x.g.cheats || []).some(c => matchesText(cheatSearchText(c), q))
   );
 }
 
-let expandedGames = new Set([currentGame]);
+let expandedGames = new Set();
 
 function sidebarLogo(game) {
   const fallback = game.icon || (game.title || '?').slice(0,2);
@@ -5476,9 +5767,9 @@ function sidebarLogo(game) {
 }
 
 function visibleCheats(game) {
-  const q = norm(searchEl.value.trim());
-  if (!q || norm(game.title).includes(q)) return (game.cheats || []).map((c,i)=>({c,i}));
-  return (game.cheats || []).map((c,i)=>({c,i})).filter(x => norm(x.c.name).includes(q));
+  const q = norm(searchEl.value);
+  if (!q || matchesText(game.title, q)) return (game.cheats || []).map((c,i)=>({c,i}));
+  return (game.cheats || []).map((c,i)=>({c,i})).filter(x => matchesText(cheatSearchText(x.c), q));
 }
 
 function toggleGame(index) {
@@ -5502,12 +5793,21 @@ function selectSidebarCheat(gameIndex, cheatIndex) {
 function renderGames() {
   const list = filteredGames();
   const q = norm(searchEl.value.trim());
-  if (!list.some(x => x.i === currentGame) && list.length) {
+  const homeBtn = document.getElementById('homeBtn');
+  if (homeBtn) homeBtn.classList.toggle('active', currentGame < 0 && !q);
+
+  if (q && !list.some(x => x.i === currentGame) && list.length) {
     currentGame = list[0].i;
     currentCheat = 0;
     expandedGames.add(currentGame);
   }
-  if (q) list.forEach(x => expandedGames.add(x.i));
+  if (q) {
+    list.forEach(x => expandedGames.add(x.i));
+    const currentVisible = catalog[currentGame] ? visibleCheats(catalog[currentGame]) : [];
+    if (currentVisible.length && !currentVisible.some(x => x.i === currentCheat)) {
+      currentCheat = currentVisible[0].i;
+    }
+  }
 
   gamesEl.innerHTML = `
     <div class="sidebar-caption">${t('sidebarCaption')}</div>
@@ -5535,6 +5835,7 @@ function renderGames() {
 }
 
 function renderCheats() {
+  if (currentGame < 0) return;
   const game = catalog[currentGame];
   if (!game) return;
   const list = visibleCheats(game);
@@ -5542,8 +5843,9 @@ function renderCheats() {
 }
 
 function renderDetail() {
+  if (currentGame < 0) { renderHome(); return; }
   const game = catalog[currentGame];
-  if (!game) { detailEl.innerHTML = ''; return; }
+  if (!game) { renderHome(); return; }
   const cheat = game.cheats[currentCheat] || game.cheats[0];
   if (!cheat) { detailEl.innerHTML = ''; return; }
 
@@ -5652,6 +5954,7 @@ function adminLogout() {
 }
 
 function openAdminPanel() {
+  if (currentGame < 0 && catalog.length) { currentGame = 0; currentCheat = 0; expandedGames.add(0); renderAll(); }
   document.getElementById('adminPanelBackdrop').classList.add('active');
   adminFillSelectors();
   adminUpdateStats();
