@@ -756,6 +756,59 @@ body:before { display:none; }
     font-weight:900;
     background:rgba(255,255,255,.035);
 }
+.minimal-lang {
+    border:0;
+    background:transparent;
+    font:inherit;
+    cursor:pointer;
+}
+.minimal-lang:not(.active):hover {
+    background:rgba(123,195,255,.08);
+    color:#e8f3ff;
+}
+.minimal-top-actions {
+    display:grid;
+    grid-template-columns:minmax(250px,390px) minmax(260px,420px);
+    align-items:center;
+    gap:14px;
+}
+.minimal-fp-buy {
+    display:grid;
+    grid-template-columns:42px minmax(0,1fr);
+    align-items:center;
+    gap:12px;
+    min-height:44px;
+    padding:5px 14px 5px 5px;
+    border:1px solid rgba(123,195,255,.20);
+    border-radius:14px;
+    background:rgba(123,195,255,.07);
+    color:#e8f5ff;
+    text-decoration:none;
+    font-weight:900;
+}
+.minimal-fp-buy:hover {
+    border-color:rgba(123,195,255,.42);
+    background:rgba(123,195,255,.12);
+}
+.minimal-fp-logo {
+    width:34px;
+    height:34px;
+    border-radius:11px;
+    display:grid;
+    place-items:center;
+    background:#7bc3ff;
+    color:#06101d;
+    font-family:Russo One,Inter,sans-serif;
+    font-weight:900;
+    box-shadow:0 0 22px rgba(123,195,255,.22);
+}
+.minimal-fp-text {
+    display:block;
+    text-align:center;
+    font-size:.88rem;
+    line-height:1.15;
+}
+.minimal-buy { display:none; }
 .minimal-overview {
     display:flex;
     align-items:center;
@@ -922,7 +975,7 @@ body:before { display:none; }
     .minimal-site { grid-template-columns:1fr; }
     .minimal-sidebar { position:relative; height:auto; max-height:none; border-right:0; border-bottom:1px solid var(--line); }
     .minimal-topbar { position:relative; align-items:flex-start; flex-direction:column; padding:18px; }
-    .minimal-top-actions { width:100%; }
+    .minimal-top-actions { width:100%; grid-template-columns:1fr; }
     .search { width:100%; }
     .minimal-overview { padding:18px 18px 0; }
     .minimal-detail { margin:18px; }
@@ -931,8 +984,8 @@ body:before { display:none; }
 @media(max-width:560px) {
     .minimal-product-head { flex-direction:column; }
     .req { grid-template-columns:1fr; gap:5px; }
-    .minimal-top-actions { flex-direction:column; align-items:stretch; }
-    .minimal-funpay { width:100%; }
+    .minimal-top-actions { grid-template-columns:1fr; align-items:stretch; }
+    .minimal-fp-buy { width:100%; }
 }
 
 </style>
@@ -944,44 +997,42 @@ body:before { display:none; }
       <div class="minimal-brand-icon">P</div>
       <div>
         <div class="minimal-brand-name">PIPIDAHTERKA</div>
-        <div class="minimal-brand-sub">Каталог читов</div>
+        <div class="minimal-brand-sub" data-i18n="brandSub">Информация о читах</div>
       </div>
     </div>
 
-    <div class="minimal-lang-row">
-      <span class="minimal-lang active">RU</span>
-      <span class="minimal-lang">FUNPAY</span>
+    <div class="minimal-lang-row" role="group" aria-label="Language switcher">
+      <button class="minimal-lang active" type="button" data-lang="ru" onclick="setLang('ru')">RU</button>
+      <button class="minimal-lang" type="button" data-lang="en" onclick="setLang('en')">EN</button>
     </div>
 
-    <a class="minimal-buy" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">
-      <span class="minimal-dot"></span>
-      Купить лучшие читы тут
-    </a>
-
-    <div class="minimal-menu-title">Игры и читы</div>
+    <div class="minimal-menu-title" data-i18n="menuTitle">Игры и читы</div>
     <aside class="games game-sidebar" id="games"></aside>
 
     <div class="minimal-side-bottom">
-      <button class="admin-open-btn" onclick="openAdminLogin()">Админ-панель</button>
+      <button class="admin-open-btn" onclick="openAdminLogin()" data-i18n="adminPanel">Админ-панель</button>
     </div>
   </aside>
 
   <main class="minimal-main">
     <header class="minimal-topbar">
       <div>
-        <div class="minimal-breadcrumb" id="breadcrumb">PIPIDAHTERKA &gt; Каталог</div>
-        <h1>Витрина продуктов</h1>
+        <div class="minimal-breadcrumb" id="breadcrumb">PIPIDAHTERKA &gt; Информация о читах</div>
+        <h1 data-i18n="mainTitle">Информация о читах</h1>
       </div>
       <div class="minimal-top-actions">
-        <input class="search" id="search" placeholder="Поиск игры или чита..." oninput="renderAll()">
-        <a class="minimal-funpay" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">FunPay</a>
+        <a class="minimal-fp-buy" href="https://funpay.com/users/13609498/" target="_blank" rel="noopener noreferrer">
+          <span class="minimal-fp-logo">FP</span>
+          <span class="minimal-fp-text" data-i18n="buyBest">Купить лучшие читы тут</span>
+        </a>
+        <input class="search" id="search" data-i18n-placeholder="searchPlaceholder" placeholder="Поиск игры или чита..." oninput="renderAll()">
       </div>
     </header>
 
     <section class="minimal-overview">
-      <div class="minimal-stat"><b id="gamesCount">0</b><span>игр</span></div>
-      <div class="minimal-stat"><b id="cheatsCount">0</b><span>читов</span></div>
-      <div class="minimal-status"><span></span> Все системы работают</div>
+      <div class="minimal-stat"><b id="gamesCount">0</b><span data-i18n="gamesLabel">игр</span></div>
+      <div class="minimal-stat"><b id="cheatsCount">0</b><span data-i18n="cheatsLabel">читов</span></div>
+      <div class="minimal-status"><span></span> <em data-i18n="systemsOk">Все системы работают</em></div>
     </section>
 
     <main class="detail minimal-detail" id="detail"></main>
@@ -4624,7 +4675,7 @@ let currentGame = 0;
 let currentCheat = 0;
 
 const intro = document.getElementById('intro');
-function hideIntro() { intro.classList.add('hide'); }
+function hideIntro() { if (intro) intro.classList.add('hide'); }
 window.addEventListener('keydown', hideIntro, { once:true });
 window.addEventListener('click', hideIntro, { once:true });
 
@@ -4637,6 +4688,139 @@ document.getElementById('gamesCount').textContent = catalog.length;
 document.getElementById('cheatsCount').textContent = catalog.reduce((s,g)=>s+g.cheats.length,0);
 
 function norm(s) { return (s || '').toLowerCase(); }
+
+const LANG_STORAGE_KEY = 'pipidahterka_lang';
+let currentLang = localStorage.getItem(LANG_STORAGE_KEY) || 'ru';
+if (!['ru', 'en'].includes(currentLang)) currentLang = 'ru';
+
+const UI_TEXT = {
+  ru: {
+    brandSub: 'Информация о читах',
+    menuTitle: 'Игры и читы',
+    mainTitle: 'Информация о читах',
+    buyBest: 'Купить лучшие читы тут',
+    searchPlaceholder: 'Поиск игры или чита...',
+    gamesLabel: 'игр',
+    cheatsLabel: 'читов',
+    systemsOk: 'Все системы работают',
+    adminPanel: 'Админ-панель',
+    sidebarCaption: 'Каталог игр',
+    cheatsNotFound: 'Читы не найдены',
+    nothingFound: 'Ничего не найдено',
+    reqTitle: 'Системные требования',
+    featuresTitle: 'Функционал',
+    mediaTitle: 'Фото / видео',
+    reqEmpty: 'Системные требования пока не указаны',
+    featuresEmpty: 'Функционал пока не указан',
+    mediaEmptyTitle: 'Фото пока не добавлены',
+    mediaEmptyHint: 'Можно добавить позже в assets',
+    descriptionFallback: 'Описание можно добавить в админ-панели.',
+    breadcrumbRoot: 'Информация о читах'
+  },
+  en: {
+    brandSub: 'Cheat information',
+    menuTitle: 'Games and cheats',
+    mainTitle: 'Cheat information',
+    buyBest: 'Buy the best cheats here',
+    searchPlaceholder: 'Search game or cheat...',
+    gamesLabel: 'games',
+    cheatsLabel: 'cheats',
+    systemsOk: 'All systems operational',
+    adminPanel: 'Admin panel',
+    sidebarCaption: 'Game catalog',
+    cheatsNotFound: 'No cheats found',
+    nothingFound: 'Nothing found',
+    reqTitle: 'System requirements',
+    featuresTitle: 'Features',
+    mediaTitle: 'Photos / videos',
+    reqEmpty: 'System requirements are not specified yet',
+    featuresEmpty: 'Features are not specified yet',
+    mediaEmptyTitle: 'No photos added yet',
+    mediaEmptyHint: 'You can add them later in assets',
+    descriptionFallback: 'Description can be added in the admin panel.',
+    breadcrumbRoot: 'Cheat information'
+  }
+};
+
+const REQUIREMENT_KEY_EN = {
+  'Процессор': 'Processor',
+  'ОС': 'OS',
+  'Клиент': 'Client',
+  'Видеокарта': 'Graphics card',
+  'Режим игры': 'Game mode',
+  'Биос': 'BIOS',
+  'Формат диска': 'Disk format',
+  'Обход записи': 'Recording bypass',
+  'Спуфер': 'Spoofer',
+  'Информация': 'Info',
+  'Флешка': 'USB drive'
+};
+
+const STATUS_EN = {
+  'Available': 'Available',
+  'Undetected': 'Undetected',
+  'Updating': 'Updating',
+  'On update': 'On update',
+  'На обновлении': 'On update',
+  'Доступен': 'Available'
+};
+
+const EN_PHRASES = [
+  ['Уточняется на странице источника', 'Check the source page'],
+  ['Карточка добавлена в витрину, ссылка ведёт на страницу источника.', 'Card added to the showcase, source link is available.'],
+  ['Описание можно добавить в админ-панели.', 'Description can be added in the admin panel.'],
+  ['Оконный', 'Windowed'], ['Безрамочный', 'Borderless'], ['Без рамок', 'Borderless'], ['Полноэкранный в окне', 'Fullscreen windowed'],
+  ['Любой', 'Any'], ['Кроме', 'Except'], ['Требуется', 'Required'], ['Встроенный', 'Built-in'], ['Да', 'Yes'], ['Нет', 'No'],
+  ['Отключены', 'Disabled'], ['Включено', 'Enabled'], ['Не поддерживаются', 'not supported'], ['Ноутбуки', 'Laptops'],
+  ['Отображение игроков', 'Player display'], ['Отображение ботов', 'Bot display'], ['Отображение лута', 'Loot display'], ['Отображение напарников', 'Teammate display'],
+  ['Проверка видимости', 'Visibility check'], ['Выбор кости', 'Bone selection'], ['Радиус аима', 'Aim radius'], ['Максимальная дистанция', 'Max distance'],
+  ['Показать радиус аима', 'Show aim radius'], ['Скорость наводки', 'Aim speed'], ['Кнопка аима', 'Aim key'], ['Назначение кнопки', 'Keybind'],
+  ['Игнорировать', 'Ignore'], ['Игроки', 'Players'], ['игроков', 'players'], ['игроки', 'players'], ['Зомби', 'Zombies'], ['зомби', 'zombies'], ['животных', 'animals'],
+  ['трупов', 'corpses'], ['трупы', 'corpses'], ['Оружие', 'Weapon'], ['оружия', 'weapon'], ['Транспорт', 'Vehicles'], ['транспорт', 'vehicles'],
+  ['Настройка', 'Settings'], ['настройка', 'settings'], ['Цвет', 'Color'], ['цвет', 'color'], ['Линия до цели', 'Target line'], ['Линии', 'Lines'],
+  ['Скелет', 'Skeleton'], ['Имя', 'Name'], ['Дистанция', 'Distance'], ['дистанции', 'distance'], ['Здоровье', 'Health'], ['Круг', 'Circle'],
+  ['Включить', 'Enable'], ['Включено', 'Enabled'], ['Отключить', 'Disable'], ['Показ', 'Show'], ['Показать', 'Show'],
+  ['Метки высоты', 'Height markers'], ['Фильтры на лут', 'Loot filters'], ['Выбор карты', 'Map selection'], ['Поворот карты', 'Map rotation'],
+  ['Центрирование игрока', 'Player centering'], ['Предметы', 'Items'], ['Артефакты', 'Artifacts'], ['Союзники', 'Allies'], ['Противники', 'Enemies'],
+  ['На игроков', 'For players'], ['На ботов', 'For bots'], ['На зомби', 'For zombies'], ['На животных', 'For animals']
+];
+
+function t(key) { return (UI_TEXT[currentLang] && UI_TEXT[currentLang][key]) || UI_TEXT.ru[key] || key; }
+
+function setLang(lang) {
+  currentLang = lang === 'en' ? 'en' : 'ru';
+  localStorage.setItem(LANG_STORAGE_KEY, currentLang);
+  document.documentElement.lang = currentLang;
+  renderAll();
+}
+
+function applyStaticTranslations() {
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === currentLang));
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+}
+
+function hasCyrillic(value) { return /[А-Яа-яЁё]/.test(String(value || '')); }
+function trReqKey(key) { return currentLang === 'en' ? (REQUIREMENT_KEY_EN[key] || key) : key; }
+function trStatus(status) { return currentLang === 'en' ? (STATUS_EN[status] || status || 'Available') : (status || 'Available'); }
+function cheatCountLabel(count) { return currentLang === 'en' ? `${count} cheats` : `${count} читов`; }
+
+function trText(value) {
+  let text = String(value || '');
+  if (currentLang !== 'en' || !hasCyrillic(text)) return text;
+  for (const [ru, en] of EN_PHRASES) text = text.split(ru).join(en);
+  return text;
+}
+
+function productDescription(game, cheat) {
+  if (currentLang !== 'en') return cheat.description || t('descriptionFallback');
+  const source = cheat.description || '';
+  if (!source || hasCyrillic(source)) {
+    return `${cheat.name} for ${game.title}. View system requirements, features and media for this cheat.`;
+  }
+  return source;
+}
 
 function filteredGames() {
   const q = norm(searchEl.value.trim());
@@ -4689,7 +4873,7 @@ function renderGames() {
   if (q) list.forEach(x => expandedGames.add(x.i));
 
   gamesEl.innerHTML = `
-    <div class="sidebar-caption">Каталог игр</div>
+    <div class="sidebar-caption">${t('sidebarCaption')}</div>
     ${list.map(x => {
       const cheats = visibleCheats(x.g);
       const isOpen = expandedGames.has(x.i);
@@ -4698,18 +4882,18 @@ function renderGames() {
         <div class="game-group ${isOpen ? 'open' : ''} ${isActiveGame ? 'active' : ''}">
           <button class="game-head" onclick="toggleGame(${x.i})" type="button">
             ${sidebarLogo(x.g)}
-            <span class="game-meta"><b>${x.g.title}</b><small>${(x.g.cheats || []).length} читов</small></span>
+            <span class="game-meta"><b>${x.g.title}</b><small>${cheatCountLabel((x.g.cheats || []).length)}</small></span>
             <span class="game-arrow">›</span>
           </button>
           <div class="game-cheat-list">
             ${cheats.map(item => `
               <button class="side-cheat ${isActiveGame && item.i === currentCheat ? 'active' : ''}" onclick="selectSidebarCheat(${x.i}, ${item.i})" type="button">
-                <b>${item.c.name}</b><small>${item.c.status || 'Available'}</small>
+                <b>${item.c.name}</b><small>${trStatus(item.c.status)}</small>
               </button>
-            `).join('') || '<div class="side-empty">Читы не найдены</div>'}
+            `).join('') || `<div class="side-empty">${t('cheatsNotFound')}</div>`}
           </div>
         </div>`;
-    }).join('') || '<div class="side-empty">Ничего не найдено</div>'}
+    }).join('') || `<div class="side-empty">${t('nothingFound')}</div>`}
   `;
 }
 
@@ -4727,19 +4911,19 @@ function renderDetail() {
   if (!cheat) { detailEl.innerHTML = ''; return; }
 
   const breadcrumb = document.getElementById('breadcrumb');
-  if (breadcrumb) breadcrumb.textContent = `PIPIDAHTERKA > ${game.title} > ${cheat.name}`;
+  if (breadcrumb) breadcrumb.textContent = `PIPIDAHTERKA > ${t('breadcrumbRoot')} > ${game.title} > ${cheat.name}`;
 
   const req = Object.entries(cheat.requirements || {}).map(([k,v]) => `
-    <div class="req"><b>${k}</b><span>${v}</span></div>
-  `).join('') || '<div class="side-empty">Системные требования пока не указаны</div>';
+    <div class="req"><b>${trReqKey(k)}</b><span>${trText(v)}</span></div>
+  `).join('') || `<div class="side-empty">${t('reqEmpty')}</div>`;
 
-  const features = (cheat.features || []).map(f => `<div class="feature">${f}</div>`).join('') || '<div class="side-empty">Функционал пока не указан</div>';
+  const features = (cheat.features || []).map(f => `<div class="feature">${trText(f)}</div>`).join('') || `<div class="side-empty">${t('featuresEmpty')}</div>`;
 
   const media = (cheat.media || []).length ? cheat.media.map(m => `
     <div class="media-card" onclick="${m.type === 'photo' ? `openLightbox('${m.file}')` : ''}">
       ${m.type === 'video' ? `<video controls src="${m.file}"></video>` : `<img src="${m.file}" alt="${m.title || cheat.name}">`}
     </div>
-  `).join('') : '<div class="media-card"><div><b>Фото пока не добавлены</b><br><small>Можно добавить позже в assets</small></div></div>';
+  `).join('') : `<div class="media-card"><div><b>${t('mediaEmptyTitle')}</b><br><small>${t('mediaEmptyHint')}</small></div></div>`;
 
   detailEl.innerHTML = `
     <section class="minimal-hero-card">
@@ -4747,24 +4931,24 @@ function renderDetail() {
         <div>
           <div class="minimal-kicker">${game.title}</div>
           <h2 class="minimal-product-title">${cheat.name}</h2>
-          <p class="minimal-product-description">${cheat.description || 'Описание можно добавить в админ-панели.'}</p>
+          <p class="minimal-product-description">${productDescription(game, cheat)}</p>
         </div>
-        <div class="status">${cheat.status || 'Available'}</div>
+        <div class="status">${trStatus(cheat.status)}</div>
       </div>
     </section>
 
     <section class="minimal-grid">
       <div class="box">
-        <h4>Системные требования</h4>
+        <h4>${t('reqTitle')}</h4>
         <div class="req-grid">${req}</div>
       </div>
       <div class="box">
-        <h4>Функционал</h4>
+        <h4>${t('featuresTitle')}</h4>
         <div class="features">${features}</div>
       </div>
     </section>
 
-    <div class="minimal-section-title">Фото / видео</div>
+    <div class="minimal-section-title">${t('mediaTitle')}</div>
     <section class="media">${media}</section>
   `;
 }
@@ -5082,7 +5266,7 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-function renderAll() { adminUpdateStats(); renderGames(); renderCheats(); renderDetail(); }
+function renderAll() { adminUpdateStats(); renderGames(); renderCheats(); renderDetail(); applyStaticTranslations(); }
 renderAll();
 </script>
 </body>
